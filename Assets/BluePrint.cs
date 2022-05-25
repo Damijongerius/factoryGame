@@ -24,7 +24,7 @@ public class BluePrint : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 50000.0f))
         {
             transform.position = hit.point + new Vector3(0,0.19f,0);
-            Debug.DrawLine(ray.origin, hit.point, Color.red);
+            Debug.DrawLine(ray.origin, hit.point, Color.green);
         }
     }
 }
