@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class cameraController : MonoBehaviour
 {
-    public class ranges
+    public class Ranges
     {
         internal static float maxRotation = 30f;
         internal static float minRotation = 90f;
@@ -15,7 +15,6 @@ public class cameraController : MonoBehaviour
     }
 
     public Camera mainCam;
-    public Rigidbody rb;
 
     public float moveSpeed;
     public float zoomSpeed;
@@ -26,13 +25,15 @@ public class cameraController : MonoBehaviour
     public Terrain floor;
     public LayerMask Mask;
 
-    public Vector3 Point;
+    public Vector3 point;
     public bool Using;
+    public float mouseSensitivity = 500f;
+
+    public float xRotation;
+    public float yRotation;
     // Start is called before the first frame update
     void Start()
     {
-        
-        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -54,9 +55,9 @@ public class cameraController : MonoBehaviour
         float zInput = Input.GetAxis("Vertical");
 
         Vector3 dir = transform.forward * zInput + transform.right * xInput;
+        dir = new Vector3(dir.x,0,dir.z);
 
-        //transform.position += dir  * moveSpeed * Time.deltaTime;
-        rb.AddForce(10f * dir * moveSpeed * Time.deltaTime);
+        transform.position += moveSpeed * Time.deltaTime * dir;
 
     }
     public void Zoom()
@@ -69,24 +70,23 @@ public class cameraController : MonoBehaviour
         else if (dist > maxZoomDist && scrollInput < 0.0f)
             return;
 
-        mainCam.transform.position += mainCam.transform.forward * scrollInput * zoomSpeed;
+        mainCam.transform.position += scrollInput * zoomSpeed * mainCam.transform.forward;
     }
 
     public void OverObj()
     {
-        Ray ray = new Ray(transform.position, Vector3.down);
-        RaycastHit hit;
+        Ray ray = new(transform.position, Vector3.down);
 
-        if(Physics.Raycast(ray,out hit, 20f, Mask, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(ray, out RaycastHit hit, 20f, Mask, QueryTriggerInteraction.Ignore))
         {
             Debug.DrawLine(ray.origin, hit.point, Color.red);
-            transform.position += new Vector3(0,0.1f, 0);
+            transform.position += new Vector3(0, 0.1f, 0);
             //transform.position += new Vector3(0, Mathf.Lerp(transform.position.y, transform.position.y + 1, 0.5f), 0);
         }
-        else if (!Physics.Raycast(ray, out hit, 22f, Mask, QueryTriggerInteraction.Ignore))
+        else if (!Physics.Raycast(ray, out _, 22f, Mask, QueryTriggerInteraction.Ignore) && Physics.Raycast(ray, out hit, 150f, Mask, QueryTriggerInteraction.Ignore))
         {
             Debug.DrawLine(ray.origin, hit.point, Color.red);
-            transform.position -= new Vector3(0, 0.1f, 0); 
+            transform.position -= new Vector3(0, 0.1f, 0);
         }
         else
         {
@@ -98,16 +98,21 @@ public class cameraController : MonoBehaviour
     public void Rotation()
     {
         Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Input.GetMouseButton(2) && Physics.Raycast(ray,out hit))
+        if (Input.GetMouseButton(2) && Physics.Raycast(ray, out RaycastHit hit))
         {
             if (!Using)
-            {
-                Point = hit.point;
-            }
-            Vector3 PointDir = Point - Input.mousePosition;
-            float angle = Vector3.Angle(PointDir, transform.forward);
-            Debug.Log(angle);
+             {
+               point = hit.point;
+               Using = true;
+             }
+            float MouseX = Input.GetAxis("Mouse X") * Time.deltaTime * mouseSensitivity;
+            float MouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * mouseSensitivity;
+
+            xRotation -= MouseY;
+            xRotation = Mathf.Clamp(xRotation, -40f, 0f);
+            yRotation -= MouseX;
+
+            this.transform.localRotation = Quaternion.Euler(xRotation, -yRotation, 0f);
         }
         else
         {
@@ -119,4 +124,5 @@ public class cameraController : MonoBehaviour
     {
         transform.position = pos;
     }
+
 }
