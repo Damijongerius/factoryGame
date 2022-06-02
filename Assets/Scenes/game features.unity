@@ -1281,8 +1281,8 @@ MonoBehaviour:
   size: 0
   objects:
   - {fileID: 1176205194971928352, guid: df3f8900a39875f48898f48d0ce373fe, type: 3}
-  - {fileID: 361307868958002733, guid: f280a4faa18f61344992ff4bb0c5403c, type: 3}
-  - {fileID: 3879301087765597574, guid: 4170662656d01a249ad15faca9723537, type: 3}
+  - {fileID: 7629606587207126237, guid: cc1fbbdbd5d04af4faa07621c3f06dcf, type: 3}
+  - {fileID: 7621623858981708744, guid: 112dca4375d29d84783f5dc0943ea130, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -1787,7 +1787,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCam: {fileID: 165514633}
   moveSpeed: 10
-  zoomSpeed: 1
+  zoomSpeed: 10
   minZoomDist: 10
   maxZoomDist: 30
   floor: {fileID: 0}

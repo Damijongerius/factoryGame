@@ -8,7 +8,7 @@ public class gridSys : MonoBehaviour
     public float scale = .1f;
     public int size = 100;
 
-    public Cell[,] grid;
+    public static Cell[,] grid;
 
     void Start()
     {

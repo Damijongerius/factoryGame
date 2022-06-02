@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class BuildingManager : MonoBehaviour
 {
-    Cell[,] grid;
     public int size;
     //placables
     public GameObject[] objects;
@@ -27,39 +26,34 @@ public class BuildingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        size = GetComponent<gridSys>().size;
-        grid = GetComponent<gridSys>().grid;
     }
 
     private void Update()
     {
-        Pending(grid);
+        Pending();
     }
 
-    public void Pending(Cell[,] grid)
+    public void Pending()
     {
         //snap to grid
         if (pendingObject != null)
         {
-            Debug.Log("hoi hoi");
             float posX = RoundToNearestGrid(pos.x);
             float posY = RoundToNearestGrid(pos.y);
             float posZ = RoundToNearestGrid(pos.z);
 
             int X = Mathf.FloorToInt(posX);
-            int Y = Mathf.FloorToInt(posY);
+            int Z = Mathf.FloorToInt(posZ);
 
             pendingObject.transform.position = new Vector3(posX, posY, posZ);
-            Cell cell = grid[X,Y];
-            Debug.Log("hey");
+            Cell cell = gridSys.grid[X, Z];
+            //Debug.Log(X + "||" + Z + "||" + cell.obj);
             if (!cell.isWater && cell.obj == null)
             {
-                Debug.Log("voldaan");
                 if (Input.GetMouseButtonDown(0))
                 {
                     cell.obj = pendingObject;
                     pendingObject = null;
-                    Debug.Log("click");
                 }
             }
 
@@ -82,7 +76,11 @@ public class BuildingManager : MonoBehaviour
     public void SelectObject(int index)
     {
         //choosing from array to object
-       pendingObject = Instantiate(objects[index], pos, transform.rotation);
+        if (pendingObject == null)
+        {
+            pendingObject = Instantiate(objects[index], pos, transform.rotation);
+        }
+        else return;
     }
 
     float RoundToNearestGrid(float pos)
