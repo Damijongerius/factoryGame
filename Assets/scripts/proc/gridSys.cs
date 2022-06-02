@@ -8,7 +8,7 @@ public class gridSys : MonoBehaviour
     public float scale = .1f;
     public int size = 100;
 
-    Cell[,] grid;
+    public Cell[,] grid;
 
     void Start()
     {
@@ -118,21 +118,21 @@ public class gridSys : MonoBehaviour
         meshRenderer.material.mainTexture = texture;
     }
 
-    void OnDrawGizmos()
-    {
-        if (!Application.isPlaying) return;
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                Cell cell = grid[x, y];
-                if (cell.isWater)
-                    Gizmos.color = Color.blue;
-                else
-                    Gizmos.color = Color.green;
-                Vector3 pos = new Vector3(x, 0, y);
-                Gizmos.DrawCube(pos, Vector3.one);
-            }
-        }
-    }
+    //void OnDrawGizmos()
+    //{
+    //    if (!Application.isPlaying) return;
+    //    for (int y = 0; y < size; y++)
+    //    {
+    //        for (int x = 0; x < size; x++)
+    //        {
+    //            Cell cell = grid[x, y];
+    //            if (cell.isWater)
+    //                Gizmos.color = Color.blue;
+    //            else
+    //                Gizmos.color = Color.green;
+    //            Vector3 pos = new Vector3(x, 0, y);
+    //            Gizmos.DrawCube(pos, Vector3.one);
+    //        }
+    //    }
+    //}
 }
