@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 165514634}
   - component: {fileID: 165514633}
   - component: {fileID: 165514632}
-  - component: {fileID: 165514635}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -201,39 +200,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165514631}
   m_LocalRotation: {x: 0.3856957, y: -0, z: -0, w: 0.9226261}
-  m_LocalPosition: {x: 3.85, y: 12.96, z: -10.6}
+  m_LocalPosition: {x: -2.0213733, y: 31.366009, z: -31.535013}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 1877975683}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45.374, y: 0, z: 0}
---- !u!114 &165514635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 165514631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 754ce6df675de324cb3f3935a1ee9252, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCam: {fileID: 165514633}
-  moveSpeed: 10
-  zoomSpeed: 1
-  minZoomDist: 10
-  maxZoomDist: 90
-  floor: {fileID: 0}
-  Mask:
-    serializedVersion: 2
-    m_Bits: 64
-  point: {x: 0, y: 0, z: 0}
-  Using: 0
-  mouseSensitivity: 500
-  xRotation: 0
-  yRotation: 0
 --- !u!1 &252350724
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +304,7 @@ RectTransform:
   - {fileID: 275572507}
   - {fileID: 1637387771}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1674,7 +1647,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1857463005
 BoxCollider:
@@ -1688,7 +1661,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 100, y: 1, z: 100}
-  m_Center: {x: 50, y: 0, z: 50}
+  m_Center: {x: 49.5, y: -0.5, z: 49.5}
 --- !u!1 &1867774887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1781,8 +1754,67 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1877975681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1877975683}
+  - component: {fileID: 1877975682}
+  m_Layer: 0
+  m_Name: cam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1877975682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877975681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754ce6df675de324cb3f3935a1ee9252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCam: {fileID: 165514633}
+  moveSpeed: 10
+  zoomSpeed: 1
+  minZoomDist: 10
+  maxZoomDist: 30
+  floor: {fileID: 0}
+  Mask:
+    serializedVersion: 2
+    m_Bits: 2147483647
+  point: {x: 0, y: 0, z: 0}
+  Using: 0
+  mouseSensitivity: 500
+  xRotation: 0
+  yRotation: 0
+--- !u!4 &1877975683
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877975681}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: 18.40601, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 165514634}
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2076129479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1848,5 +1880,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
