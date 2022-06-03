@@ -11,7 +11,6 @@ public class Cell
     {
         this.isWater = isWater;
     }
-    
 }
 
 public class ObjInfo
@@ -39,25 +38,10 @@ public class ObjOnCell
     // 0up 1right 2down 3left
     public static int seek(int x, int z, string tag)
     {
-        Cell cell;
-        //cell = gridSys.grid[x, z];
-
-            cell = gridSys.grid[x++, z];
-        if (cell.obj.CompareTag(tag))
-            return 0;
-        else
-            cell = gridSys.grid[x++, z];
-        if (cell.obj.CompareTag(tag))
-            return 1;
-        else
-            cell = gridSys.grid[x++, z];
-        if (cell.obj.CompareTag(tag))
-            return 2;
-        else
-            cell = gridSys.grid[x++, z];
-        if (cell.obj.CompareTag(tag))
-            return 3;
-        else
-            return -1;
+        Cell cell0 = gridSys.grid[x, z++];
+        Cell cell1 = gridSys.grid[x++, z];
+        Cell cell2 = gridSys.grid[x--, z];
+        Cell cell3 = gridSys.grid[x, z--];
+        return cell0.obj.CompareTag(tag) ? 0 : (cell1.obj.CompareTag(tag) ? 1 : (cell2.obj.CompareTag(tag) ? 2 : (cell3.obj.CompareTag(tag) ? 3 : -1)));
     }
 }

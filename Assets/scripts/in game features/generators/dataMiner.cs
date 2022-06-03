@@ -46,12 +46,16 @@ public class dataMiner : MonoBehaviour
             if(objInfo.dataStored > 1f )
             {
                 // looks for data wire in direction
-               int direction = ObjOnCell.seek((int)transform.position.x, (int)transform.position.z, "dataWire");
-                Debug.Log(direction);
-                if (direction != -1)
-                  {
-                    Debug.Log("ejow");
-                }
+               //int direction = ObjOnCell.seek((int)transform.position.x, (int)transform.position.z, "dataWire");
+                //Debug.Log(direction);
+                int x = (int)transform.position.x;
+                int z = (int)transform.position.z;
+                Cell cell = gridSys.grid[x++, z++];
+                Debug.Log(cell.obj + "||" + x++ + "||" + z++ +" ||| " + x +"||"+ z );
+               // if (direction != -1)
+                //  {
+                //    Debug.Log("ejow");
+                //}
             }
         }
     }
