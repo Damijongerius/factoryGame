@@ -62,25 +62,26 @@ public class gridSys : MonoBehaviour
         {
             for (int x = 0; x < size; x++)
             {
-                Cell cell = grid[x, y];
-                /* if(!cell.isWater) { */
+                Cell cell = grid[x, y]; 
+                if(!cell.isWater) {
                 Vector3 a = new Vector3(x - .5f, 0, y + .5f);
                 Vector3 b = new Vector3(x + .5f, 0, y + .5f);
                 Vector3 c = new Vector3(x - .5f, 0, y - .5f);
                 Vector3 d = new Vector3(x + .5f, 0, y - .5f);
-                Vector2 uvA = new Vector2(x / (float)size, y / (float)size);
-                Vector2 uvB = new Vector2((x + 1) / (float)size, y / (float)size);
-                Vector2 uvC = new Vector2(x / (float)size, (y + 1) / (float)size);
-                Vector2 uvD = new Vector2((x + 1) / (float)size, (y + 1) / (float)size);
+                Vector2 uv00 = new Vector2(0,0);
+                Vector2 uv10 = new Vector2(1,0);
+                Vector2 uv01 = new Vector2(0,1);
+                Vector2 uv11 = new Vector2(1,1);
                 Vector3[] v = new Vector3[] { a, b, c, b, d, c };
-                Vector2[] uv = new Vector2[] { uvA, uvB, uvC, uvB, uvD, uvC };
+                Vector2[] uv = new Vector2[] { uv00, uv10, uv01, uv10, uv11, uv01 };
+                
                 for (int k = 0; k < 6; k++)
                 {
                     vertices.Add(v[k]);
                     triangles.Add(triangles.Count);
                     uvs.Add(uv[k]);
                 }
-                /* } */
+               } 
             }
         }
         mesh.vertices = vertices.ToArray();
@@ -104,7 +105,7 @@ public class gridSys : MonoBehaviour
             {
                 Cell cell = grid[x, y];
                 if (cell.isWater)
-                    colorMap[y * size + x] = Color.blue;
+                    colorMap[y * size + x] = Color.red;
                 else
                     colorMap[y * size + x] = Color.green;
             }

@@ -5,12 +5,54 @@ public class Cell
     public bool isWater;
     public bool bought;
 
+
     public GameObject obj;
 
     public Cell(bool isWater)
     {
         this.isWater = isWater;
+
     }
+
+
+    public bool CheckCell(int x, int z, string tag)
+    {
+        if (gridSys.grid[x, z].obj != null)
+        {
+            if (gridSys.grid[x, z].obj.CompareTag(tag))
+            {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public int CheckNeighbour(int x, int z, string tag)
+    {
+        int NeighbourCountBinair = 0;
+        if(CheckCell(x, z + 1, tag))
+        {
+            NeighbourCountBinair += 1;
+        }
+        if (CheckCell(x + 1, z, tag))
+        {
+            NeighbourCountBinair += 2;
+        }
+        if (CheckCell(x, z - 1, tag))
+        {
+            NeighbourCountBinair += 4;
+        }
+        if (CheckCell(x - 1, z, tag))
+        {
+            NeighbourCountBinair += 8;
+        }
+
+        return NeighbourCountBinair;
+
+    }
+
+    
 }
 
 public class ObjInfo
@@ -32,16 +74,3 @@ public class ObjInfo
     public int upkeepCost;
 }
 
-public class ObjOnCell
-{
-    //seek for obj next to this obj
-    // 0up 1right 2down 3left
-    public static int seek(int x, int z, string tag)
-    {
-        Cell cell0 = gridSys.grid[x, z++];
-        Cell cell1 = gridSys.grid[x++, z];
-        Cell cell2 = gridSys.grid[x--, z];
-        Cell cell3 = gridSys.grid[x, z--];
-        return cell0.obj.CompareTag(tag) ? 0 : (cell1.obj.CompareTag(tag) ? 1 : (cell2.obj.CompareTag(tag) ? 2 : (cell3.obj.CompareTag(tag) ? 3 : -1)));
-    }
-}

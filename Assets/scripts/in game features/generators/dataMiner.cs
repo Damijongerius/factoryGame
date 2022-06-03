@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class dataMiner : MonoBehaviour
 {
-    public Cell cell;
+    //public Cell cell;
     public ObjInfo objInfo;
 
     // Start is called before the first frame update
     void Start()
     {
         // get grid pos
-        Cell cell = gridSys.grid[(int)transform.position.x, (int)transform.position.z];
         objInfo = new ObjInfo
         {
             powered = true
@@ -46,16 +45,12 @@ public class dataMiner : MonoBehaviour
             if(objInfo.dataStored > 1f )
             {
                 // looks for data wire in direction
-               //int direction = ObjOnCell.seek((int)transform.position.x, (int)transform.position.z, "dataWire");
+                int directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
                 //Debug.Log(direction);
-                int x = (int)transform.position.x;
-                int z = (int)transform.position.z;
-                Cell cell = gridSys.grid[x++, z++];
-                Debug.Log(cell.obj + "||" + x++ + "||" + z++ +" ||| " + x +"||"+ z );
-               // if (direction != -1)
-                //  {
-                //    Debug.Log("ejow");
-                //}
+               if(directions != 0)
+                {
+                    Debug.Log("I have some one that can take my power: " + directions);
+                }
             }
         }
     }
