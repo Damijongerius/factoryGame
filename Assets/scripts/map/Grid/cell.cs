@@ -55,22 +55,4 @@ public class Cell
     
 }
 
-public class ObjInfo
-{
-    public bool powered;
-    public bool exitPoint;
-
-    [Range(0f, 100f)]
-    public float powerStored;
-
-    [Range(0, 50)]
-    public int dataStored;
-
-    public int Level;
-
-    public int dataMined;
-    public int age;
-
-    public int upkeepCost;
-}
 
