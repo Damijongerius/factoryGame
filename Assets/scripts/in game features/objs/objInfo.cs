@@ -25,14 +25,17 @@ public class Miner : ObjInfo
 
     public bool exitPoints;
     public bool powered;
+
 }
 
 public class Transformer : ObjInfo
 {
+
 }
 
 public class Wires : ObjInfo
 {
+
 
 }
 

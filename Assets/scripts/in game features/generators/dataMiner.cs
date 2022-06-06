@@ -7,6 +7,7 @@ public class dataMiner : MonoBehaviour
     //public Cell cell;
     public Miner miner;
 
+    public enum dir { north, east, south, west };
     // Start is called before the first frame update
     void Start()
     {
@@ -45,11 +46,13 @@ public class dataMiner : MonoBehaviour
             if(miner.dataStored > 1f )
             {
                 // looks for data wire in direction
-                int directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
+                int[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
                 //Debug.Log(direction);
-               if(directions != 0)
+                for(int i=0; i < directions.Length; i++)
                 {
-                    Debug.Log("I have some one that can take my power: " + directions);
+                    if (directions[i] != 0)
+                    {
+                    }
                 }
             }
         }

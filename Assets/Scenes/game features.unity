@@ -175,7 +175,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 26.991467
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -1627,10 +1627,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1857463002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64efcaddfffa96f4187e6e0e1a7d1fd7, type: 3}
+  m_Script: {fileID: 11500000, guid: d815438a2e1d2e24c871449791f82737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainMaterial: {fileID: 2100000, guid: 34be01acded5b444683fd67acb2aed66, type: 2}
+  atlas: {fileID: 2100000, guid: ce58b2c5515a444458d3381b52a47e8c, type: 2}
   waterLevel: 0.4
   scale: 0.1
   size: 100

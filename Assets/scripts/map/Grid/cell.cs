@@ -28,24 +28,24 @@ public class Cell
         return false;
     }
 
-    public int CheckNeighbour(int x, int z, string tag)
+    public int[] CheckNeighbour(int x, int z, string tag)
     {
-        int NeighbourCountBinair = 0;
+        int[] NeighbourCountBinair = new int[4];
         if(CheckCell(x, z + 1, tag))
         {
-            NeighbourCountBinair += 1;
+            NeighbourCountBinair[0] += 1;
         }
         if (CheckCell(x + 1, z, tag))
         {
-            NeighbourCountBinair += 2;
+            NeighbourCountBinair[1] += 1;
         }
         if (CheckCell(x, z - 1, tag))
         {
-            NeighbourCountBinair += 4;
+            NeighbourCountBinair[2] += 1;
         }
         if (CheckCell(x - 1, z, tag))
         {
-            NeighbourCountBinair += 8;
+            NeighbourCountBinair[3] += 1;
         }
 
         return NeighbourCountBinair;
