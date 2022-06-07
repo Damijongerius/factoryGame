@@ -175,7 +175,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 26.991467
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -1278,15 +1278,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76739a509f7c07a40a2944f8983cb721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: 0
   objects:
   - {fileID: 1176205194971928352, guid: df3f8900a39875f48898f48d0ce373fe, type: 3}
-  - {fileID: 361307868958002733, guid: f280a4faa18f61344992ff4bb0c5403c, type: 3}
-  - {fileID: 3879301087765597574, guid: 4170662656d01a249ad15faca9723537, type: 3}
+  - {fileID: 7629606587207126237, guid: cc1fbbdbd5d04af4faa07621c3f06dcf, type: 3}
+  - {fileID: 7621623858981708744, guid: 112dca4375d29d84783f5dc0943ea130, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 64
   gridSize: 1
-  gridToggle: {fileID: 1637387772}
 --- !u!1 &1567250513
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,10 +1627,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1857463002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64efcaddfffa96f4187e6e0e1a7d1fd7, type: 3}
+  m_Script: {fileID: 11500000, guid: d815438a2e1d2e24c871449791f82737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainMaterial: {fileID: 2100000, guid: 34be01acded5b444683fd67acb2aed66, type: 2}
+  atlas: {fileID: 2100000, guid: ce58b2c5515a444458d3381b52a47e8c, type: 2}
   waterLevel: 0.4
   scale: 0.1
   size: 100
@@ -1642,7 +1642,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1857463002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1660,7 +1660,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 100, y: 1, z: 100}
+  m_Size: {x: 100, y: 2, z: 100}
   m_Center: {x: 49.5, y: -0.5, z: 49.5}
 --- !u!1 &1867774887
 GameObject:
@@ -1787,7 +1787,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCam: {fileID: 165514633}
   moveSpeed: 10
-  zoomSpeed: 1
+  zoomSpeed: 10
   minZoomDist: 10
   maxZoomDist: 30
   floor: {fileID: 0}
