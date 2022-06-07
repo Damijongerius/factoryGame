@@ -38,12 +38,20 @@ public class BuildingManager : MonoBehaviour
         //snap to grid
         if (pendingObject != null)
         {
+<<<<<<< Updated upstream:Assets/scripts/manager/BuildingManager.cs
             float posX = RoundToNearestGrid(pos.x);
             float posY = RoundToNearestGrid(pos.y);
             float posZ = RoundToNearestGrid(pos.z);
 
             int X = Mathf.FloorToInt(posX);
             int Z = Mathf.FloorToInt(posZ);
+=======
+                pendingObject.transform.position = new Vector3(
+                    RoundToNearestGrid(pos.x),
+                    RoundToNearestGrid(pos.y),
+                    RoundToNearestGrid(pos.z)
+                    );
+>>>>>>> Stashed changes:Assets/scripts/new scripts/BuildingManager.cs
 
             pendingObject.transform.position = new Vector3(posX, posY, posZ);
             Cell cell = gridSys.grid[X, Z];
@@ -75,12 +83,18 @@ public class BuildingManager : MonoBehaviour
 
     public void SelectObject(int index)
     {
+<<<<<<< Updated upstream:Assets/scripts/manager/BuildingManager.cs
         //choosing from array to object
         if (pendingObject == null)
         {
             pendingObject = Instantiate(objects[index], pos, transform.rotation);
         }
         else return;
+=======
+
+       pendingObject = Instantiate(objects[index], pos, transform.rotation);
+        
+>>>>>>> Stashed changes:Assets/scripts/new scripts/BuildingManager.cs
     }
 
     float RoundToNearestGrid(float pos)
