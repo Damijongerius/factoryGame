@@ -1,68 +1,74 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UiFoldMenu : MonoBehaviour
 {
 
-    Animator openClose;
-    public GameObject foldObject;
-    public Canvas settings;
-    public bool Foldopen = false;
-    public bool SettingOpen = false;
-
-
+ //   Animator openClose;
+    //public GameObject foldObject;
+    public bool open = false;
+    public Button button;
+    public Canvas canvas;
 
     // Start is called before the first frame update
     void Start()
     {
-        openClose = foldObject.GetComponent<Animator>();
+       // openClose = foldObject.GetComponent<Animator>();
+        button = gameObject.GetComponent<Button>();
+        button.onClick.AddListener(HandleClick);
         
+    }
+        
+    public void HandleClick()
+    {
+        Debug.Log("IUADSILHBGASDHVJIOHOFA");
+        open = !open;
+        canvas.gameObject.SetActive(open);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Escape))
-        {
-            Settings();
-        }
-        else if (Input.GetKeyUp(KeyCode.Q))
-        {
-            OpenClose();
-        }
+        
+        //if (Input.GetKeyUp(KeyCode.Escape))
+        //{
+        //    Settings();
+        //}
+        //else if (Input.GetKeyUp(KeyCode.Q))
+        //{
+        //    OpenClose();
+        //}
     }
 
     
+    
 
 
-    public void OpenClose()
-    {
+    //public void OpenClose()
+    //{
      
-        if (Foldopen)
-        {
-            Foldopen = false;
-            openClose.SetTrigger("close");
-        }
-        else
-        {
-            Foldopen = true;
-            openClose.SetTrigger("open");
-        }
-    }
+    //    if (open[0])
+    //    {
+    //        open[0] = false;
+    //        openClose.SetTrigger("close");
+    //    }
+    //    else
+    //    {
+    //        open[0] = true;
+    //        openClose.SetTrigger("open");
+    //    }
+    //}
 
-    public void Settings()
-    {
-        if (SettingOpen)
-        {
-            SettingOpen = false;
-            settings.gameObject.SetActive(false);
-        }
-        else
-        {
-            settings.gameObject.SetActive(true);
-            SettingOpen = true;
-        }
-    }
+
+    //public void LeaveShop(Canvas canvas123)
+    //{
+    //    if (open[2])
+    //        open[2] = false;
+    //}
+
 }
