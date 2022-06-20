@@ -35,8 +35,8 @@ public class Transformer : ObjInfo
 
 public class Wires : ObjInfo
 {
-
-
+    //up right down left
+    public int[] distance;
 }
 
 public class Storage : ObjInfo

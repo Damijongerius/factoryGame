@@ -28,24 +28,28 @@ public class Cell
         return false;
     }
 
-    public int CheckNeighbour(int x, int z, string tag)
+    public bool[] CheckNeighbour(int x, int z, string tag)
     {
-        int NeighbourCountBinair = 0;
-        if(CheckCell(x, z + 1, tag))
+        bool[] NeighbourCountBinair = new bool[4] { false, false, false, false};
+        if (CheckCell(x, z + 1, tag))
         {
-            NeighbourCountBinair += 1;
+            NeighbourCountBinair[0] = true;
+            //Debug.Log("up");
         }
         if (CheckCell(x + 1, z, tag))
         {
-            NeighbourCountBinair += 2;
+            NeighbourCountBinair[1] = true;
+            //Debug.Log("right");
         }
         if (CheckCell(x, z - 1, tag))
         {
-            NeighbourCountBinair+= 4;
+            NeighbourCountBinair[2] = true;
+            //Debug.Log("down");
         }
         if (CheckCell(x - 1, z, tag))
         {
-            NeighbourCountBinair += 8;
+            NeighbourCountBinair[3] = true;
+            //Debug.Log("left");
         }
 
         return NeighbourCountBinair;

@@ -16,7 +16,8 @@ public class dataMiner : MonoBehaviour
         {
         powered = true     
         };
-
+        
+        
         InvokeRepeating(nameof(Run), 2f, 1.5f);
     }
 
@@ -32,85 +33,33 @@ public class dataMiner : MonoBehaviour
     //run the following actions
     public void Run()
     {
+        Debug.Log(miner.powerStored);
+        // looks for data wire in direction
+        bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
+        foreach (bool direction in directions)
+        {
+            if (direction)
+            {
+                Debug.Log("wire with power");
+                GameObject wire = gridSys.grid[(int)transform.position.x, (int)transform.position.z].obj;
+            }
+        }
+
         if (miner.powered)
         {
             miner.powerStored += 1.5f;
 
             if(miner.powerStored > 10f)
             {
-                miner.powerStored -= 1f;
+                miner.powerStored -= 1.5f;
                 miner.dataStored += 1;
 
             }
 
             if(miner.dataStored > 1f )
             {
-                // looks for data wire in direction
-                int directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
-                //Debug.Log(direction);
-                switch (directions)
-                {
-                    case 1:
-                        {
-                            break;
-                        }
-                    case 2:
-                        {
-                            break;
-                        }
-                    case 3:
-                        {
-                            break;
-                        }
-                    case 4:
-                        {
-                            break;
-                        }
-                    case 5:
-                        {
-                            break;
-                        }
-                    case 6:
-                        {
-                            break;
-                        }
-                    case 7:
-                        {
-                            break;
-                        }
-                    case 8:
-                        {
-                            break;
-                        }
-                    case 9:
-                        {
-                            break;
-                        }
-                    case 10:
-                        {
-                            break;
-                        }
-                    case 11:
-                        {
-                            break;
-                        }
-                    case 12:
-                        {
-                            break;
-                        }
-                    case 13:
-                        {
-                            break;
-                        }
-                    case 14:
-                        {
-                            break;
-                        }
-                    case 15:
-                        {
-                            break;
-                        }
-                }
+
+               
             }
         }
     }
