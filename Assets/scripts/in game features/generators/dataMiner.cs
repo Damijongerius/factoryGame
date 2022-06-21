@@ -42,6 +42,7 @@ public class dataMiner : MonoBehaviour
             {
                 Debug.Log("wire with power");
                 GameObject wire = gridSys.grid[(int)transform.position.x, (int)transform.position.z].obj;
+                //ScriptableObject script = wire.GetComponent<ScriptableObject>();
             }
         }
 
