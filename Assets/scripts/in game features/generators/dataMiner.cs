@@ -16,7 +16,8 @@ public class dataMiner : MonoBehaviour
         {
         powered = true     
         };
-
+        
+        
         InvokeRepeating(nameof(Run), 2f, 1.5f);
     }
 
@@ -32,28 +33,34 @@ public class dataMiner : MonoBehaviour
     //run the following actions
     public void Run()
     {
+        Debug.Log(miner.powerStored);
+        // looks for data wire in direction
+        bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
+        foreach (bool direction in directions)
+        {
+            if (direction)
+            {
+                Debug.Log("wire with power");
+                GameObject wire = gridSys.grid[(int)transform.position.x, (int)transform.position.z].obj;
+                //ScriptableObject script = wire.GetComponent<ScriptableObject>();
+            }
+        }
+
         if (miner.powered)
         {
             miner.powerStored += 1.5f;
 
             if(miner.powerStored > 10f)
             {
-                miner.powerStored -= 1f;
+                miner.powerStored -= 1.5f;
                 miner.dataStored += 1;
 
             }
 
             if(miner.dataStored > 1f )
             {
-                // looks for data wire in direction
-                int[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
-                //Debug.Log(direction);
-                for(int i=0; i < directions.Length; i++)
-                {
-                    if (directions[i] != 0)
-                    {
-                    }
-                }
+
+               
             }
         }
     }

@@ -28,28 +28,66 @@ public class Cell
         return false;
     }
 
-    public int[] CheckNeighbour(int x, int z, string tag)
+    public GameObject GetCellObj(int x, int z, string tag)
     {
-        int[] NeighbourCountBinair = new int[4];
-        if(CheckCell(x, z + 1, tag))
+        if (gridSys.grid[x, z].obj != null)
         {
-            NeighbourCountBinair[0] += 1;
+         return gridSys.grid[x, z].obj;
+        }
+        return null;
+    }
+
+    public bool[] CheckNeighbour(int x, int z, string tag)
+    {
+        bool[] NeighbourCountBinair = new bool[4] { false, false, false, false};
+        if (CheckCell(x, z + 1, tag))
+        {
+            NeighbourCountBinair[0] = true;
+            //Debug.Log("up");
         }
         if (CheckCell(x + 1, z, tag))
         {
-            NeighbourCountBinair[1] += 1;
+            NeighbourCountBinair[1] = true;
+            //Debug.Log("right");
         }
         if (CheckCell(x, z - 1, tag))
         {
-            NeighbourCountBinair[2] += 1;
+            NeighbourCountBinair[2] = true;
+            //Debug.Log("down");
         }
         if (CheckCell(x - 1, z, tag))
         {
-            NeighbourCountBinair[3] += 1;
+            NeighbourCountBinair[3] = true;
+            //Debug.Log("left");
         }
 
         return NeighbourCountBinair;
 
+    }
+
+    public GameObject[] CheckPowered(int x, int z, string tag)
+    {
+        GameObject[] PoweredObjs = new GameObject[4] {null,null,null,null};
+
+        bool[] Neighbours = CheckNeighbour(x, z, tag);
+        if (Neighbours[0])
+        {
+            PoweredObjs[0] = GetCellObj(x, z + 1, tag);
+        }
+        if (Neighbours[1])
+        {
+            PoweredObjs[1] = GetCellObj(x + 1, z, tag);
+        }
+        if (Neighbours[2])
+        {
+            PoweredObjs[2] = GetCellObj(x, z - 1, tag);
+        }
+        if (Neighbours[3])
+        {
+            PoweredObjs[3] = GetCellObj(x - 1, z, tag);
+        }
+
+        return PoweredObjs;
     }
 
     

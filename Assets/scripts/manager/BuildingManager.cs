@@ -21,6 +21,7 @@ public class BuildingManager : MonoBehaviour
 
     //grid size
     public float gridSize;
+    public bool isWire;
 
 
     // Start is called before the first frame update
@@ -53,6 +54,11 @@ public class BuildingManager : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     cell.obj = pendingObject;
+                    if (isWire)
+                    {
+                        pendingObject.tag = "dataWire";
+                        isWire = false;
+                    }
                     pendingObject = null;
                 }
             }
@@ -79,9 +85,15 @@ public class BuildingManager : MonoBehaviour
         if (pendingObject == null)
         {
             pendingObject = Instantiate(objects[index], pos, transform.rotation);
+            if(index == 1)
+            {
+                isWire = true;
+            }
+    
         }
         else return;
     }
+
 
     float RoundToNearestGrid(float pos)
     {
