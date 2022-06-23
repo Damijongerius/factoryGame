@@ -28,6 +28,15 @@ public class Cell
         return false;
     }
 
+    public GameObject GetCellObj(int x, int z, string tag)
+    {
+        if (gridSys.grid[x, z].obj != null)
+        {
+         return gridSys.grid[x, z].obj;
+        }
+        return null;
+    }
+
     public bool[] CheckNeighbour(int x, int z, string tag)
     {
         bool[] NeighbourCountBinair = new bool[4] { false, false, false, false};
@@ -54,6 +63,31 @@ public class Cell
 
         return NeighbourCountBinair;
 
+    }
+
+    public GameObject[] CheckPowered(int x, int z, string tag)
+    {
+        GameObject[] PoweredObjs = new GameObject[4] {null,null,null,null};
+
+        bool[] Neighbours = CheckNeighbour(x, z, tag);
+        if (Neighbours[0])
+        {
+            PoweredObjs[0] = GetCellObj(x, z + 1, tag);
+        }
+        if (Neighbours[1])
+        {
+            PoweredObjs[1] = GetCellObj(x + 1, z, tag);
+        }
+        if (Neighbours[2])
+        {
+            PoweredObjs[2] = GetCellObj(x, z - 1, tag);
+        }
+        if (Neighbours[3])
+        {
+            PoweredObjs[3] = GetCellObj(x - 1, z, tag);
+        }
+
+        return PoweredObjs;
     }
 
     

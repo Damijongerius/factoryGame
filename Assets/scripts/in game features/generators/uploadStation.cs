@@ -25,7 +25,8 @@ public class uploadStation : MonoBehaviour
 
     public void TestSurround()
     {
-        bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
+        bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "DataWire");
+        GameObject[] Wires = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckPowered((int)transform.position.x, (int)transform.position.z, "DataWire");
         foreach (bool direction in directions)
         {
             if (direction)
