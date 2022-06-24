@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 public class Cell
 {
@@ -28,9 +30,9 @@ public class Cell
         return false;
     }
 
-    public GameObject GetCellObj(int x, int z, string tag)
+    public GameObject GetCellObj(int x, int z,string tag)
     {
-        if (gridSys.grid[x, z].obj != null)
+        if (gridSys.grid[x, z].obj != null && gridSys.grid[x,z].obj.CompareTag(tag))
         {
          return gridSys.grid[x, z].obj;
         }
@@ -65,29 +67,23 @@ public class Cell
 
     }
 
-    public GameObject[] CheckPowered(int x, int z, string tag)
+    public List<GameObject> GetObject(int x, int z, string tag)
     {
-        GameObject[] PoweredObjs = new GameObject[4] {null,null,null,null};
+        List<GameObject> Objects = new();
+        
+        if (GetCellObj(x, z + 1, tag) != null)
+            Objects.Add(GetCellObj(x, z + 1, tag));
+        if (GetCellObj(x + 1, z, tag) != null)
+            Objects.Add(GetCellObj(x + 1, z, tag));
+        if (GetCellObj(x, z - 1, tag) != null)
+            Objects.Add(GetCellObj(x, z - 1, tag));
+        if (GetCellObj(x - 1, z, tag) != null)
+            Objects.Add(GetCellObj(x - 1, z, tag));
 
-        bool[] Neighbours = CheckNeighbour(x, z, tag);
-        if (Neighbours[0])
-        {
-            PoweredObjs[0] = GetCellObj(x, z + 1, tag);
-        }
-        if (Neighbours[1])
-        {
-            PoweredObjs[1] = GetCellObj(x + 1, z, tag);
-        }
-        if (Neighbours[2])
-        {
-            PoweredObjs[2] = GetCellObj(x, z - 1, tag);
-        }
-        if (Neighbours[3])
-        {
-            PoweredObjs[3] = GetCellObj(x - 1, z, tag);
-        }
 
-        return PoweredObjs;
+
+
+        return Objects;
     }
 
     

@@ -26,7 +26,6 @@ public class openCloseManager : MonoBehaviour
     {
         bool state = canvas.gameObject.active;
         state = !state;
-        Debug.Log(state);
         canvas.gameObject.SetActive(state);
         if(CloseCanvas != null)
         {

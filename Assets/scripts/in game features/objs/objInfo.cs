@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class ObjInfo
 {
-    [Range(0, 50)]
     public int dataStored;
 
-    [Range(0f, 100f)]
     public float powerStored;
 
     public int Level;

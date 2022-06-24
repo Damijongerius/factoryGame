@@ -35,7 +35,6 @@ public class UiBuildBar : MonoBehaviour
         for(int i = 0; i < length; i++)
         {
             buttons[i].transform.position = new Vector3(begin + (width * i) + (Screen.width / 2),transform.position.y,transform.position.z);
-            Debug.Log(begin + (width * i));
         }
     }
 }

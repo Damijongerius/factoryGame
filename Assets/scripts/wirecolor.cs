@@ -19,7 +19,7 @@ public class wirecolor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(this.gameObject.tag + "tag");
+       // Debug.Log(this.gameObject.tag + "tag");
         if (this.gameObject.CompareTag("dataWire"))
         {
             bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
@@ -27,7 +27,7 @@ public class wirecolor : MonoBehaviour
             {
                 if (direction)
                 {
-                    Debug.Log("powered");
+                    //Debug.Log("powered");
                 }
             }
         }

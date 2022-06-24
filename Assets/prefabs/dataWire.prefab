@@ -107,7 +107,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8394288518561453615}
   - component: {fileID: 4779811080461423526}
-  - component: {fileID: 1643197082128331910}
   - component: {fileID: 5634668327314010860}
   m_Layer: 0
   m_Name: dataWire
@@ -144,21 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e93e569b24de9e4c9101d0163d0d89b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1643197082128331910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7629606587207126237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 702b71a55ef87be45b62e4f28968bb37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Powered: {fileID: 2100000, guid: 5d6e3573555a7b74e83fc96576f0d6f7, type: 2}
-  Unpowered: {fileID: 2100000, guid: b9b06fca2f059a642b84d69c71d83902, type: 2}
-  material: {fileID: 5634668327314010860}
+  random: 1
 --- !u!23 &5634668327314010860
 MeshRenderer:
   m_ObjectHideFlags: 0
