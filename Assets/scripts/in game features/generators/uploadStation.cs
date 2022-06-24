@@ -1,15 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class uploadStation : MonoBehaviour
 {
-    
     void Start()
     {
-        InvokeRepeating(nameof(TestSurround), 2f, 1.5f);
+        InvokeRepeating(nameof(Run), 2f, 1.5f);
        
     }
 
@@ -18,11 +15,15 @@ public class uploadStation : MonoBehaviour
     {
     }
 
-    public void TestSurround()
+    public void Run()
     {
-        bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "DataWire");
-        //GameObject[] Wires = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "DataWire");
-        // Wires wire = Wires[0].GetComponent<dataWire>().wire;
-        //float power = wire.powerStored;
+        List<GameObject> wires = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
+        foreach(GameObject wire in wires)
+        {
+            wire.GetComponent<dataWire>().wire.SelfPrio = 0;
+            Debug.Log("done");
+            wire.GetComponent<dataWire>().GiveValues();
+        }
+
     }
 }

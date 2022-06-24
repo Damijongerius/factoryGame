@@ -5,11 +5,10 @@ using UnityEngine;
 public class dataWire : MonoBehaviour
 {
     public Wires wire = new Wires();
-    public int random = 1;
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating(nameof(Run), 2f, 1.5f);
+        InvokeRepeating(nameof(Run), 1f, 1f);
     }
 
     // Update is called once per frame
@@ -21,7 +20,7 @@ public class dataWire : MonoBehaviour
 
     public void Run()
     {
-        Debug.Log(wire.dataStored);
+        Debug.Log(wire.SelfPrio);
         bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataMiner");
         foreach (bool direction in directions)
         {
@@ -31,4 +30,23 @@ public class dataWire : MonoBehaviour
             }
         }
     }
+
+    public void GiveValues()
+    {
+        wire.updateSpeed--;
+        if (wire.updateSpeed <= 0)
+        {
+            Debug.Log("run datawire");
+            wire.updateSpeed = 20;
+
+
+            List<GameObject> wires = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
+            for (int i = 0; i < wires.Count; i++)
+            {
+                wire.Prio[i] = wires[i].GetComponent<dataWire>().wire.SelfPrio;
+                //wires[i].GetComponent<dataWire>().wire.prio
+            }
+        }
+    }
+
 }

@@ -84,7 +84,10 @@ public class dataMiner : MonoBehaviour
 
             if (miner.dataStored > 1f)
             {
-                chosenWire.GetComponent<dataWire>().wire.dataStored += 1;
+                if (chosenWire)
+                {
+                    chosenWire.GetComponent<dataWire>().wire.dataStored += 1;
+                }
                 miner.dataStored -= 1;
 
             }

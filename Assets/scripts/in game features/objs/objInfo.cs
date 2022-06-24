@@ -34,7 +34,11 @@ public class Transformer : ObjInfo
 public class Wires : ObjInfo
 {
     //up right down left
-    public int[] distance;
+    public int[] Prio = {-1,-1,-1,-1};
+    //his highest prio number
+    public int SelfPrio;
+
+    public int updateSpeed;
 }
 
 public class Storage : ObjInfo
@@ -42,7 +46,7 @@ public class Storage : ObjInfo
 
 }
 
-public class Sell : ObjInfo
+public class UploadStation : ObjInfo
 {
 
 }
