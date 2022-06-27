@@ -10,6 +10,10 @@ public class dataMiner : MonoBehaviour
     public int nextSide;
     public GameObject chosenWire;
 
+    public bool[] directions;
+    public List<GameObject> wires;
+    public List<GameObject> notNull;
+
     public enum dir { north, east, south, west };
     // Start is called before the first frame update
     void Start()
@@ -35,36 +39,43 @@ public class dataMiner : MonoBehaviour
     {
         // looks for data wire in direction
 
-        bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
-        List<GameObject> wires = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
+        directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
+        wires = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
+        notNull = null;
         sides = -1;
-        foreach (bool d in directions)
+        for(int i = 0;i < directions.Length; i++)
         {
-            if (d)
+            if (directions[i])
             {
                 sides++;
-
+                notNull.Add(wires[i]);
+                //Debug.Log(wires[i]);
             }
+                
         }
-        if(sides >= 0)
+        if(sides > nextSide)
         {
             nextSide++;
         }
         if(nextSide == 0)
         {
-            chosenWire = wires[0];
+            chosenWire = notNull[0];
+            Debug.Log("summon0");
         }
         if (nextSide == 1)
         {
-            chosenWire = wires[1];
+            chosenWire = notNull[1];
+            Debug.Log("summon1");
         }
         if (nextSide == 2)
         {
-            chosenWire = wires[2];
+            chosenWire = notNull[2];
+            Debug.Log("summon2");
         }
         if (nextSide == 3)
         {
-            chosenWire = wires[3];
+            chosenWire = notNull[3];
+            Debug.Log("summon3");
         }
         if(nextSide >= sides)
         {
@@ -87,6 +98,7 @@ public class dataMiner : MonoBehaviour
                 if (chosenWire)
                 {
                     chosenWire.GetComponent<dataWire>().wire.dataStored += 1;
+                    Debug.Log("gived");
                 }
                 miner.dataStored -= 1;
 

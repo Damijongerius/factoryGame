@@ -71,13 +71,9 @@ public class Cell
     {
         List<GameObject> Objects = new();
         
-        if (GetCellObj(x, z + 1, tag) != null)
             Objects.Add(GetCellObj(x, z + 1, tag));
-        if (GetCellObj(x + 1, z, tag) != null)
             Objects.Add(GetCellObj(x + 1, z, tag));
-        if (GetCellObj(x, z - 1, tag) != null)
             Objects.Add(GetCellObj(x, z - 1, tag));
-        if (GetCellObj(x - 1, z, tag) != null)
             Objects.Add(GetCellObj(x - 1, z, tag));
 
 
