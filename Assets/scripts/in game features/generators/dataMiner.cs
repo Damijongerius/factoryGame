@@ -6,13 +6,13 @@ public class dataMiner : MonoBehaviour
 {
     //public Cell cell;
     public Miner miner;
-    public int sides;
-    public int nextSide;
-    public GameObject chosenWire;
 
     public bool[] directions;
+    public List<GameObject> objects;
     public List<GameObject> wires;
-    public List<GameObject> notNull;
+
+    public int sides = 0;
+    public GameObject chosenWire;
 
     public enum dir { north, east, south, west };
     // Start is called before the first frame update
@@ -24,7 +24,6 @@ public class dataMiner : MonoBehaviour
         powered = true     
         };
         
-        nextSide = -1;
         InvokeRepeating(nameof(Run), 2f, 1.5f);
     }
 
@@ -40,46 +39,42 @@ public class dataMiner : MonoBehaviour
         // looks for data wire in direction
 
         directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
-        wires = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
-        notNull = null;
-        sides = -1;
-        for(int i = 0;i < directions.Length; i++)
+        objects = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
+        wires.Clear();
+        foreach(GameObject obj in objects)
         {
-            if (directions[i])
+            if (obj != null)
             {
-                sides++;
-                notNull.Add(wires[i]);
-                //Debug.Log(wires[i]);
+
+                wires.Add(obj);
             }
-                
         }
-        if(sides > nextSide)
+        if(wires.Count > 0)
         {
-            nextSide++;
+            sides++;
         }
-        if(nextSide == 0)
+        
+
+        if(sides == 1)
         {
-            chosenWire = notNull[0];
-            Debug.Log("summon0");
+            chosenWire = wires[0];
         }
-        if (nextSide == 1)
+        else if(sides == 2)
         {
-            chosenWire = notNull[1];
-            Debug.Log("summon1");
+            chosenWire = wires[1];
         }
-        if (nextSide == 2)
+        else if (sides == 3)
         {
-            chosenWire = notNull[2];
-            Debug.Log("summon2");
+            chosenWire = wires[2];
         }
-        if (nextSide == 3)
+        else if (sides == 4)
         {
-            chosenWire = notNull[3];
-            Debug.Log("summon3");
+            chosenWire = wires[3];
         }
-        if(nextSide >= sides)
+
+        if(sides == wires.Count)
         {
-            nextSide = -1;
+            sides = 0;
         }
 
         if (miner.powered)
@@ -95,10 +90,9 @@ public class dataMiner : MonoBehaviour
 
             if (miner.dataStored > 1f)
             {
-                if (chosenWire)
+                if (chosenWire != null)
                 {
                     chosenWire.GetComponent<dataWire>().wire.dataStored += 1;
-                    Debug.Log("gived");
                 }
                 miner.dataStored -= 1;
 
