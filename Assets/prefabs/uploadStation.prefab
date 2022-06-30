@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -5025669976581903038}
   m_Layer: 0
   m_Name: uploadStation
-  m_TagString: Untagged
+  m_TagString: uploadStation
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

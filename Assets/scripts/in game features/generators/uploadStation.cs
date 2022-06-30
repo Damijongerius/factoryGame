@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class uploadStation : MonoBehaviour
 {
+    public UploadStation station = new UploadStation();
     void Start()
     {
         InvokeRepeating(nameof(Run), 10f, 1.5f);
@@ -26,6 +27,11 @@ public class uploadStation : MonoBehaviour
                 wire.GetComponent<dataWire>().GiveValues();
             }
         }
-
+        if (station.dataStored > 1)
+        {
+            station.dataStored--;
+            GameManager.Money++;
+        }
     }
+
 }

@@ -36,7 +36,7 @@ public class Wires : ObjInfo
     //up right down left
     public int[] Prio = {-1,-1,-1,-1};
     //his highest prio number
-    public int SelfPrio;
+    public int SelfPrio = -1;
 
     public int updateSpeed;
 }
