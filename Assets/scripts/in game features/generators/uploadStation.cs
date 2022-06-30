@@ -6,7 +6,7 @@ public class uploadStation : MonoBehaviour
 {
     void Start()
     {
-        InvokeRepeating(nameof(Run), 4f, 1.5f);
+        InvokeRepeating(nameof(Run), 10f, 1.5f);
        
     }
 

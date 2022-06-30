@@ -12,8 +12,8 @@ public class dataWire : MonoBehaviour
 
     public int dataStored;
 
-    public int[] sorted;
-    public GameObject[] sortedObjects;
+    public List<int> sorted = new List<int>();
+    public List<GameObject> sortedObjects = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +34,7 @@ public class dataWire : MonoBehaviour
 
     public void Run()
     {
-
+        wire.updateSpeed--;
 
         bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataMiner");
         foreach (bool direction in directions)
@@ -56,7 +56,6 @@ public class dataWire : MonoBehaviour
 
     public void GiveValues()
     {
-        wire.updateSpeed--;
         if (wire.updateSpeed <= 0)
         {
             wire.updateSpeed = 2;
@@ -70,7 +69,11 @@ public class dataWire : MonoBehaviour
                     if (wires[i].GetComponent<dataWire>().wire.updateSpeed <= 0)
                         wires[i].GetComponent<dataWire>().wire.SelfPrio = wire.SelfPrio + 1;
                     wire.Prio[i] = wires[i].GetComponent<dataWire>().wire.SelfPrio + wire.SelfPrio;
-                    wires[i].GetComponent<dataWire>().GiveValues();
+                    if (wires[i].GetComponent<dataWire>().wire.updateSpeed <= 0)
+                    {
+                        wires[i].GetComponent<dataWire>().GiveValues();
+                    }
+
                 }
             }
         }
@@ -78,33 +81,34 @@ public class dataWire : MonoBehaviour
 
     public void GiveData()
     {
+        
+
         List<GameObject> objects = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
-        sorted = null;
         for(int i = 0; i < wire.Prio.Length; i++)
         {
             if (wire.Prio[i] > 0)
             {
-                sorted[i] = wire.Prio[i];
-                sortedObjects[i] = objects[i];
+                //Debug.Log(wire.Prio[i]);
+
+                sorted.Add(wire.Prio[i]);
+                sortedObjects.Add(objects[i]);
             }
         }
-        if(sorted != null)
-        {
-        Array.Sort(sorted);
-        for(int i = 0; i < sortedObjects.Length; i++)
-        {
-            if (sorted[i] == wire.Prio[i])
-            {
-                sortedObjects[i].GetComponent<dataWire>().wire.dataStored += 1;
-                wire.dataStored -= 1;
+        //if(sorted != null)
+        //{
+        //    sorted.Sort();
 
-            }
-        }
-        }
+        //    if(sorted[0] == sorted[1]) {
+        //        for (int i = 0; i < sortedObjects.Count; i++)
+        //        {
+        //            if (sorted[0] == wire.Prio[i])
+        //            {
+        //                sortedObjects[i].GetComponent<dataWire>().wire.dataStored += 1;
+        //                wire.dataStored -= 1;
 
-
-
-    }
-    
-
+        //            }
+        //        }
+        //    }
+        //}
+    }    
 }
