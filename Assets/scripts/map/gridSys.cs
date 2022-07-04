@@ -63,20 +63,16 @@ public class gridSys : MonoBehaviour
             for (int x = 0; x < size; x++)
             {
                 Cell cell = grid[x, y];
-                 if(!cell.isWater) { 
+
 
                 Vector3 a = new Vector3(x - .5f, 0, y + .5f);
                 Vector3 b = new Vector3(x + .5f, 0, y + .5f);
                 Vector3 c = new Vector3(x - .5f, 0, y - .5f);
                 Vector3 d = new Vector3(x + .5f, 0, y - .5f);
 
-                Vector2 uv00 = new Vector2(0, 0);
-                Vector2 uv10 = new Vector2(0.49f, 0);
-                Vector2 uv01 = new Vector2(0.49f, 0.49f);
-                Vector2 uv11 = new Vector2(0, 0.49f);
 
                 Vector3[] v = new Vector3[] { a, b, c, b, d, c };
-                Vector2[] uv = new Vector2[] { uv00, uv10, uv01, uv10, uv11, uv01 };
+                Vector2[] uv = getUvs(cell);
 
                 for (int k = 0; k < 6; k++)
                 {
@@ -84,7 +80,7 @@ public class gridSys : MonoBehaviour
                     triangles.Add(triangles.Count);
                     uvs.Add(uv[k]);
                 }
-                 } 
+                 
             }
         }
         mesh.vertices = vertices.ToArray();
@@ -103,6 +99,29 @@ public class gridSys : MonoBehaviour
 
         MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
         meshRenderer.material = atlas;
+    }
+
+    private Vector2[] getUvs(Cell cell)
+    {
+        
+        if (!cell.isWater)
+        {
+            Vector2 uv00 = new Vector2(0, 0);
+            Vector2 uv10 = new Vector2(0.49f, 0);
+            Vector2 uv01 = new Vector2(0.49f, 0.49f);
+            Vector2 uv11 = new Vector2(0, 0.49f);
+            Vector2[] uv = new Vector2[] { uv00, uv10, uv01, uv10, uv11, uv01 };
+            return uv;
+        }
+        else
+        {
+            Vector2 uv00 = new Vector2(0.51f, 0.51f);
+            Vector2 uv10 = new Vector2(0.51f, 1);
+            Vector2 uv01 = new Vector2(1f, 0.51f);
+            Vector2 uv11 = new Vector2(1, 1);
+            Vector2[] uv = new Vector2[] { uv00, uv10, uv01, uv10, uv11, uv01 };
+            return uv;
+        }
     }
     
 }
