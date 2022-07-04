@@ -13,8 +13,9 @@ public class dataWire : MonoBehaviour
     public int dataStored;
 
     public List<int> sorted = new List<int>();
-    public List<GameObject> sortedObjects = new List<GameObject>();
+    public List<GameObject> uploadStations = new List<GameObject>();
 
+    private int StationNr;
     private int selected; 
     // Start is called before the first frame update
     void Start()
@@ -86,54 +87,27 @@ public class dataWire : MonoBehaviour
                 }
                 
             }
-            if(wire.SelfPrio == 0)
+            if(wire.SelfPrio == 0 && wire.dataStored > 0)
             {
-                int count = 0;
                 bool[] directionsU = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "uploadStation");
                 List<GameObject> Stations = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "uploadStation");
-                foreach(GameObject station in Stations)
+                List<GameObject> stations = new List<GameObject>();
+                uploadStations = stations;
+                for(int i = 0; i < directionsU.Length; i++)
                 {
-                    if (station != null)
+                    if (directionsU[i])
                     {
-                        count++;
-                        Stations.Remove(station);
+                        stations.Add(Stations[i]);
                     }
-                }
-                if(selected == 0)
-                {
-                    Stations[0].GetComponent<uploadStation>().station.dataStored += 1;
-                }
-                if (selected == 1)
-                {
-                    Stations[1].GetComponent<uploadStation>().station.dataStored += 1;
-                }
-                if (selected == 2)
-                {
-                    Stations[2].GetComponent<uploadStation>().station.dataStored += 1;
-                }
-                if (selected == 3)
-                {
-                    Stations[3].GetComponent<uploadStation>().station.dataStored += 1;
-                }
-                
-                if (selected == count)
-                {
-                    selected = 0;
-                }else if(selected < count)
-                {
-                    selected++;
                 }
 
             }
-
-
         }
     }
 
     public void GiveData()
     {
         sorted.Clear();
-        sortedObjects.Clear();
 
         List<GameObject> objects = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
         for(int i = 0; i < wire.Prio.Length; i++)
@@ -143,25 +117,37 @@ public class dataWire : MonoBehaviour
                 //Debug.Log(wire.Prio[i]);
 
                 sorted.Add(wire.Prio[i]);
-                sortedObjects.Add(objects[i]);
             }
         }
-        if (sorted != null)
+        if(uploadStations.Count > 0)
+        {
+            if (wire.dataStored >= uploadStations.Count)
+            {
+                for (int i = 0; i < uploadStations.Count; i++)
+                {
+                    uploadStations[i].GetComponent<uploadStation>().station.dataStored += 1;
+                    wire.dataStored -= 1;
+                }
+            }
+            
+        }
+        else if (sorted != null)
         {
             sorted.Sort();
 
-            //if (sorted[0] == sorted[1])
-            //{
-            //    for (int i = 0; i < sortedObjects.Count; i++)
-            //    {
-            //        if (sorted[0] == wire.Prio[i])
-            //        {
-            //            sortedObjects[i].GetComponent<dataWire>().wire.dataStored += 1;
-            //            wire.dataStored -= 1;
-
-            //        }
-            //    }
-            //}
+            if (sorted.Count >= 1)
+            {
+                
+                    for (int i = 0; i < wire.Prio.Length; i++)
+                    {
+                        if (sorted[0] == wire.Prio[i])
+                        {
+                            objects[i].GetComponent<dataWire>().wire.dataStored += 1;
+                            wire.dataStored -= 1;
+                        }
+                    
+                }
+            }
         }
     }    
 }
