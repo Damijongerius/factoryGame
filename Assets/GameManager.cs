@@ -6,15 +6,12 @@ public class GameManager : MonoBehaviour
 {
     public static float Money;
     public static float Data;
-    // Start is called before the first frame update
-    void Start()
+    public class Profile
     {
-        
-    }
+        public string Name;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //dates
+        public string Made;
+        public string lastSeen;
     }
 }

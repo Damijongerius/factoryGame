@@ -20,6 +20,7 @@ public class openCloseManager : MonoBehaviour
         button = gameObject.GetComponent<Button>();
         button.onClick.AddListener(HandleClick);
         
+
     }
         
     public void HandleClick()
