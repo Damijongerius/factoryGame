@@ -30,7 +30,7 @@ public class uploadStation : MonoBehaviour
         if (station.dataStored > 1)
         {
             station.dataStored--;
-            GameManager.Money++;
+            SaveFile.saveFile.profile.Statistics.money++;
         }
     }
 

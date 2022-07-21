@@ -17,7 +17,14 @@ public class infoBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoneyText.text = "" + GameManager.Money;
-        DataText.text = "" + GameManager.Data;
+        try
+        {
+            MoneyText.text = "" + SaveFile.saveFile.profile.Statistics.money;
+            DataText.text = "" + SaveFile.saveFile.profile.Statistics.data;
+        }
+        catch
+        {
+            Debug.Log("SaveFile doessnt exist yet?");
+        }
     }
 }

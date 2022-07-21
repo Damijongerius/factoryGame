@@ -10,18 +10,36 @@ public class gridSys : MonoBehaviour
 
     public static Cell[,] grid;
 
-    void Start()
+    public void Generate(bool _load)
     {
         float[,] noiseMap = new float[size, size];
-        (float xOffset, float yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
-        for (int y = 0; y < size; y++)
+        if (_load)
         {
-            for (int x = 0; x < size; x++)
+            (float xOffset, float yOffset) = (SaveFile.saveFile.map.grid.xRange, SaveFile.saveFile.map.grid.yRange);
+        }
+        else
+        {
+            (float xOffset, float yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
+
+            try
             {
-                float noiseValue = Mathf.PerlinNoise(x * scale + xOffset, y * scale + yOffset);
-                noiseMap[x, y] = noiseValue;
+                SaveFile.saveFile.map.grid.xRange = xOffset;
+                SaveFile.saveFile.map.grid.yRange = yOffset;
+            }
+            catch
+            {
+                Debug.Log("no profile to save it to");
+            }
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    float noiseValue = Mathf.PerlinNoise(x * scale + xOffset, y * scale + yOffset);
+                    noiseMap[x, y] = noiseValue;
+                }
             }
         }
+        //(float xOffset, float yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
 
         float[,] falloffMap = new float[size, size];
         for (int y = 0; y < size; y++)
