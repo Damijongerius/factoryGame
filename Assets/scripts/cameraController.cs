@@ -124,5 +124,4 @@ public class cameraController : MonoBehaviour
     {
         transform.position = pos;
     }
-
 }

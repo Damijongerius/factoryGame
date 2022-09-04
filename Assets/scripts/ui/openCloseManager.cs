@@ -15,6 +15,7 @@ public class openCloseManager : MonoBehaviour
     public Canvas CloseCanvas;
 
     // Start is called before the first frame update
+    [Obsolete]
     void Start()
     {
         button = gameObject.GetComponent<Button>();
@@ -22,7 +23,8 @@ public class openCloseManager : MonoBehaviour
         
 
     }
-        
+
+    [Obsolete]
     public void HandleClick()
     {
         bool state = canvas.gameObject.active;

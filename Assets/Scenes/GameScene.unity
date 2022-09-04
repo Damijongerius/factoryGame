@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 3711677}
   - component: {fileID: 3711676}
   - component: {fileID: 3711675}
+  - component: {fileID: 3711678}
   m_Layer: 5
   m_Name: MainMenuBackground
   m_TagString: Untagged
@@ -246,6 +247,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3711673}
   m_CullTransparentMesh: 1
+--- !u!114 &3711678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3711673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8137f695ba845341af013ee0e0933b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Manager: {fileID: 1460577949}
 --- !u!1 &12464643
 GameObject:
   m_ObjectHideFlags: 0
@@ -2871,7 +2885,6 @@ GameObject:
   - component: {fileID: 649209220}
   - component: {fileID: 649209219}
   - component: {fileID: 649209218}
-  - component: {fileID: 649209221}
   m_Layer: 0
   m_Name: Building
   m_TagString: Untagged
@@ -2944,18 +2957,6 @@ Transform:
   m_Father: {fileID: 1460577951}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &649209221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 649209216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d51a03435dca0f4293de281cfbaf9a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &661573608
 GameObject:
   m_ObjectHideFlags: 0
@@ -6235,9 +6236,9 @@ GameObject:
   - component: {fileID: 1460577951}
   - component: {fileID: 1460577952}
   - component: {fileID: 1460577953}
-  - component: {fileID: 1460577954}
+  - component: {fileID: 1460577955}
   m_Layer: 0
-  m_Name: BuildingManager
+  m_Name: Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6296,7 +6297,7 @@ MonoBehaviour:
   openClose: {fileID: 0}
   foldObject: {fileID: 351453430}
   open: 0
---- !u!114 &1460577954
+--- !u!114 &1460577955
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6305,9 +6306,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1460577949}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53e475ca225284c4881f53d578feffed, type: 3}
+  m_Script: {fileID: 11500000, guid: d8c4edc27bd6afb4989681ea2fb3db02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 1857463002}
 --- !u!1 &1470123367
 GameObject:
   m_ObjectHideFlags: 0

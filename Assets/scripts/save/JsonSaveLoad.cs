@@ -57,6 +57,7 @@ public class JsonSaveLoad
             using(StreamReader reader = new StreamReader(fs))
             {
                 string json = reader.ReadToEnd();
+                Debug.Log(json);
                 SaveFile saveFile = JsonUtility.FromJson<SaveFile>(json);
             }
         }

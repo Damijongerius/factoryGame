@@ -19,12 +19,14 @@ public class infoBar : MonoBehaviour
     {
         try
         {
+            if(MoneyText != null)
             MoneyText.text = "" + SaveFile.saveFile.profile.Statistics.money;
+            if(DataText != null)
             DataText.text = "" + SaveFile.saveFile.profile.Statistics.data;
         }
         catch
         {
-            Debug.Log("SaveFile doessnt exist yet?");
+            Debug.Log(SaveFile.saveFile.profile);
         }
     }
 }

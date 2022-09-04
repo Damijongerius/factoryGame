@@ -13,9 +13,11 @@ public class gridSys : MonoBehaviour
     public void Generate(bool _load)
     {
         float[,] noiseMap = new float[size, size];
+        
         if (_load)
         {
             (float xOffset, float yOffset) = (SaveFile.saveFile.map.grid.xRange, SaveFile.saveFile.map.grid.yRange);
+            Debug.Log(SaveFile.saveFile.map.grid.xRange +","+ SaveFile.saveFile.map.grid.yRange);
         }
         else
         {
@@ -28,7 +30,7 @@ public class gridSys : MonoBehaviour
             }
             catch
             {
-                Debug.Log("no profile to save it to");
+                Debug.Log(SaveFile.saveFile.map);
             }
             for (int y = 0; y < size; y++)
             {
@@ -106,10 +108,27 @@ public class gridSys : MonoBehaviour
         mesh.uv = uvs.ToArray();
         mesh.RecalculateNormals();
 
+        
         MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
-        meshFilter.mesh = mesh;
+        try
+        {
+            meshFilter.mesh = mesh;
+        }
+        catch
+        {
+            Debug.Log("couldn't preform that action");
+        }
 
-        MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        MeshRenderer meshRenderer;
+        
+        if(gameObject.GetComponent<MeshRenderer>() != null)
+        {
+            meshRenderer = gameObject.GetComponent<MeshRenderer>();
+        }
+        else
+        {
+            meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        }
     }
 
     void DrawTexture(Cell[,] grid)

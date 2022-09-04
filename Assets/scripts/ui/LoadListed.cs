@@ -27,7 +27,7 @@ public class LoadListed : MonoBehaviour
 
     private void Master()
     {
-        Debug.Log("awake");
+        if(JsonSaveLoad.ReadListedProfiles() != null)
         foreach (string name in JsonSaveLoad.ReadListedProfiles())
         {
             profiles.Add(Instantiate(Profile));
@@ -35,16 +35,14 @@ public class LoadListed : MonoBehaviour
             SetName(profiles[profiles.Count - 1], name);
             SetPos(profiles[profiles.Count - 1]);
             profiles[profiles.Count - 1].transform.Find("TimePlayed").GetComponent<TextMeshProUGUI>().text = "ooit";
-            profiles[profiles.Count - 1].transform.Find("LastPlayed").GetComponent<TextMeshProUGUI>().text = "niet nu";
-            
-            
-            
+            profiles[profiles.Count - 1].transform.Find("LastPlayed").GetComponent<TextMeshProUGUI>().text = "niet nu"; 
         }
 
         void SetName(GameObject profile, string name)
         {
             profile.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text = name;
-            profile.transform.parent = this.gameObject.transform;
+            //profile.transform.parent = this.gameObject.transform;
+            profile.transform.SetParent(this.gameObject.transform, false);
         }
 
         void SetPos(GameObject profile)
@@ -58,7 +56,7 @@ public class LoadListed : MonoBehaviour
             nextPos -= new Vector3(0, -100, 0);
         }
 
-        void SetTimes(GameObject profile)
+        void SetTime(GameObject profile)
         {
 
         }
