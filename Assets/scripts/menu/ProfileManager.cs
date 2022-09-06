@@ -20,7 +20,7 @@ public class ProfileManager : MonoBehaviour
         //InvokeRepeating(nameof(Upating), 60f, 60f);
 
     }
-
+    
 
     public void Create(GameObject inputField)
     {

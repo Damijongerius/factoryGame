@@ -59,6 +59,9 @@ public class JsonSaveLoad
                 string json = reader.ReadToEnd();
                 Debug.Log(json);
                 SaveFile saveFile = JsonUtility.FromJson<SaveFile>(json);
+                Debug.Log(SaveFile.saveFile.profile.Name);
+
+
             }
         }
     }

@@ -7,16 +7,16 @@ using UnityEngine;
 [Serializable]
 public class Map
 {
-    public Grid grid;
+    public Grid grid = new Grid();
 }
 
 
 public class Grid
 {
-    public float xRange;
-    public float yRange;
+    public float xRange = 0;
+    public float yRange = 0;
 
-    public List<cells> grid;
+    public List<cells> grid = new List<cells>();
 }
 
 public class cells
@@ -25,8 +25,8 @@ public class cells
     public int y;
 
     public string ObjectName;
-    public Pos pos;
-    public ObjInfo info;
+    public Pos pos = new Pos();
+    public ObjInfo info = new ObjInfo();
 }
 
 public class Pos

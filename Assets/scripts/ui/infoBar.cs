@@ -27,6 +27,9 @@ public class infoBar : MonoBehaviour
         catch
         {
             Debug.Log(SaveFile.saveFile.profile);
+            SaveFile.saveFile.profile = new Profile();
+            DataText.text = "" + SaveFile.saveFile.profile.Statistics.data;
+            MoneyText.text = "" + SaveFile.saveFile.profile.Statistics.money;
         }
     }
 }

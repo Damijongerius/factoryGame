@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SerializeField]
 public class SaveFile
 {
     private static SaveFile _saveFile;
@@ -16,7 +17,8 @@ public class SaveFile
             return _saveFile; 
         } 
     }
-    public Profile profile;
-    public Map map;
+
+    public Profile profile = new Profile();
+    public Map map = new Map();
     
 }

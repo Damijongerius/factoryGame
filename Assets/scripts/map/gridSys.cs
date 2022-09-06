@@ -31,6 +31,8 @@ public class gridSys : MonoBehaviour
             catch
             {
                 Debug.Log(SaveFile.saveFile.map);
+                Map map = new Map();
+                SaveFile.saveFile.map = map;
             }
             for (int y = 0; y < size; y++)
             {

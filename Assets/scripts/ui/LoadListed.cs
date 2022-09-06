@@ -18,10 +18,9 @@ public class LoadListed : MonoBehaviour
         Master();
     }
 
-    private void Start()
+    void Start()
     {
-        button.onClick.AddListener(Master);
-        escape.onClick.AddListener(ClearList);
+        escape.onClick.AddListener(call: ClearList);
     }
 
 
@@ -56,7 +55,7 @@ public class LoadListed : MonoBehaviour
             nextPos -= new Vector3(0, -100, 0);
         }
 
-        void SetTime(GameObject profile)
+        void SetTime()
         {
 
         }
