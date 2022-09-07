@@ -5,12 +5,16 @@ using UnityEngine;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 // save en load class voor het saven van een profiel/lijst van profielen en laden
 public class JsonSaveLoad
 {
+
+
+    public SaveFile gameSave = SaveFile.GetInstance();
     //bestaat de file directory zo niet maakt hij hem ook meteen aan
-    public static void Exsisting(string _name)
+    public void Exsisting(string _name)
     {
 
         if (!Directory.Exists(Application.persistentDataPath + "/profile/" + _name))
@@ -24,18 +28,18 @@ public class JsonSaveLoad
 
     //hij maakt een nieuw profiel en zet die ook meteen als profiel in game
     //daarnaast zet die hem ook in de lijst
-    public static void CreateSaveData(string _name)
+    public void CreateSaveData(string _name)
     {
-        SaveFile.saveFile.profile = new Profile();
-        SaveFile.saveFile.profile.Name = _name;
-        SaveFile.saveFile.profile.DateMade = System.DateTime.Now;
-        SaveFile.saveFile.map = new Map();
+        gameSave.profile = new Profile();
+        gameSave.profile.Name = _name;
+        gameSave.profile.DateMade = System.DateTime.Now;
+        gameSave.map = new Map();
         ListProfile(_name);
     }
 
 
     //stopt alle in game data in de file
-    public static void Save(string _name)
+    public void Save(string _name)
     {
         
         using (FileStream fs = new FileStream(Application.persistentDataPath + "/profile/" + _name + "/SaveFile.Factory", FileMode.OpenOrCreate, FileAccess.Write))
@@ -44,22 +48,32 @@ public class JsonSaveLoad
 
             using (StreamWriter writer = new StreamWriter(fs))
             {
-                serializer.Serialize(writer, SaveFile.saveFile);
+                serializer.Serialize(writer, gameSave);
             }
         }
     }
 
     //haalt alle data uit de files
-    public static void Load(string _name)
+    public void Load(string _name)
     {
         using (FileStream fs = new FileStream(Application.persistentDataPath + "/profile/" + _name + "/SaveFile.Factory", FileMode.OpenOrCreate, FileAccess.Read))
         {
-            using(StreamReader reader = new StreamReader(fs))
+            JsonSerializer serializer = new JsonSerializer();
+            using (StreamReader reader = new StreamReader(fs))
             {
-                string json = reader.ReadToEnd();
-                Debug.Log(json);
-                SaveFile saveFile = JsonUtility.FromJson<SaveFile>(json);
-                Debug.Log(SaveFile.saveFile.profile.Name);
+                string temp = reader.ReadToEnd();
+                Debug.Log(temp);
+                //string json = reader.ReadToEnd();
+                // Debug.Log(json);
+                //var format = "dd/MM/yyyy"; // your datetime format
+                //var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = format };
+                //SaveFile safefile = SaveFile.saveFile;
+                new SaveFile(JsonConvert.DeserializeObject<SaveFile>(temp));
+
+
+                //SaveFile saveFile = JsonConvert.DeserializeObject<SaveFile>(json, dateTimeConverter);
+                Debug.Log(gameSave.profile.Statistics.Money);
+               
 
 
             }
@@ -67,7 +81,7 @@ public class JsonSaveLoad
     }
 
     //zet het nieuw aangemaakte profiel in de lijst van profielen
-    public static void ListProfile(string _name)
+    public void ListProfile(string _name)
     {
         Listed listed = new Listed();
 
@@ -99,7 +113,7 @@ public class JsonSaveLoad
     }
     
     //vraagt om alle profielen in de file
-    public static List<string> ReadListedProfiles()
+    public List<string> ReadListedProfiles()
     {
         using (FileStream fs = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.OpenOrCreate, FileAccess.Read))
         {

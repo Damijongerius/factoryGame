@@ -1,15 +1,15 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 
-[Serializable]
-public class Map
+public partial class Map
 {
-    public Grid grid = new Grid();
+    [JsonProperty("grid")]
+    public Grid grid { get; set; }
 }
-
 
 public class Grid
 {
