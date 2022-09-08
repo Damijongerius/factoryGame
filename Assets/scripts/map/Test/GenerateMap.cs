@@ -15,38 +15,33 @@ public class GenerateMap : MonoBehaviour
     {
         float[,] noiseMap = new float[size, size];
 
+        float xOffset; 
+        float yOffset;
+
         if (_load)
         {
-            (float xOffset, float yOffset) = (sf.map.grid.xRange, sf.map.grid.yRange);
+            (xOffset, yOffset) = (sf.map.grid.xRange, sf.map.grid.yRange);
             Debug.Log(sf.map.grid.xRange + "," + sf.map.grid.yRange);
         }
         else
         {
-            (float xOffset, float yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
+            (xOffset, yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
 
-            try
-            {
-                sf.map.grid.xRange = xOffset;
-                sf.map.grid.yRange = yOffset;
-            }
-            catch
-            {
-                Map map = new Map();
-                sf.map = map;
-            }
-            for (int y = 0; y < size; y++)
-            {
-                List<float> floats = new();
-                for (int x = 0; x < size; x++)
-                {
-                    float noiseValue = Mathf.PerlinNoise(x * scale + xOffset, y * scale + yOffset);
-                    noiseMap[x, y] = noiseValue;
-                    floats.Add(noiseValue);
-                }
-                sf.map.grid.NoiseMap.Add(floats);
-            }
+            sf.map.grid.xRange = xOffset;
+            sf.map.grid.yRange = yOffset;
         }
-        //(float xOffset, float yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
+
+        for (int y = 0; y < size; y++)
+        {
+
+            for (int x = 0; x < size; x++)
+            {
+                float noiseValue = Mathf.PerlinNoise(x * scale + xOffset, y * scale + yOffset);
+                noiseMap[x, y] = noiseValue;
+
+            }
+
+        }
 
         float[,] falloffMap = new float[size, size];
         for (int y = 0; y < size; y++)

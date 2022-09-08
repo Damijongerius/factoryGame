@@ -9,7 +9,6 @@ using UnityEngine.SceneManagement;
 public class ProfileManager : MonoBehaviour
 {
     public static bool playing = false;
-    public static bool load = false;
     public GameObject grid;
     private SaveFile gameSave = SaveFile.GetInstance();
 
@@ -17,9 +16,6 @@ public class ProfileManager : MonoBehaviour
     private void Start()
     {
         profileManager = this;
-        grid.GetComponent<gridSys>().Generate(false);
-        //InvokeRepeating(nameof(Upating), 60f, 60f);
-
     }
     
 
@@ -51,7 +47,7 @@ public class ProfileManager : MonoBehaviour
         //load clicked profile in load screen
         string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
         JsonSaveLoad loader = new();
-        load = true;
+        playing = true;
 
 
         loader.Load(ProfileName);
@@ -68,14 +64,10 @@ public class ProfileManager : MonoBehaviour
     }
 
     private void Awake()
-    {
-     if(playing == true)
+    {  
+        if (playing == true)
         {
-            grid.GetComponent<gridSys>().Generate(false);
-        }   
-     if(load == true)
-        {
-            grid.GetComponent<gridSys>().Generate(true);
+            grid.GetComponent<gridSys>().Generate();
         }
     }
 

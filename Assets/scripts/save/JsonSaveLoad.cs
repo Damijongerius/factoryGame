@@ -63,15 +63,7 @@ public class JsonSaveLoad
             {
                 string temp = reader.ReadToEnd();
                 Debug.Log(temp);
-                //string json = reader.ReadToEnd();
-                // Debug.Log(json);
-                //var format = "dd/MM/yyyy"; // your datetime format
-                //var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = format };
-                //SaveFile safefile = SaveFile.saveFile;
                 new SaveFile(JsonConvert.DeserializeObject<SaveFile>(temp));
-               
-
-
             }
         }
     }
