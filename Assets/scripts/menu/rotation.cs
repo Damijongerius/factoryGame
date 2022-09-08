@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class rotation : MonoBehaviour
 {
-    public int y =10;
-    public float speed;
+    //rotation y
+    private float y;
+    public float updateSpeed;
     void Start()
     {
-        InvokeRepeating("Rotate", speed, speed); 
+        //call function on speed(time)
+        InvokeRepeating(nameof(Rotate), updateSpeed, updateSpeed);
     }
 
     private void Rotate()
     {
-        
-        transform.Rotate(0, Mathf.Lerp(transform.rotation.y, y,0.1f), 0);
-        
+        //rotate
+        transform.RotateAround(this.transform.position, Vector3.up, 20 * Time.deltaTime);
     }
 
 }
