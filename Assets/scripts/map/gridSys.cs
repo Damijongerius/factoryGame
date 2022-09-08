@@ -10,30 +10,24 @@ public class gridSys : MonoBehaviour
 
     public static Cell[,] grid;
 
+    private SaveFile sf = SaveFile.GetInstance();
+
     public void Generate(bool _load)
     {
         float[,] noiseMap = new float[size, size];
         
         if (_load)
         {
-            (float xOffset, float yOffset) = (SaveFile.saveFile.map.grid.xRange, SaveFile.saveFile.map.grid.yRange);
-            Debug.Log(SaveFile.saveFile.map.grid.xRange +","+ SaveFile.saveFile.map.grid.yRange);
+            (float xOffset, float yOffset) = (sf.map.grid.xRange, sf.map.grid.yRange);
+            Debug.Log(sf.map.grid.xRange +","+ sf.map.grid.yRange);
         }
         else
         {
             (float xOffset, float yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
 
-            try
-            {
-                SaveFile.saveFile.map.grid.xRange = xOffset;
-                SaveFile.saveFile.map.grid.yRange = yOffset;
-            }
-            catch
-            {
-                Debug.Log(SaveFile.saveFile.map);
-                Map map = new Map();
-                SaveFile.saveFile.map = map;
-            }
+            sf.map.grid.xRange = xOffset;
+            sf.map.grid.yRange = yOffset;
+
             for (int y = 0; y < size; y++)
             {
                 for (int x = 0; x < size; x++)

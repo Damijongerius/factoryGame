@@ -1,20 +1,22 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 
-[Serializable]
-public class Map
+public partial class Map
 {
-    public Grid grid = new Grid();
+    [JsonProperty("grid")]
+    public Grid grid { get; set; }  = new Grid();
 }
-
 
 public class Grid
 {
     public float xRange = 0;
     public float yRange = 0;
+
+    public List<List<float>> NoiseMap = new();
 
     public List<cells> grid = new List<cells>();
 }
