@@ -69,10 +69,6 @@ public class JsonSaveLoad
                 //var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = format };
                 //SaveFile safefile = SaveFile.saveFile;
                 new SaveFile(JsonConvert.DeserializeObject<SaveFile>(temp));
-
-
-                //SaveFile saveFile = JsonConvert.DeserializeObject<SaveFile>(json, dateTimeConverter);
-                Debug.Log(gameSave.profile.Statistics.Money);
                
 
 

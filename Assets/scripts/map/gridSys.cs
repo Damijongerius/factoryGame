@@ -25,17 +25,9 @@ public class gridSys : MonoBehaviour
         {
             (float xOffset, float yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
 
-            try
-            {
-                sf.map.grid.xRange = xOffset;
-                sf.map.grid.yRange = yOffset;
-            }
-            catch
-            {
-                Debug.Log(sf.map);
-                Map map = new Map();
-                sf.map = map;
-            }
+            sf.map.grid.xRange = xOffset;
+            sf.map.grid.yRange = yOffset;
+
             for (int y = 0; y < size; y++)
             {
                 for (int x = 0; x < size; x++)

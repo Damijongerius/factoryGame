@@ -32,7 +32,6 @@ public class ProfileManager : MonoBehaviour
             loader.Exsisting(ProfileName);
             loader.CreateSaveData(ProfileName);
             loader.Save(ProfileName);
-            loader.Load(ProfileName);
             SceneManager.LoadScene("GameScene");
             playing = true;
         }
@@ -52,6 +51,7 @@ public class ProfileManager : MonoBehaviour
         //load clicked profile in load screen
         string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
         JsonSaveLoad loader = new();
+        load = true;
 
 
         loader.Load(ProfileName);

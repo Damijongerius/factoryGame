@@ -31,17 +31,19 @@ public class GenerateMap : MonoBehaviour
             }
             catch
             {
-                Debug.Log(sf.map);
                 Map map = new Map();
                 sf.map = map;
             }
             for (int y = 0; y < size; y++)
             {
+                List<float> floats = new();
                 for (int x = 0; x < size; x++)
                 {
                     float noiseValue = Mathf.PerlinNoise(x * scale + xOffset, y * scale + yOffset);
                     noiseMap[x, y] = noiseValue;
+                    floats.Add(noiseValue);
                 }
+                sf.map.grid.NoiseMap.Add(floats);
             }
         }
         //(float xOffset, float yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));

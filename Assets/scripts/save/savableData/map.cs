@@ -8,13 +8,15 @@ using UnityEngine;
 public partial class Map
 {
     [JsonProperty("grid")]
-    public Grid grid { get; set; }
+    public Grid grid { get; set; }  = new Grid();
 }
 
 public class Grid
 {
     public float xRange = 0;
     public float yRange = 0;
+
+    public List<List<float>> NoiseMap = new();
 
     public List<cells> grid = new List<cells>();
 }
