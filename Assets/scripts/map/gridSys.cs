@@ -8,10 +8,18 @@ public class gridSys : MonoBehaviour
     public float scale = .1f;
     public int size = 100;
 
+    private static gridSys sys;
+
+    public GameObject[] placables;
+
     public static Cell[,] grid;
 
     private SaveFile sf = SaveFile.GetInstance();
 
+    void Start()
+    {
+        sys = this;
+    }
     public void Generate()
     {
         float[,] noiseMap = new float[size, size];
@@ -156,6 +164,11 @@ public class gridSys : MonoBehaviour
             Vector2[] uv = new Vector2[] { uv00, uv10, uv01, uv10, uv11, uv01 };
             return uv;
         }
+    }
+
+    public static gridSys GetInstance()
+    {
+        return sys;
     }
     
 }

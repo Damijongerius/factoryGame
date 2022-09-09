@@ -1,3 +1,4 @@
+using Palmmedia.ReportGenerator.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,17 +10,32 @@ public class ObjInfo
 
     public float powerStored;
 
-    public int Level;
+    public int level;
 
-    public int age;
+    public float age;
 
     public int upkeepCost;
 
+    public int dataMined;
+
+    public int dataSold;
+
+    public int dataTransferd;
+
+    public void Settings(ObjInfo obj)
+    {
+        this.dataStored = obj.dataStored;
+        this.level = obj.level;
+        this.age = obj.age;
+        this.upkeepCost = obj.upkeepCost;
+        this.dataMined = obj.dataMined;
+        this.dataSold = obj.dataSold;
+        this.dataTransferd = obj.dataTransferd;
+    }
 }
 
 public class Miner : ObjInfo
 {
-    public int dataMined;
 
     public bool exitPoints;
     public bool powered;

@@ -56,9 +56,11 @@ public class ProfileManager : MonoBehaviour
 
     public void Save()
     {
+        
         //getting profile name 
         string ProfileName = gameSave.profile.Name;
         JsonSaveLoad saver = new();
+        saver.SaveObjects();
 
         saver.Save(ProfileName);
     }
@@ -68,6 +70,8 @@ public class ProfileManager : MonoBehaviour
         if (playing == true)
         {
             grid.GetComponent<gridSys>().Generate();
+            JsonSaveLoad loader = new();
+            loader.LoadObjects();
         }
     }
 
