@@ -11,6 +11,7 @@ public class ProfileManager : MonoBehaviour
     public static bool playing = false;
     public GameObject grid;
     private SaveFile gameSave = SaveFile.GetInstance();
+    public ObjectSaveLoad objects = new ObjectSaveLoad();
 
     private static ProfileManager profileManager;
     private void Start()
@@ -24,10 +25,10 @@ public class ProfileManager : MonoBehaviour
         string ProfileName = inputField.GetComponent<TextMeshProUGUI>().text;
         if(ProfileName.Length > 1)
         {
-            JsonSaveLoad loader = new();
+            JsonSaveLoad loader = new JsonSaveLoad();
             loader.Exsisting(ProfileName);
             loader.CreateSaveData(ProfileName);
-            loader.Save(ProfileName);
+            loader.Save(ProfileName, gameSave);
             SceneManager.LoadScene("GameScene");
             playing = true;
         }
@@ -60,9 +61,9 @@ public class ProfileManager : MonoBehaviour
         //getting profile name 
         string ProfileName = gameSave.profile.Name;
         JsonSaveLoad saver = new();
-        saver.SaveObjects();
+        objects.SaveObjects();
 
-        saver.Save(ProfileName);
+        saver.Save(ProfileName, gameSave);
     }
 
     private void Awake()
@@ -71,7 +72,7 @@ public class ProfileManager : MonoBehaviour
         {
             grid.GetComponent<gridSys>().Generate();
             JsonSaveLoad loader = new();
-            loader.LoadObjects();
+            objects.LoadObjects();
         }
     }
 

@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Unity.Jobs.LowLevel.Unsafe;
+using System.Security.Cryptography;
+using System.Text;
 
 // save en load class voor het saven van een profiel/lijst van profielen en laden
 public class JsonSaveLoad
@@ -37,33 +35,90 @@ public class JsonSaveLoad
         ListProfile(_name);
     }
 
-
-    //stopt alle in game data in de file
-    public void Save(string _name)
+    //save file to filestream
+    public bool Save(string _saveName, object _saveData)
     {
-        
-        using (FileStream fs = new FileStream(Application.persistentDataPath + "/profile/" + _name + "/SaveFile.Factory", FileMode.OpenOrCreate, FileAccess.Write))
-        {
-            JsonSerializer serializer = new JsonSerializer();
+        string prePath = Application.persistentDataPath + "/profile/" + _saveName;
 
-            using (StreamWriter writer = new StreamWriter(fs))
-            {
-                serializer.Serialize(writer, gameSave);
-            }
+        if (!Directory.Exists(prePath))
+        {
+            Directory.CreateDirectory(prePath);
         }
+
+        string path = Application.persistentDataPath + "/profile/" + _saveName + "/Save.saveFile";
+
+        FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write);
+
+        BinaryWriter writer = new BinaryWriter(file);
+
+
+        using (Aes personalAes = Aes.Create())
+        {
+            personalAes.Key = KeyCheck();
+            personalAes.GenerateIV();
+
+            
+            string fileContent = JsonUtility.ToJson(_saveData);
+            Debug.Log(fileContent);
+
+            byte[] encrypted = EncryptBytes(fileContent, personalAes.Key, personalAes.IV);
+            writer.Write(personalAes.IV.Length);
+            Debug.Log(personalAes.IV.Length + "iv Written");
+            Debug.Log(Encoding.UTF8.GetString(personalAes.IV));
+            writer.Write(personalAes.IV);
+            writer.Write(encrypted.Length);
+            Debug.Log(encrypted.Length + "enc written");
+            writer.Write(encrypted);
+
+        }
+        writer.Close();
+        file.Close();
+
+        return true;
     }
 
-    //haalt alle data uit de files
-    public void Load(string _name)
+    //loads data stored in savefile
+    public string Load(string _saveName)
     {
-        using (FileStream fs = new FileStream(Application.persistentDataPath + "/profile/" + _name + "/SaveFile.Factory", FileMode.OpenOrCreate, FileAccess.Read))
+        string path = Application.persistentDataPath + "/profile/" + _saveName + "/Save.saveFile";
+
+        string decrypterdContent = null;
+        if (!File.Exists(path))
         {
-            JsonSerializer serializer = new JsonSerializer();
-            using (StreamReader reader = new StreamReader(fs))
+            return null;
+        }
+
+        FileStream file = File.Open(path, FileMode.Open, FileAccess.Read);
+        BinaryReader reader = new BinaryReader(file);
+        using (Aes personalAes = Aes.Create())
+        {
+            personalAes.Key = KeyCheck();
+
+            try
             {
-                string temp = reader.ReadToEnd();
-                Debug.Log(temp);
-                new SaveFile(JsonConvert.DeserializeObject<SaveFile>(temp));
+
+                int IVLength = reader.ReadInt32();
+                byte[] IV = reader.ReadBytes(IVLength);
+
+                int encryptedBytesLength = reader.ReadInt32();
+                byte[] encryptedBytes = reader.ReadBytes(encryptedBytesLength);
+
+
+
+                personalAes.IV = IV;
+                decrypterdContent = DecryptBytes(encryptedBytes, personalAes.Key, personalAes.IV);
+                reader.Close();
+                file.Close();
+
+                Debug.Log(decrypterdContent);
+                return decrypterdContent;
+
+            }
+            catch
+            {
+                reader.Close();
+                file.Close();
+                return null;
             }
         }
     }
@@ -122,123 +177,109 @@ public class JsonSaveLoad
         }
     }
 
-    public void SaveObjects()
+    public static byte[] EncryptBytes(string _content, byte[] _key, byte[] _IV)
     {
-        Cell[,] grid = gridSys.grid;
-        List<cells> newGrid = new();
-        for(int x = 0; x < grid.GetLength(0); x++)
+        byte[] encrypted;
+
+        using (Aes aesAlg = Aes.Create())
         {
-            for(int y = 0; y < grid.GetLength(1); y++)
+            // assign the keys;
+            aesAlg.Key = _key;
+            aesAlg.IV = _IV;
+
+            // Create an encryptor to perform the stream transform.
+            ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+            // Create the streams used for encryption.
+            using (MemoryStream msEncrypt = new MemoryStream())
             {
-                if (grid[x,y].obj != null)
+                using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
                 {
-                    cells cell = new cells();
-
-                    cell.x = x;
-                    cell.y = y;
-
-                    cell.objType = GetType(grid[x,y].obj.tag);
-
-
-                    cell.info = GetInfo(cell.objType, grid, x, y);
-
-                    newGrid.Add(cell);
-                } 
-            }
-        }
-
-        gameSave.map.grid.grid = newGrid;
-    }
-
-    public ObjectTypes GetType(string _tag)
-    {
-        return _tag switch
-        {
-            "dataMiner" => ObjectTypes.DATAMINER,
-            "dataWire" => ObjectTypes.DATAWIRE,
-            "uploadStation" => ObjectTypes.UPLOADSTATION,
-            _ => ObjectTypes.DATAWIRE,
-        };
-    }
-
-    public ObjInfo GetInfo(ObjectTypes _objType, Cell[,] _grid, int x,int y)
-    {
-        switch (_objType)
-        {
-            case ObjectTypes.DATAWIRE: return _grid[x, y].obj.GetComponent<dataWire>().wire;
-            case ObjectTypes.DATAMINER: return _grid[x, y].obj.GetComponent<dataMiner>().miner;
-            case ObjectTypes.UPLOADSTATION: return _grid[x, y].obj.GetComponent<uploadStation>().station;
-            default:
-                break;
-        }
-        return null;
-    }
-
-    public void LoadObjects()
-    {
-        Debug.Log("load");
-        List<cells> grid = gameSave.map.grid.grid;
-
-            Debug.Log(grid.Count);
-        foreach (cells cell in grid)
-        {
-            if (cell != null)
-            {
-                Debug.Log("not null");
-                GameObject scem = SetObject(cell);
-                SetInfo(cell, scem);
-            }
-        }
-        
-
-        void SetInfo(cells cell, GameObject scem)
-        {
-            switch (cell.objType)
-            {
-                case ObjectTypes.DATAWIRE:
+                    using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
                     {
-                        scem.GetComponent<dataWire>().wire = new Wires();
-                        scem.GetComponent<dataWire>().wire.Settings(cell.info);
+                        //Write bytes to the stream.
+                        swEncrypt.Write(_content);
                     }
-                    break;
-                case ObjectTypes.DATAMINER:
-                    {
-                        scem.GetComponent<dataMiner>().miner = new Miner();
-                        scem.GetComponent<dataMiner>().miner.Settings(cell.info); 
-                    }     
-                    break;
-                case ObjectTypes.UPLOADSTATION:
-                    {
-                        scem.GetComponent<uploadStation>().station = new UploadStation();
-                        scem.GetComponent<uploadStation>().station.Settings(cell.info);
-                    }
-                    break;
-                default:
-                    break;
+                    encrypted = msEncrypt.ToArray();
+                }
             }
         }
+
+        // Return the encrypted bytes from the memory stream.
+        return encrypted;
     }
 
-    public GameObject SetObject(cells cell)
+    public static string DecryptBytes(byte[] _cipherText, byte[] _Key, byte[] _IV)
     {
-        GameObject[] placable = gridSys.GetInstance().placables;
-        Debug.Log(placable);
-        Debug.Log(getType());
-        GameObject scem = gridSys.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));
-        gridSys.grid[cell.x, cell.y].obj = scem;
 
-        return scem;
-        GameObject getType()
+        string content;
+        using (Aes aesAlg = Aes.Create())
         {
-            
-            switch (cell.objType)
+            aesAlg.Key = _Key;
+            aesAlg.IV = _IV;
+
+            // Create a decryptor to perform the stream transform.
+            ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+            // Create the streams used for decryption.
+            using (MemoryStream msDecrypt = new MemoryStream(_cipherText))
             {
-                case ObjectTypes.DATAWIRE: return placable[0];
-                case ObjectTypes.DATAMINER: return placable[1];
-                case ObjectTypes.UPLOADSTATION: return placable[2];
-                default:
-                    return null;
+                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                {
+
+                    using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                    {
+
+                        content = srDecrypt.ReadToEnd();
+
+
+                    }
+                }
             }
         }
+
+        return content;
+    }
+
+    public static byte[] KeyCheck()
+    {
+        string prePath = Application.persistentDataPath + "/saves";
+
+        if (!Directory.Exists(prePath))
+        {
+            Directory.CreateDirectory(prePath);
+        }
+        string path = Application.persistentDataPath + "/saves/key.Lock";
+
+
+        if (File.Exists(path))
+        {
+            FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read);
+            BinaryReader reader = new BinaryReader(file);
+            byte[] key = reader.ReadBytes(16);
+            reader.Close();
+            file.Close();
+
+
+            return key;
+        }
+        else
+        {
+            FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write);
+            BinaryWriter writer = new BinaryWriter(file);
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.GenerateKey();
+                writer.Write(aesAlg.Key);
+                writer.Close();
+                file.Close();
+                return aesAlg.Key;
+            }
+        }
+
+
+
+
+
     }
 }
