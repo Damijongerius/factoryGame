@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public sealed class SaveFile : MonoBehaviour
+public sealed class SaveFile
 {
     private static SaveFile saveFile;
 

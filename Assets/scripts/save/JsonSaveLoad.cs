@@ -36,7 +36,7 @@ public class JsonSaveLoad
     }
 
     //save file to filestream
-    public bool Save(string _saveName, object _saveData)
+    public bool Save(string _saveName, SaveFile _saveData)
     {
         string prePath = Application.persistentDataPath + "/profile/" + _saveName;
 
@@ -57,8 +57,8 @@ public class JsonSaveLoad
             personalAes.Key = KeyCheck();
             personalAes.GenerateIV();
 
-            
-            string fileContent = JsonUtility.ToJson(_saveData);
+            string fileContent = JsonConvert.SerializeObject(_saveData); 
+            //string fileContent = JsonUtility.ToJson(_saveData);
             Debug.Log(fileContent);
 
             byte[] encrypted = EncryptBytes(fileContent, personalAes.Key, personalAes.IV);
@@ -111,6 +111,8 @@ public class JsonSaveLoad
                 file.Close();
 
                 Debug.Log(decrypterdContent);
+                SaveFile temp = JsonConvert.DeserializeObject<SaveFile>(decrypterdContent);
+                new SaveFile(temp);
                 return decrypterdContent;
 
             }
