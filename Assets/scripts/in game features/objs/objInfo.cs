@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ObjInfo
 {
-    public int dataStored;
+    public float dataStored;
 
     public float powerStored;
 
@@ -14,13 +14,13 @@ public class ObjInfo
 
     public float age;
 
-    public int upkeepCost;
+    public float upkeepCost;
 
-    public int dataMined;
+    public float dataMined;
 
-    public int dataSold;
+    public float dataSold;
 
-    public int dataTransferd;
+    public float dataTransferd;
 
     public void Settings(ObjInfo obj)
     {

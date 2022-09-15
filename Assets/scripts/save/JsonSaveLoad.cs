@@ -58,7 +58,6 @@ public class JsonSaveLoad
             personalAes.GenerateIV();
 
             string fileContent = JsonConvert.SerializeObject(_saveData); 
-            //string fileContent = JsonUtility.ToJson(_saveData);
             Debug.Log(fileContent);
 
             byte[] encrypted = EncryptBytes(fileContent, personalAes.Key, personalAes.IV);

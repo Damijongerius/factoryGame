@@ -6,13 +6,7 @@ using UnityEngine;
 
 public partial class Map
 {
-    public Grid grid { get; set; }  = new Grid();
-}
 
-//contains all map info needed
-public class Grid
-{
-    //seed
     public float xRange = 0;
     public float yRange = 0;
 

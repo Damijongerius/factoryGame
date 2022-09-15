@@ -17,7 +17,7 @@ public partial class Profile
     public DateTime DateSeen { get; set; }
 
     [JsonProperty("TimePlayed")]
-    public DateTime TimePlayed { get; set; }
+    public TimeSpan TimePlayed { get; set; }
 
     [JsonProperty("Statistics")]
     public Statistics Statistics { get; set; } = new Statistics();

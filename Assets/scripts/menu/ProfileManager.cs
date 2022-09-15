@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class ProfileManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class ProfileManager : MonoBehaviour
     public GameObject grid;
     private SaveFile gameSave = SaveFile.GetInstance();
     public ObjectSaveLoad objects = new ObjectSaveLoad();
+
+    private DateTime startPlaying;
 
     private static ProfileManager profileManager;
     private void Start()
@@ -30,6 +33,7 @@ public class ProfileManager : MonoBehaviour
             loader.CreateSaveData(ProfileName);
             loader.Save(ProfileName, gameSave);
             SceneManager.LoadScene("GameScene");
+            startPlaying = System.DateTime.Now;
             playing = true;
         }
         else
@@ -46,6 +50,7 @@ public class ProfileManager : MonoBehaviour
     public void Load(GameObject profileObject)
     {
         //load clicked profile in load screen
+        startPlaying = System.DateTime.Now;
         string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
         JsonSaveLoad loader = new();
         playing = true;
@@ -60,6 +65,8 @@ public class ProfileManager : MonoBehaviour
         
         //getting profile name 
         string ProfileName = gameSave.profile.Name;
+        gameSave.profile.TimePlayed += System.DateTime.Now - startPlaying;
+        gameSave.profile.DateSeen = System.DateTime.Now;
         JsonSaveLoad saver = new();
         objects.SaveObjects();
 
