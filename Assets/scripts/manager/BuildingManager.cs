@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,8 @@ public class BuildingManager : MonoBehaviour
     //grid size
     public float gridSize;
     public bool isWire;
+
+    private int endix;
 
 
     // Start is called before the first frame update
@@ -53,12 +56,27 @@ public class BuildingManager : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0))
                 {
+                    if (endix == 0){
+                        SaveFile.saveFile.profile.Statistics.money -= 100;
+                    }
+                    if (endix == 1)
+                    {
+                        SaveFile.saveFile.profile.Statistics.money -= 10;
+                    }
+                    if (endix == 2)
+                    {
+                        SaveFile.saveFile.profile.Statistics.money -= 50;
+                    }
                     cell.obj = pendingObject;
                     if (isWire)
                     {
                         pendingObject.tag = "dataWire";
                         isWire = false;
                     }
+                    pendingObject = null;
+                }
+                else if (Input.GetMouseButtonDown(1)) {
+                    Destroy(pendingObject);
                     pendingObject = null;
                 }
             }
@@ -82,16 +100,31 @@ public class BuildingManager : MonoBehaviour
     public void SelectObject(int index)
     {
         //choosing from array to object
+
         if (pendingObject == null)
         {
-            pendingObject = Instantiate(objects[index], pos, transform.rotation);
-            if(index == 1)
+            if (index == 1 && SaveFile.saveFile.profile.Statistics.money >= 10)
             {
+                Debug.Log(SaveFile.saveFile.profile.Statistics.money);
                 isWire = true;
+                inst(index);
             }
-    
+            else if ((index == 0 && SaveFile.saveFile.profile.Statistics.money >= 100))
+            {
+                inst(index);
+            }
+            else if ((index == 2 && SaveFile.saveFile.profile.Statistics.money >= 50))
+            {
+                inst(index);
+            }
         }
         else return;
+    }
+
+    void inst(int index)
+    {
+        pendingObject = Instantiate(objects[index], pos, transform.rotation);
+        endix = index;
     }
 
 

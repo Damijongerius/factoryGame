@@ -81,10 +81,10 @@ public class dataMiner : MonoBehaviour
         {
             miner.powerStored += 1.5f;
 
-            if(miner.powerStored > 10f)
+            if(miner.powerStored > 2f)
             {
                 miner.powerStored -= 1.5f;
-                miner.dataStored += 1;
+                miner.dataStored += 10;
 
             }
 

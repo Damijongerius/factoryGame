@@ -11,7 +11,7 @@ public class infoBar : MonoBehaviour
 
     void Start()
     {
-        
+        SaveFile.saveFile.profile.Statistics.money = 9999;
     }
 
     // Update is called once per frame

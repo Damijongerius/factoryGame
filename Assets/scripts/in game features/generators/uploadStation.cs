@@ -30,7 +30,7 @@ public class uploadStation : MonoBehaviour
         if (station.dataStored > 1)
         {
             station.dataStored--;
-            SaveFile.saveFile.profile.Statistics.money++;
+            SaveFile.saveFile.profile.Statistics.money+=5;
         }
     }
 
