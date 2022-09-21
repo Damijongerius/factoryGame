@@ -11,6 +11,7 @@ public class ProfileManager : MonoBehaviour
 {
     public static bool playing = false;
     public GameObject grid;
+    public WebServer ws = new WebServer(); 
     private SaveFile gameSave = SaveFile.GetInstance();
     public ObjectSaveLoad objects = new ObjectSaveLoad();
 
@@ -86,6 +87,11 @@ public class ProfileManager : MonoBehaviour
     public static ProfileManager getObject()
     {
         return profileManager;
+    }
+
+    public void sendnudes(string data)
+    {
+        StartCoroutine(ws.annus(data));
     }
 
 
