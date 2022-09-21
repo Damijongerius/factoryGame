@@ -25,16 +25,16 @@ public class gridSys : MonoBehaviour
         float[,] noiseMap = new float[size, size];
         float xOffset = 0;
         float yOffset = 0;
-        if(sf.map.grid.xRange == 0)
+        if(sf.map.xRange == 0)
         {
             (xOffset, yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
 
-            sf.map.grid.xRange = xOffset;
-            sf.map.grid.yRange = yOffset;
+            sf.map.xRange = xOffset;
+            sf.map.yRange = yOffset;
         }
         else
         {
-            (xOffset, yOffset) = (sf.map.grid.xRange, sf.map.grid.yRange);
+            (xOffset, yOffset) = (sf.map.xRange, sf.map.yRange);
         }
 
         for (int y = 0; y < size; y++)

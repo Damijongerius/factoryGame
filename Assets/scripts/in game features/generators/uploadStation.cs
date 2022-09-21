@@ -32,7 +32,7 @@ public class uploadStation : MonoBehaviour
         {
             station.dataStored--;
             sf.profile.Statistics.Money++;
-            SaveFile.saveFile.profile.Statistics.money+=5;
+            sf.profile.Statistics.Money+=5;
         }
     }
 

@@ -32,7 +32,7 @@ public class dataWire : MonoBehaviour
 
         priority = wire.SelfPrio;
         prioritys = wire.Prio;
-        dataStored = wire.dataStored;
+        dataStored = (int)wire.dataStored;
     }
 
     public void Run()

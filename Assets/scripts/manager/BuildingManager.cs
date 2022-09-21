@@ -26,6 +26,8 @@ public class BuildingManager : MonoBehaviour
 
     private int endix;
 
+    private SaveFile sf = SaveFile.GetInstance();
+
 
     // Start is called before the first frame update
     void Start()
@@ -57,15 +59,15 @@ public class BuildingManager : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     if (endix == 0){
-                        SaveFile.saveFile.profile.Statistics.money -= 100;
+                        sf.profile.Statistics.Money -= 100;
                     }
                     if (endix == 1)
                     {
-                        SaveFile.saveFile.profile.Statistics.money -= 10;
+                        sf.profile.Statistics.Money -= 10;
                     }
                     if (endix == 2)
                     {
-                        SaveFile.saveFile.profile.Statistics.money -= 50;
+                        sf.profile.Statistics.Money -= 50;
                     }
                     cell.obj = pendingObject;
                     if (isWire)
@@ -103,17 +105,17 @@ public class BuildingManager : MonoBehaviour
 
         if (pendingObject == null)
         {
-            if (index == 1 && SaveFile.saveFile.profile.Statistics.money >= 10)
+            if (index == 1 && sf.profile.Statistics.Money >= 10)
             {
-                Debug.Log(SaveFile.saveFile.profile.Statistics.money);
+                Debug.Log(sf.profile.Statistics.Money);
                 isWire = true;
                 inst(index);
             }
-            else if ((index == 0 && SaveFile.saveFile.profile.Statistics.money >= 100))
+            else if ((index == 0 && sf.profile.Statistics.Money >= 100))
             {
                 inst(index);
             }
-            else if ((index == 2 && SaveFile.saveFile.profile.Statistics.money >= 50))
+            else if ((index == 2 && sf.profile.Statistics.Money >= 50))
             {
                 inst(index);
             }

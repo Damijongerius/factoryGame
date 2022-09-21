@@ -20,15 +20,15 @@ public class GenerateMap : MonoBehaviour
 
         if (_load)
         {
-            (xOffset, yOffset) = (sf.map.grid.xRange, sf.map.grid.yRange);
-            Debug.Log(sf.map.grid.xRange + "," + sf.map.grid.yRange);
+            (xOffset, yOffset) = (sf.map.xRange, sf.map.yRange);
+            Debug.Log(sf.map.xRange + "," + sf.map.yRange);
         }
         else
         {
             (xOffset, yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
 
-            sf.map.grid.xRange = xOffset;
-            sf.map.grid.yRange = yOffset;
+            sf.map.xRange = xOffset;
+            sf.map.yRange = yOffset;
         }
 
         for (int y = 0; y < size; y++)

@@ -30,7 +30,7 @@ public class ObjectSaveLoad
             }
         }
 
-        gameSave.map.grid.grid = newGrid;
+        gameSave.map.grid = newGrid;
     }
 
     public ObjectTypes GetType(string _tag)
@@ -59,7 +59,7 @@ public class ObjectSaveLoad
 
     public void LoadObjects()
     {
-        List<cells> grid = gameSave.map.grid.grid;
+        List<cells> grid = gameSave.map.grid;
 
         foreach (cells cell in grid)
         {
