@@ -1,25 +1,44 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class Profile
+
+public partial class Profile
 {
-    public string Name = "0";
-    public DateTime DateMade;
-    public DateTime DateSeen;
-    public string TimePlayed = "0";
-    public Statistics Statistics = new Statistics();
+    [JsonProperty("Name")]
+    public string Name { get; set; }
+
+    [JsonProperty("DateMade")]
+    public DateTime DateMade { get; set; }
+
+    [JsonProperty("DateSeen")]
+    public DateTime DateSeen { get; set; }
+
+    [JsonProperty("TimePlayed")]
+    public TimeSpan TimePlayed { get; set; }
+
+    [JsonProperty("Statistics")]
+    public Statistics Statistics { get; set; } = new Statistics();
 }
 
-public class Statistics
+public partial class Statistics
 {
-    public int networth;
-    public int money;
-    public int data;
-    public int xp;
-    public int Level;
+    [JsonProperty("networth")]
+    public long Networth { get; set; }
+
+    [JsonProperty("money")]
+    public long Money { get; set; }
+
+    [JsonProperty("data")]
+    public long Data { get; set; }
+
+    [JsonProperty("xp")]
+    public long Xp { get; set; }
+
+    [JsonProperty("Level")]
+    public long Level { get; set; }
 }
 
 

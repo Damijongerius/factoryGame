@@ -8,28 +8,18 @@ public class infoBar : MonoBehaviour
 
     public TextMeshProUGUI MoneyText;
     public TextMeshProUGUI DataText;
+    private SaveFile sf;
 
     void Start()
     {
-        SaveFile.saveFile.profile.Statistics.money = 9999;
+        sf = SaveFile.GetInstance();
     }
 
     // Update is called once per frame
     void Update()
     {
-        try
-        {
-            if(MoneyText != null)
-            MoneyText.text = "" + SaveFile.saveFile.profile.Statistics.money;
-            if(DataText != null)
-            DataText.text = "" + SaveFile.saveFile.profile.Statistics.data;
-        }
-        catch
-        {
-            Debug.Log(SaveFile.saveFile.profile);
-            SaveFile.saveFile.profile = new Profile();
-            DataText.text = "" + SaveFile.saveFile.profile.Statistics.data;
-            MoneyText.text = "" + SaveFile.saveFile.profile.Statistics.money;
-        }
+        
+        MoneyText.text = "" + sf.profile.Statistics.Money;
+           DataText.text = "" + sf.profile.Statistics.Data;
     }
 }

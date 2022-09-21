@@ -5,20 +5,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class ProfileManager : MonoBehaviour
 {
     public static bool playing = false;
-    public static bool load = false;
     public GameObject grid;
+    private SaveFile gameSave = SaveFile.GetInstance();
+    public ObjectSaveLoad objects = new ObjectSaveLoad();
+
+    private DateTime startPlaying;
 
     private static ProfileManager profileManager;
     private void Start()
     {
         profileManager = this;
-        grid.GetComponent<gridSys>().Generate(false);
-        //InvokeRepeating(nameof(Upating), 60f, 60f);
-
     }
     
 
@@ -27,11 +28,12 @@ public class ProfileManager : MonoBehaviour
         string ProfileName = inputField.GetComponent<TextMeshProUGUI>().text;
         if(ProfileName.Length > 1)
         {
-            JsonSaveLoad.Exsisting(ProfileName);
-            JsonSaveLoad.CreateSaveData(ProfileName);
-            JsonSaveLoad.Save(ProfileName);
-            JsonSaveLoad.Load(ProfileName);
+            JsonSaveLoad loader = new JsonSaveLoad();
+            loader.Exsisting(ProfileName);
+            loader.CreateSaveData(ProfileName);
+            loader.Save(ProfileName, gameSave);
             SceneManager.LoadScene("GameScene");
+            startPlaying = System.DateTime.Now;
             playing = true;
         }
         else
@@ -48,29 +50,36 @@ public class ProfileManager : MonoBehaviour
     public void Load(GameObject profileObject)
     {
         //load clicked profile in load screen
+        startPlaying = System.DateTime.Now;
         string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
+        JsonSaveLoad loader = new();
+        playing = true;
 
-        JsonSaveLoad.Load(ProfileName);
+
+        loader.Load(ProfileName);
         SceneManager.LoadScene("GameScene");
     }
 
     public void Save()
     {
+        
         //getting profile name 
-        string ProfileName = SaveFile.saveFile.profile.Name;
+        string ProfileName = gameSave.profile.Name;
+        gameSave.profile.TimePlayed += System.DateTime.Now - startPlaying;
+        gameSave.profile.DateSeen = System.DateTime.Now;
+        JsonSaveLoad saver = new();
+        objects.SaveObjects();
 
-        JsonSaveLoad.Save(ProfileName);
+        saver.Save(ProfileName, gameSave);
     }
 
     private void Awake()
-    {
-     if(playing == true)
+    {  
+        if (playing == true)
         {
-            grid.GetComponent<gridSys>().Generate(false);
-        }   
-     if(load == true)
-        {
-            grid.GetComponent<gridSys>().Generate(true);
+            grid.GetComponent<gridSys>().Generate();
+            JsonSaveLoad loader = new();
+            objects.LoadObjects();
         }
     }
 
