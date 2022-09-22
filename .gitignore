@@ -67,5 +67,6 @@ crashlytics-build.properties
 
 
 *.dwlt
-
 UserSettings/
+
+node/node_modules
