@@ -9,7 +9,7 @@ public class Cell
 
 
     public GameObject obj;
-
+    
     public Cell(bool isWater)
     {
         this.isWater = isWater;

@@ -1,6 +1,7 @@
 using SerializeToFile;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class test : MonoBehaviour
@@ -8,15 +9,13 @@ public class test : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Test.save();
-        //Program.Main();
-        //Program.Des();
-        //read();
-        //Save.Main();
+       // InvokeRepeating("Map", 10f, 10f);
+
     }
 
-    public void read()
+
+    private void Map()
     {
-        Test.read();
+        //GameObject.Find("Manager").GetComponent<ProfileManager>().SaveObjects();
     }
 }

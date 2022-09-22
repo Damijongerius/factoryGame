@@ -14,30 +14,24 @@ public class dataMiner : MonoBehaviour
     public int sides = 0;
     public GameObject chosenWire;
 
-    public enum dir { north, east, south, west };
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // get grid pos
-        miner = new Miner
+        if(miner == null)
         {
-        powered = true     
-        };
-        
+            miner = new Miner
+            {
+                powered = true
+            };
+        }
         InvokeRepeating(nameof(Run), 2f, 1.5f);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // ask if powered
     }
 
     //run the following actions
     public void Run()
     {
         // looks for data wire in direction
-
         directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
         objects = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
         wires.Clear();
@@ -81,10 +75,10 @@ public class dataMiner : MonoBehaviour
         {
             miner.powerStored += 1.5f;
 
-            if(miner.powerStored > 10f)
+            if(miner.powerStored > 2f)
             {
                 miner.powerStored -= 1.5f;
-                miner.dataStored += 1;
+                miner.dataStored += 10;
 
             }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,10 @@ public class BuildingManager : MonoBehaviour
     //grid size
     public float gridSize;
     public bool isWire;
+
+    private int endix;
+
+    private SaveFile sf = SaveFile.GetInstance();
 
 
     // Start is called before the first frame update
@@ -53,12 +58,27 @@ public class BuildingManager : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0))
                 {
+                    if (endix == 0){
+                        sf.profile.Statistics.Money -= 100;
+                    }
+                    if (endix == 1)
+                    {
+                        sf.profile.Statistics.Money -= 10;
+                    }
+                    if (endix == 2)
+                    {
+                        sf.profile.Statistics.Money -= 50;
+                    }
                     cell.obj = pendingObject;
                     if (isWire)
                     {
                         pendingObject.tag = "dataWire";
                         isWire = false;
                     }
+                    pendingObject = null;
+                }
+                else if (Input.GetMouseButtonDown(1)) {
+                    Destroy(pendingObject);
                     pendingObject = null;
                 }
             }
@@ -82,16 +102,32 @@ public class BuildingManager : MonoBehaviour
     public void SelectObject(int index)
     {
         //choosing from array to object
+
         if (pendingObject == null)
         {
-            pendingObject = Instantiate(objects[index], pos, transform.rotation);
-            if(index == 1)
+            Debug.Log(sf.profile.Statistics.Money);
+            if (index == 1 && sf.profile.Statistics.Money >= 10)
             {
+                Debug.Log(sf.profile.Statistics.Money);
                 isWire = true;
+                inst(index);
             }
-    
+            else if ((index == 0 && sf.profile.Statistics.Money >= 100))
+            {
+                inst(index);
+            }
+            else if ((index == 2 && sf.profile.Statistics.Money >= 50))
+            {
+                inst(index);
+            }
         }
         else return;
+    }
+
+    void inst(int index)
+    {
+        pendingObject = Instantiate(objects[index], pos, transform.rotation);
+        endix = index;
     }
 
 
