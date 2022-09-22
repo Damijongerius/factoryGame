@@ -21,6 +21,7 @@ public class WebServer
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {
                 Debug.Log(www.error);
+                www.Dispose();
             }
             else
             {
