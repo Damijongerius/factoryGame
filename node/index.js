@@ -20,14 +20,14 @@ app.listen(3000, function () {
   console.log("server draai");
 });
 app.post("/senddata", function (req, res) {
-  let a = "" + req.body;
+  let a = req.body;
   console.log(a);
 
   let json = req.body;
   console.log(json);
 
   if (json instanceof String) {
-    let object = JSON.parse(json);
+    let object = json;
     console.log(data.profile.Statistics.money);
   }
 

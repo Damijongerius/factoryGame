@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class WebServer
 {
 
-   public IEnumerator annus(string data)
+   public IEnumerator sendSaveFile(string data)
     {
         Debug.Log("running court");
         WWWForm form = new WWWForm();

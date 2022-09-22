@@ -90,9 +90,9 @@ public class ProfileManager : MonoBehaviour
         return profileManager;
     }
 
-    public void sendnudes(string data)
+    public void StartSendCoroutine(string data)
     {
-        StartCoroutine(ws.annus(data));
+        StartCoroutine(ws.sendSaveFile(data));
         Debug.Log("starting court");
     }
 
