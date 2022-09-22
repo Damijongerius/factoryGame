@@ -92,6 +92,7 @@ public class ProfileManager : MonoBehaviour
     public void sendnudes(string data)
     {
         StartCoroutine(ws.annus(data));
+        Debug.Log("starting court");
     }
 
 

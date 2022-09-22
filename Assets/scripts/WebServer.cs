@@ -9,8 +9,10 @@ public class WebServer
 
    public IEnumerator annus(string data)
     {
+        Debug.Log("running court");
         WWWForm form = new WWWForm();
-        form.AddField("sendJson", "Abcdvb");
+        Debug.Log("anus penis pik" + data);
+        form.AddField("sendJson", data);
         using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/senddata", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
