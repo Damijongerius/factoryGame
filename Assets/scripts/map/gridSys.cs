@@ -8,12 +8,35 @@ public class gridSys : MonoBehaviour
     public float scale = .1f;
     public int size = 100;
 
+    private static gridSys sys;
+
+    public GameObject[] placables;
+
     public static Cell[,] grid;
+
+    private SaveFile sf = SaveFile.GetInstance();
 
     void Start()
     {
+        sys = this;
+    }
+    public void Generate()
+    {
         float[,] noiseMap = new float[size, size];
-        (float xOffset, float yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
+        float xOffset = 0;
+        float yOffset = 0;
+        if(sf.map.xRange == 0)
+        {
+            (xOffset, yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
+
+            sf.map.xRange = xOffset;
+            sf.map.yRange = yOffset;
+        }
+        else
+        {
+            (xOffset, yOffset) = (sf.map.xRange, sf.map.yRange);
+        }
+
         for (int y = 0; y < size; y++)
         {
             for (int x = 0; x < size; x++)
@@ -22,6 +45,8 @@ public class gridSys : MonoBehaviour
                 noiseMap[x, y] = noiseValue;
             }
         }
+        
+        //(float xOffset, float yOffset) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
 
         float[,] falloffMap = new float[size, size];
         for (int y = 0; y < size; y++)
@@ -88,10 +113,27 @@ public class gridSys : MonoBehaviour
         mesh.uv = uvs.ToArray();
         mesh.RecalculateNormals();
 
+        
         MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
-        meshFilter.mesh = mesh;
+        try
+        {
+            meshFilter.mesh = mesh;
+        }
+        catch
+        {
+            Debug.Log("couldn't preform that action");
+        }
 
-        MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        MeshRenderer meshRenderer;
+        
+        if(gameObject.GetComponent<MeshRenderer>() != null)
+        {
+            meshRenderer = gameObject.GetComponent<MeshRenderer>();
+        }
+        else
+        {
+            meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        }
     }
 
     void DrawTexture(Cell[,] grid)
@@ -122,6 +164,11 @@ public class gridSys : MonoBehaviour
             Vector2[] uv = new Vector2[] { uv00, uv10, uv01, uv10, uv11, uv01 };
             return uv;
         }
+    }
+
+    public static gridSys GetInstance()
+    {
+        return sys;
     }
     
 }
