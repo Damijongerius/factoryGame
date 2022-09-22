@@ -75,7 +75,8 @@ public class ProfileManager : MonoBehaviour
     }
 
     private void Awake()
-    {  
+    {
+        gameSave.profile.Statistics.Money = 200;
         if (playing == true)
         {
             grid.GetComponent<gridSys>().Generate();

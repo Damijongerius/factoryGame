@@ -105,6 +105,7 @@ public class BuildingManager : MonoBehaviour
 
         if (pendingObject == null)
         {
+            Debug.Log(sf.profile.Statistics.Money);
             if (index == 1 && sf.profile.Statistics.Money >= 10)
             {
                 Debug.Log(sf.profile.Statistics.Money);

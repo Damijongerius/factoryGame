@@ -31,7 +31,6 @@ public class uploadStation : MonoBehaviour
         if (station.dataStored > 1)
         {
             station.dataStored--;
-            sf.profile.Statistics.Money++;
             sf.profile.Statistics.Money+=5;
         }
     }
