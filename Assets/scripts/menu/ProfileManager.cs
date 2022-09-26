@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEditor.PackageManager;
 
 public class ProfileManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class ProfileManager : MonoBehaviour
     private SaveFile gameSave = SaveFile.GetInstance();
     public ObjectSaveLoad objects = new ObjectSaveLoad();
 
-    private DateTime startPlaying;
+    private static DateTime startPlaying;
 
     private static ProfileManager profileManager;
     private void Start()
@@ -55,7 +56,8 @@ public class ProfileManager : MonoBehaviour
         string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
         JsonSaveLoad loader = new();
         playing = true;
-
+        Debug.Log(startPlaying);
+        Debug.Log(System.DateTime.Now);
 
         loader.Load(ProfileName);
         SceneManager.LoadScene("GameScene");
@@ -63,8 +65,10 @@ public class ProfileManager : MonoBehaviour
 
     public void Save()
     {
-        
+
         //getting profile name 
+        Debug.Log(startPlaying);
+        Debug.Log(System.DateTime.Now);
         string ProfileName = gameSave.profile.Name;
         gameSave.profile.TimePlayed += System.DateTime.Now - startPlaying;
         gameSave.profile.DateSeen = System.DateTime.Now;

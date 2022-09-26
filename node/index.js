@@ -1,5 +1,5 @@
 //node module express
-const { response, request } = require("express");
+const { response, request, json } = require("express");
 
 const express = require("express");
 
@@ -7,6 +7,7 @@ const app = express();
 
 app.use(express.json());
 
+let data;
 //node module body parser
 const bodyParser = require("body-parser");
 
@@ -20,6 +21,9 @@ app.listen(3000, function () {
   console.log("server draai");
 });
 app.post("/senddata", function (req, res) {
-  console.log(JSON.stringify(req.body, null, 2))
-  res.end(JSON.stringify(req.body, null, 2))
+  console.log(req.body);
+  let a = JSON.parse(req.body.sendJson);
+  //data = JSON.parse(req.body);
+
+  console.log(a);
 });
