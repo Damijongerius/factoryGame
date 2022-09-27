@@ -1,9 +1,9 @@
-import { ObjectEncodingOptions } from 'fs';
-import * as ErrorHandler from './ErrorHandler';
+import * as EH from './ErrorHandler';
 var mysql = require("mysql");
 
 export class Database {
   conn: any;
+  errorHandler: EH.ErrorHandler;
 
   setConnection(host: string, user: string, password: string, database: string) {
     this.conn = mysql.createConnection({
@@ -14,7 +14,9 @@ export class Database {
     });
 
     setInterval(this.Update(), 100);
-    this.conn.connect()
+
+    this.errorHandler = new EH.ErrorHandler;
+    this.conn.connect();
   }
 
   Update(): any{
@@ -25,15 +27,16 @@ export class Database {
 
   }
 
-  select() {
-    this.conn.query();
+  select(table: string) {
+    this.conn.query(`SELECT * FROM ${table}`);
   }
 
-  insert(table: string, param: String[], obj: object) {
-    this.conn.query(`INSTERT INTO ${table} (${param})`);
+  insert(table: string, param: String[], obj: String[]) {
+    let sql = `INSTERT INTO ${table} (${this.ParamToString(param)})`;
+    this.conn.query(sql, [obj], this.errorHandler.OnInsert);
   }
 
-  ParamToString(param: String[]){
+  ParamToString(param: String[]): string{
     let string;
     for(let i = 0; i < param.length ; i++){
       if(param.length != i){
@@ -44,6 +47,7 @@ export class Database {
         string += `${param[i]} `;
       }
     }
+    return string;
   }
 
 
