@@ -1,3 +1,4 @@
+const { DB } = require("./DB/Database");
 //node module express
 const { response, request, json } = require("express");
 
@@ -8,6 +9,8 @@ const app = express();
 app.use(express.json());
 
 let data;
+
+let database;
 //node module body parser
 const bodyParser = require("body-parser");
 
@@ -23,7 +26,8 @@ app.listen(3000, function () {
 app.post("/senddata", function (req, res) {
   console.log(req.body);
   let a = JSON.parse(req.body.sendJson);
+
   //data = JSON.parse(req.body);
 
-  console.log(a);
+  console.log(a.map.grid);
 });
