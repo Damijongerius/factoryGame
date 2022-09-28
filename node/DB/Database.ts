@@ -23,21 +23,5 @@ class Database {
     this.conn.query(`SELECT * FROM ${table}`);
   }
 
-  insert(table: string, param: String[], obj: String[]) {
-    let sql = `INSTERT INTO ${table} (${this.ParamToString(param)})`;
-    this.conn.query(sql, obj, this.errorHandler.OnInsert);
-  }
-
-  ParamToString(param: String[]): string {
-    let string;
-    for (let i = 0; i < param.length; i++) {
-      if (param.length != i) {
-        string += `${param[i]}, `;
-      } else {
-        string += `${param[i]} `;
-      }
-    }
-    return string;
-  }
 }
 export const DB = new Database("localhost", "root", "", "Factorygame");
