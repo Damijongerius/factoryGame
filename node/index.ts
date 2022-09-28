@@ -8,9 +8,6 @@ const app = express();
 
 app.use(express.json());
 
-let data;
-
-let database;
 //node module body parser
 const bodyParser = require("body-parser");
 
@@ -31,3 +28,9 @@ app.post("/senddata", function (req, res) {
 
   console.log(a.map.grid);
 });
+
+app.post("/recieve", function (req,res) {
+  let string = JSON.parse(req.body.sendJson);
+
+  
+})

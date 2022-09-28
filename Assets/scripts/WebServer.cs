@@ -11,9 +11,8 @@ public class WebServer
     {
         Debug.Log("running court");
         WWWForm form = new WWWForm();
-        Debug.Log("anus penis pik" + data);
         form.AddField("sendJson", data);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/senddata", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/sendThis", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
