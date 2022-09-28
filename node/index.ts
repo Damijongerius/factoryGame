@@ -1,4 +1,5 @@
 import { profile } from "console";
+import { savefFile } from "./models/SaveFile";
 
 const { DB } = require("./DB/Database");
 
@@ -35,8 +36,34 @@ app.post("/senddata", function (req, res) {
   // console.log(a.map.grid[0]);
 });
 
-app.post("/recieve", function (req,res) {
-  let string = JSON.parse(req.body.sendJson);
-
-  
-})
+app.post("/recieve", function (req, res) {
+  let object = JSON.parse(req.body.sendJson);
+  savefFile.ConstructProfile(
+    object.profile.Name,
+    object.profile.DateMade,
+    object.profile.DateSeen,
+    object.profile.TimePlayed
+  );
+  savefFile.Profile.ConstructStats(
+    object.profile.networth,
+    object.profile.money,
+    object.profile.data,
+    object.profile.xp,
+    object.profile.level
+  );
+  saveFile.ConstructMap(object.Map.xRange, object.Map.yRange);
+  saveFile.Map.ConstructCell(
+    object.Map.cell.x,
+    object.Map.cell.y,
+    object.Map.cell.type,
+    object.Map.cell.Buildingm
+  );
+  saveFile.building(object.building.x);
+  object.building.dataStored,
+    object.building.powerStored,
+    object.building.level,
+    object.building.upkeepCost,
+    object.building.dataMined,
+    object.building.dataSold,
+    object.building.dataTransferd;
+});
