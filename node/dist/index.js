@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const SaveFile_1 = require("./models/SaveFile");
 const { DB } = require("./DB/Database");
 const { saveFile } = require("./models/SaveFile");
+//node module express
 const { response, request, json } = require("express");
 const express = require("express");
 const app = express();
@@ -19,15 +21,25 @@ app.listen(3000, function () {
 app.post("/senddata", function (req, res) {
     console.log(req.body);
     let a = JSON.parse(req.body.sendJson);
-    console.log(saveFile.profile.Statistics.money);
-    saveFile.profile = new Profile();
-    saveFile.profile.Statistics = new Statistics();
-    //saveFile.Profile.Statistics.money = a.profile.Statistics.money;
+    console.log(a.profile.Statistics.money);
     //data = JSON.parse(req.body);
     // console.log(a.map.grid[0]);
 });
-app.post("/sendThis", function (req, res) {
-    let string = req.body.sendJson;
-    DB.select("my");
+app.post("/recieve", function (req, res) {
+    let object = JSON.parse(req.body.sendJson);
+    SaveFile_1.savefFile.ConstructProfile(object.profile.Name, object.profile.DateMade, object.profile.DateSeen, object.profile.TimePlayed);
+    SaveFile_1.savefFile.Profile.ConstructStats(object.profile.networth, object.profile.money, object.profile.data, object.profile.xp, object.profile.level);
+    saveFile.ConstructMap(object.Map.xRange, object.Map.yRange);
+    for (let i; i < 10; i++) {
+    }
+    saveFile.Map.ConstructCell(object.Map.cell.x, object.Map.cell.y, object.Map.cell.type, object.Map.cell.Building);
+    saveFile.building(object.building.x);
+    object.building.dataStored,
+        object.building.powerStored,
+        object.building.level,
+        object.building.upkeepCost,
+        object.building.dataMined,
+        object.building.dataSold,
+        object.building.dataTransferd;
 });
 //# sourceMappingURL=index.js.map

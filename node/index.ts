@@ -29,7 +29,7 @@ app.post("/senddata", function (req, res) {
   console.log(req.body);
   let a = JSON.parse(req.body.sendJson);
 
-  saveFile.Profile.Statistics.money = a.profile.Statistics.money;
+  console.log(a.profile.Statistics.money);
 
   //data = JSON.parse(req.body);
 
@@ -38,12 +38,14 @@ app.post("/senddata", function (req, res) {
 
 app.post("/recieve", function (req, res) {
   let object = JSON.parse(req.body.sendJson);
+
   savefFile.ConstructProfile(
     object.profile.Name,
     object.profile.DateMade,
     object.profile.DateSeen,
     object.profile.TimePlayed
   );
+
   savefFile.Profile.ConstructStats(
     object.profile.networth,
     object.profile.money,
@@ -52,12 +54,25 @@ app.post("/recieve", function (req, res) {
     object.profile.level
   );
   saveFile.ConstructMap(object.Map.xRange, object.Map.yRange);
+
+  //object.map.cell is een array
+  //vraag om de length van de array en maak alles aan
+  //het zou kunnen dat ik de constructor daarvoor verkeerd heb geschreven maar ik geloof dat jij het wel kan fixen
+  for(let i; i < 10; i++){
+    
+  }
+
+  //er is niet 1 cell er zijn er meer
   saveFile.Map.ConstructCell(
     object.Map.cell.x,
     object.Map.cell.y,
     object.Map.cell.type,
-    object.Map.cell.Buildingm
   );
+
+  //zelfde geld voor deze 
+  //en object.buidling bestaat niet
+  //het is object.Map.cell.objectInfo
+  //en waar zijn de haakjes lol
   saveFile.building(object.building.x);
   object.building.dataStored,
     object.building.powerStored,
@@ -66,4 +81,5 @@ app.post("/recieve", function (req, res) {
     object.building.dataMined,
     object.building.dataSold,
     object.building.dataTransferd;
+    
 });

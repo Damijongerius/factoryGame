@@ -1,4 +1,4 @@
-class Profile {
+export class Profile {
   Name: string;
   DateMade: Date;
   DateSeen: Date;
