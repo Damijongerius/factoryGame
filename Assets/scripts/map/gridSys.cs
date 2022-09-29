@@ -19,6 +19,7 @@ public class gridSys : MonoBehaviour
     void Start()
     {
         sys = this;
+        Generate();
     }
     public void Generate()
     {

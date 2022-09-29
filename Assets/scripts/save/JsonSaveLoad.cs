@@ -9,7 +9,7 @@ using System.Text;
 // save en load class voor het saven van een profiel/lijst van profielen en laden
 public class JsonSaveLoad
 {
-
+    public Listed listed = new Listed();
     public SaveFile gameSave = SaveFile.GetInstance();
     //bestaat de file directory zo niet maakt hij hem ook meteen aan
     public void Exsisting(string _name)
@@ -80,6 +80,7 @@ public class JsonSaveLoad
     //loads data stored in savefile
     public string Load(string _saveName)
     {
+        listed.lastPlayed = _saveName;
         string path = Application.persistentDataPath + "/profile/" + _saveName + "/Save.saveFile";
 
         string decrypterdContent = null;
@@ -128,37 +129,42 @@ public class JsonSaveLoad
     //zet het nieuw aangemaakte profiel in de lijst van profielen
     public void ListProfile(string _name)
     {
-        Listed listed = new Listed();
+        string temp = listed.lastPlayed;
+        listed = new Listed();
+        listed.lastPlayed = temp;
 
-            List<string> profiles = ReadListedProfiles();
-            try
+        try
+        {
+            List<string> profiles = ReadListedProfiles().profiles;
+            foreach (string profile in profiles)
             {
-                foreach (string profile in profiles)
-                {
-                    listed.profiles.Add(profile);
-                }
+                listed.profiles.Add(profile);
             }
-            catch
+
+        }
+        catch
+        {
+            Debug.Log("no profiles saved in file");
+        }    
+        listed.profiles.Add(_name);
+        listed.lastPlayed = _name;
+
+
+        using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.OpenOrCreate, FileAccess.Write))
+        {
+            JsonSerializer serializer = new JsonSerializer();
+
+            using (StreamWriter writer = new StreamWriter(fs2))
             {
-                Debug.Log("no profiles saved in file");
-            }    
-            listed.profiles.Add(_name);
-
-
-            using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-
-                using (StreamWriter writer = new StreamWriter(fs2))
-                {
-                    serializer.Serialize(writer, listed);
-                }
+                serializer.Serialize(writer, listed);
             }
+        }
         
     }
+
     
     //vraagt om alle profielen in de file
-    public List<string> ReadListedProfiles()
+    public Listed ReadListedProfiles()
     {
         using (FileStream fs = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.OpenOrCreate, FileAccess.Read))
         {
@@ -169,7 +175,7 @@ public class JsonSaveLoad
                 Listed listed = JsonUtility.FromJson<Listed>(json);
                 try
                 {
-                    return listed.profiles;
+                    return listed;
                 }
                 catch
                 {

@@ -44,9 +44,34 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
+    public void Delete()
+    {
+
+    }
+
+    public void Remove()
+    {
+    }
+
     public void Continue() 
     {
+        JsonSaveLoad loader = new();
         //for all the saves find the latest(can only be done if dates are saved in savefile)
+        startPlaying = System.DateTime.Now;
+        playing = true;
+
+        if(loader.ReadListedProfiles().lastPlayed != null)
+        {
+            loader.Load(loader.ReadListedProfiles().lastPlayed);
+            SceneManager.LoadScene("GameScene");
+        }
+        else
+        {
+            //else say that there is no profile to load
+            Debug.Log("there is no profile to load");
+        }
+
+
     }
 
     public void Load(GameObject profileObject)
@@ -56,8 +81,6 @@ public class ProfileManager : MonoBehaviour
         string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
         JsonSaveLoad loader = new();
         playing = true;
-        Debug.Log(startPlaying);
-        Debug.Log(System.DateTime.Now);
 
         loader.Load(ProfileName);
         SceneManager.LoadScene("GameScene");

@@ -28,7 +28,7 @@ public class LoadListed : MonoBehaviour
     {
         JsonSaveLoad load = new();
         if (load.ReadListedProfiles() != null)
-        foreach (string name in load.ReadListedProfiles())
+        foreach (string name in load.ReadListedProfiles().profiles)
         {
             profiles.Add(Instantiate(Profile));
 
