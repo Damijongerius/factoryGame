@@ -44,13 +44,16 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
-    public void Delete()
+    public void Delete(GameObject profileObject)
     {
+        //load clicked profile in load screen
+        string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
+        JsonSaveLoad loader = new();
 
-    }
+        loader.DeleteProfile(ProfileName);
 
-    public void Remove()
-    {
+
+        //request database to delete profile
     }
 
     public void Continue() 

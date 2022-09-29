@@ -127,6 +127,46 @@ public class JsonSaveLoad
         }
     }
 
+    public void DeleteProfile(string _name)
+    {
+        string path = Application.persistentDataPath + "/profile/" + _name;
+
+        Directory.Delete(path, true);
+
+        DeleteListedProfile(_name);
+
+        LoadListed.GetInstance().UpdateList();
+    }
+
+    public void DeleteListedProfile(string _name)
+    {
+        List<string> profiles = ReadListedProfiles().profiles;
+        profiles.Remove(_name);
+
+        try
+        {
+            foreach (string profile in profiles)
+            {
+                listed.profiles.Add(profile);
+            }
+        }
+        catch
+        {
+            Debug.Log("no profiles saved in file");
+        }
+
+        using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
+        {
+            JsonSerializer serializer = new JsonSerializer();
+
+            using (StreamWriter writer = new StreamWriter(fs2))
+            {
+                serializer.Serialize(writer, listed);
+            }
+        }
+
+    }
+
     //zet het nieuw aangemaakte profiel in de lijst van profielen
     public void ListProfile(string _name)
     {
@@ -150,7 +190,7 @@ public class JsonSaveLoad
         listed.lastPlayed = _name;
 
 
-        using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.OpenOrCreate, FileAccess.Write))
+        using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
         {
             JsonSerializer serializer = new JsonSerializer();
 
@@ -171,7 +211,6 @@ public class JsonSaveLoad
             using (StreamReader reader = new StreamReader(fs))
             {
                 string json = reader.ReadToEnd();
-                Debug.Log(json);
 
                 Listed listed = JsonUtility.FromJson<Listed>(json);
                 try

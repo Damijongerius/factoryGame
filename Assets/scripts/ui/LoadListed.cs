@@ -11,11 +11,21 @@ public class LoadListed : MonoBehaviour
     public Button button;
     public Button escape;
 
+    private static LoadListed instance;
     private List<GameObject> profiles = new List<GameObject>();
     // Start is called before the first frame update
     private void Awake()
     {
+        instance = this;
         Master();
+    }
+
+    public void UpdateList()
+    {
+        ClearList();
+
+        Master();
+
     }
 
 
@@ -34,10 +44,6 @@ public class LoadListed : MonoBehaviour
                 profiles[profiles.Count - 1].transform.Find("TimePlayed").GetComponent<TextMeshProUGUI>().text = "ooit";
                 profiles[profiles.Count - 1].transform.Find("LastPlayed").GetComponent<TextMeshProUGUI>().text = "niet nu";
             }
-        }
-        else
-        {
-            Debug.Log(load.ReadListedProfiles().profiles);
         }
 
 
@@ -58,15 +64,21 @@ public class LoadListed : MonoBehaviour
 
             nextPos -= new Vector3(0, -100, 0);
         }
+    }
 
-        void SetTime()
+    private void ClearList()
+    {
+        foreach(GameObject profile in profiles)
         {
-
+            Destroy(profile);
         }
-
+        nextPos = new Vector3(0, 0, 0);
     }
 
 
-
+    public static LoadListed GetInstance()
+    {
+        return instance;
+    }
     // Update is called once per frame
 }

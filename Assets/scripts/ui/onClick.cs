@@ -13,11 +13,19 @@ public class onClick : MonoBehaviour
         Button button = gameObject.GetComponent<Button>();
         button.onClick.AddListener(OnClick);
 
+        Button delete = transform.GetChild(4).GetComponent<Button>();
+        delete.onClick.AddListener(OnDelete);
+
     }
 
     //run after button has been clicked
     void OnClick() 
     {
         ProfileManager.getObject().Load(gameObject);
+    }
+
+    void OnDelete()
+    {
+        ProfileManager.getObject().Delete(gameObject);
     }
 }
