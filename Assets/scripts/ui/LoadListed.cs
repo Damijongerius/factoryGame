@@ -18,25 +18,28 @@ public class LoadListed : MonoBehaviour
         Master();
     }
 
-    void Start()
-    {
-        escape.onClick.AddListener(call: ClearList);
-    }
-
 
     private void Master()
     {
         JsonSaveLoad load = new();
-        if (load.ReadListedProfiles() != null)
-        foreach (string name in load.ReadListedProfiles().profiles)
+        if (load.ReadListedProfiles().profiles != null)
         {
-            profiles.Add(Instantiate(Profile));
+            foreach (string name in load.ReadListedProfiles().profiles)
+            {
+                Debug.Log(name);
+                profiles.Add(Instantiate(Profile));
 
-            SetName(profiles[profiles.Count - 1], name);
-            SetPos(profiles[profiles.Count - 1]);
-            profiles[profiles.Count - 1].transform.Find("TimePlayed").GetComponent<TextMeshProUGUI>().text = "ooit";
-            profiles[profiles.Count - 1].transform.Find("LastPlayed").GetComponent<TextMeshProUGUI>().text = "niet nu"; 
+                SetName(profiles[profiles.Count - 1], name);
+                SetPos(profiles[profiles.Count - 1]);
+                profiles[profiles.Count - 1].transform.Find("TimePlayed").GetComponent<TextMeshProUGUI>().text = "ooit";
+                profiles[profiles.Count - 1].transform.Find("LastPlayed").GetComponent<TextMeshProUGUI>().text = "niet nu";
+            }
         }
+        else
+        {
+            Debug.Log(load.ReadListedProfiles().profiles);
+        }
+
 
         void SetName(GameObject profile, string name)
         {
@@ -61,15 +64,6 @@ public class LoadListed : MonoBehaviour
 
         }
 
-    }
-
-    private void ClearList()
-    {
-        foreach(GameObject profile in profiles)
-        {
-            Destroy(profile);
-        }
-        nextPos = new Vector3(0, 0, 0);
     }
 
 

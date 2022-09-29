@@ -5,6 +5,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
+using System;
 
 // save en load class voor het saven van een profiel/lijst van profielen en laden
 public class JsonSaveLoad
@@ -133,14 +134,13 @@ public class JsonSaveLoad
         listed = new Listed();
         listed.lastPlayed = temp;
 
+        List<string> profiles = ReadListedProfiles().profiles;
         try
         {
-            List<string> profiles = ReadListedProfiles().profiles;
             foreach (string profile in profiles)
             {
                 listed.profiles.Add(profile);
             }
-
         }
         catch
         {
@@ -171,14 +171,16 @@ public class JsonSaveLoad
             using (StreamReader reader = new StreamReader(fs))
             {
                 string json = reader.ReadToEnd();
+                Debug.Log(json);
 
                 Listed listed = JsonUtility.FromJson<Listed>(json);
                 try
                 {
                     return listed;
                 }
-                catch
+                catch(Exception e)
                 {
+                    Debug.Log(e);
                     return null;
                 }
             }
