@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Profile = void 0;
 class Profile {
     constructor(_Name, _DateMade, _DateSeen, _TimePlayed) {
         if (_Name != null)
@@ -14,4 +17,5 @@ class Profile {
         this.Statistics = stats;
     }
 }
+exports.Profile = Profile;
 //# sourceMappingURL=profile.js.map
