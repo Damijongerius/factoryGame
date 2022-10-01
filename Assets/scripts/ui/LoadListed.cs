@@ -93,7 +93,7 @@ public class LoadListed : MonoBehaviour
 
     private void Dragg(float pos)
     {
-        if(nextPos.y < 500)
+        if(nextPos.y <= 500)
         {
             sb.value = 1;
         }

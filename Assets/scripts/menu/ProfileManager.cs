@@ -10,6 +10,8 @@ using UnityEditor.PackageManager;
 
 public class ProfileManager : MonoBehaviour
 {
+    public Canvas loadingscreen;
+
     public static bool playing = false;
     public GameObject grid;
     public WebServer ws = new WebServer(); 
@@ -33,10 +35,8 @@ public class ProfileManager : MonoBehaviour
             JsonSaveLoad loader = new JsonSaveLoad();
             loader.Exsisting(ProfileName);
             loader.CreateSaveData(ProfileName);
-            loader.Save(ProfileName, gameSave);
-            SceneManager.LoadScene("GameScene");
-            startPlaying = System.DateTime.Now;
-            playing = true;
+
+            loadingscreen.gameObject.SetActive(true);
         }
         else
         {
@@ -60,13 +60,12 @@ public class ProfileManager : MonoBehaviour
     {
         JsonSaveLoad loader = new();
         //for all the saves find the latest(can only be done if dates are saved in savefile)
-        startPlaying = System.DateTime.Now;
-        playing = true;
 
         if(loader.ReadListedProfiles().lastPlayed != null)
         {
             loader.Load(loader.ReadListedProfiles().lastPlayed);
-            SceneManager.LoadScene("GameScene");
+
+            loadingscreen.gameObject.SetActive(true);
         }
         else
         {
@@ -80,21 +79,19 @@ public class ProfileManager : MonoBehaviour
     public void Load(GameObject profileObject)
     {
         //load clicked profile in load screen
-        startPlaying = System.DateTime.Now;
         string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
         JsonSaveLoad loader = new();
-        playing = true;
 
         loader.Load(ProfileName);
-        SceneManager.LoadScene("GameScene");
+
+        loadingscreen.gameObject.SetActive(true);
+
     }
 
     public void Save()
     {
 
         //getting profile name 
-        Debug.Log(startPlaying);
-        Debug.Log(System.DateTime.Now);
         string ProfileName = gameSave.profile.Name;
         gameSave.profile.TimePlayed += System.DateTime.Now - startPlaying;
         gameSave.profile.DateSeen = System.DateTime.Now;
@@ -106,7 +103,7 @@ public class ProfileManager : MonoBehaviour
 
     private void Awake()
     {
-        gameSave.profile.Statistics.Money = 200;
+        gameSave.profile.Statistics.Money += 200;
         if (playing == true)
         {
             grid.GetComponent<gridSys>().Generate();
@@ -124,6 +121,13 @@ public class ProfileManager : MonoBehaviour
     {
         StartCoroutine(ws.sendSaveFile(data));
         Debug.Log("starting court");
+    }
+
+    public void ActualLoad()
+    {
+        SceneManager.LoadScene("GameScene");
+        startPlaying = System.DateTime.Now;
+        playing = true;
     }
 
 
