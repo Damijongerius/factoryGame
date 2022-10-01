@@ -63,6 +63,7 @@ public class ObjectSaveLoad
 
         foreach (cells cell in grid)
         {
+            Debug.Log("load object");
             if (cell != null)
             {
                 GameObject scem = SetObject(cell);

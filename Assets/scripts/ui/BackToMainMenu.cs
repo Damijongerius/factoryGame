@@ -18,6 +18,7 @@ public class BackToMainMenu : MonoBehaviour
     {
         ProfileManager profileManager = Manager.GetComponent<ProfileManager>();
         profileManager.Save();
+        ProfileManager.playing = false;
         SceneManager.LoadScene("MainMenu");
     }
 }

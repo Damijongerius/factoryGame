@@ -98,14 +98,12 @@ public class JsonSaveLoad
 
             try
             {
-
+                Debug.Log("trying");
                 int IVLength = reader.ReadInt32();
                 byte[] IV = reader.ReadBytes(IVLength);
 
                 int encryptedBytesLength = reader.ReadInt32();
                 byte[] encryptedBytes = reader.ReadBytes(encryptedBytesLength);
-
-
 
                 personalAes.IV = IV;
                 decrypterdContent = DecryptBytes(encryptedBytes, personalAes.Key, personalAes.IV);
@@ -120,6 +118,7 @@ public class JsonSaveLoad
             }
             catch
             {
+                Debug.Log("fail");
                 reader.Close();
                 file.Close();
                 return null;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class gridSys : MonoBehaviour
 {
+    public ObjectSaveLoad objects = new ObjectSaveLoad();
+
     public Material atlas;
     public float waterLevel = .4f;
     public float scale = .1f;
@@ -73,6 +75,8 @@ public class gridSys : MonoBehaviour
                 grid[x, y] = cell;
             }
         }
+
+        
 
         DrawTerrainMesh(grid);
         DrawTexture(grid);

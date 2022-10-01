@@ -23,7 +23,6 @@ public class LoadingScreen : MonoBehaviour
             if(child.gameObject.name == "Progress")
             {
                 childTrans = child.GetComponent<RectTransform>();
-                Debug.Log("loadBar");
                 InvokeRepeating(nameof(LoadAnim), 0.001f, 0.001f);
             }
         }
@@ -40,7 +39,6 @@ public class LoadingScreen : MonoBehaviour
         {
             CancelInvoke(nameof(StartAnim));
             ProfileManager.getObject().ActualLoad();
-            Debug.Log("closed");
         }
             
     }
@@ -55,7 +53,6 @@ public class LoadingScreen : MonoBehaviour
         else
         {
             CancelInvoke(nameof(EndAnim));
-            Debug.Log("open");
         }
 
     }

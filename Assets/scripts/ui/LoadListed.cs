@@ -51,7 +51,6 @@ public class LoadListed : MonoBehaviour
         {
             foreach (string name in load.ReadListedProfiles().profiles)
             {
-                Debug.Log(name);
                 profiles.Add(Instantiate(Profile));
 
                 SetName(profiles[profiles.Count - 1], name);
