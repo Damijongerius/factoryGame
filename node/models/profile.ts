@@ -3,7 +3,7 @@ export class Profile {
   DateMade: Date;
   DateSeen: Date;
   TimePlayed: string;
-  Statistics: Statistics;
+  statistics: Statistics;
 
   ConstructStats(
     _networth: number,
@@ -11,8 +11,10 @@ export class Profile {
     _data: number,
     _xp: number,
     _level: number
-  ) {
-    this.Statistics = new Statistics(_networth, _money, _data, _xp, _level);
+  ) 
+  {
+    let statistics = new Statistics(_networth, _money, _data, _xp, _level);
+
   }
 
   constructor(
