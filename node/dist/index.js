@@ -30,16 +30,9 @@ app.post("/recieve", function (req, res) {
     SaveFile_1.savefFile.ConstructProfile(object.profile.Name, object.profile.DateMade, object.profile.DateSeen, object.profile.TimePlayed);
     SaveFile_1.savefFile.Profile.ConstructStats(object.profile.networth, object.profile.money, object.profile.data, object.profile.xp, object.profile.level);
     saveFile.ConstructMap(object.Map.xRange, object.Map.yRange);
-    //object.map.cell is een array
-    //vraag om de length van de array en maak alles aan
-    //het zou kunnen dat ik de constructor daarvoor verkeerd heb geschreven maar ik geloof dat jij het wel kan fixen
     for (let i; i < length; i++) {
         saveFile.Map.ConstructCell(object.Map.cell.x, object.Map.cell.y, object.Map.cell.type);
+        saveFile.Map.cell[i].building(object.object.Map.cell.objectInfo.dataStored, object.object.Map.cell.objectInfo.powerStored, object.object.Map.cell.objectInfo.level, object.object.Map.cell.objectInfo.age, object.object.Map.cell.objectInfo.upkeepCost, object.object.Map.cell.objectInfo.dataMined, object.object.Map.cell.objectInfo.dataSold, object.object.Map.cell.objectInfo.dataTransferd);
     }
-    //zelfde geld voor deze
-    //en object.buidling bestaat niet
-    //het is object.Map.cell.objectInfo
-    //en waar zijn de haakjes lol
-    saveFile.building(object.Map.cell.objectInfo.x, object.Map.cell.objectInfo.y, object.object.Map.cell.objectInfo.dataStored, object.object.Map.cell.objectInfo.powerStored, object.object.Map.cell.objectInfo.level, object.object.Map.cell.objectInfo.upkeepCost, object.object.Map.cell.objectInfo.dataMined, object.object.Map.cell.objectInfo.dataSold, object.object.Map.cell.objectInfo.dataTransferd);
 });
 //# sourceMappingURL=index.js.map

@@ -13,8 +13,7 @@ class Profile {
             this.TimePlayed = _TimePlayed;
     }
     ConstructStats(_networth, _money, _data, _xp, _level) {
-        let stats = new Statistics(_networth, _money, _data, _xp, _level);
-        this.Statistics = stats;
+        this.Statistics = new Statistics(_networth, _money, _data, _xp, _level);
     }
 }
 exports.Profile = Profile;

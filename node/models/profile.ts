@@ -12,8 +12,7 @@ export class Profile {
     _xp: number,
     _level: number
   ) {
-    let stats = new Statistics(_networth, _money, _data, _xp, _level);
-    this.Statistics = stats;
+    this.Statistics = new Statistics(_networth, _money, _data, _xp, _level);
   }
 
   constructor(
