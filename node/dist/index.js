@@ -22,17 +22,15 @@ app.post("/senddata", function (req, res) {
     console.log(req.body);
     let a = JSON.parse(req.body.sendJson);
     console.log(a.profile.Statistics.money);
-    //data = JSON.parse(req.body);
-    // console.log(a.map.grid[0]);
 });
 app.post("/recieve", function (req, res) {
     let object = JSON.parse(req.body.sendJson);
     SaveFile_1.savefFile.ConstructProfile(object.profile.Name, object.profile.DateMade, object.profile.DateSeen, object.profile.TimePlayed);
     SaveFile_1.savefFile.Profile.ConstructStats(object.profile.networth, object.profile.money, object.profile.data, object.profile.xp, object.profile.level);
     saveFile.ConstructMap(object.Map.xRange, object.Map.yRange);
-    for (let i; i < length; i++) {
+    for (let i = 0; i < length; i++) {
         saveFile.Map.ConstructCell(object.Map.cell.x, object.Map.cell.y, object.Map.cell.type);
-        saveFile.Map.cell[i].building(object.object.Map.cell.objectInfo.dataStored, object.object.Map.cell.objectInfo.powerStored, object.object.Map.cell.objectInfo.level, object.object.Map.cell.objectInfo.age, object.object.Map.cell.objectInfo.upkeepCost, object.object.Map.cell.objectInfo.dataMined, object.object.Map.cell.objectInfo.dataSold, object.object.Map.cell.objectInfo.dataTransferd);
+        saveFile.Map.cell[i].building(object.Map.cell[i].objectInfo.dataStored, object.Map.cell[i].objectInfo.powerStored, object.Map.cell[i].objectInfo.level, object.Map.cell[i].objectInfo.age, object.Map.cell[i].objectInfo.upkeepCost, object.Map.cell[i].objectInfo.dataMined, object.Map.cell[i].objectInfo.dataSold, object.Map.cell[i].objectInfo.dataTransferd);
     }
 });
 //# sourceMappingURL=index.js.map
