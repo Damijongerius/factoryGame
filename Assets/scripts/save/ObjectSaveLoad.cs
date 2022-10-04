@@ -56,21 +56,16 @@ public class ObjectSaveLoad
         }
         return null;
     }
-
-    public void LoadObjects()
+    
+    public void LoadSavedObjects()
     {
         List<cells> grid = gameSave.map.grid;
-
         foreach (cells cell in grid)
         {
-            Debug.Log("load object");
-            if (cell != null)
-            {
-                GameObject scem = SetObject(cell);
-                SetInfo(cell, scem);
-            }
-        }
 
+            SetObject(cell);
+            SetInfo(cell, gridSys.grid[cell.x, cell.y].obj);
+        }
 
         void SetInfo(cells cell, GameObject scem)
         {
@@ -80,6 +75,7 @@ public class ObjectSaveLoad
                     {
                         scem.GetComponent<dataWire>().wire = new Wires();
                         scem.GetComponent<dataWire>().wire.Settings(cell.info);
+                        scem.tag = "dataWire";
                     }
                     break;
                 case ObjectTypes.DATAMINER:
@@ -100,26 +96,24 @@ public class ObjectSaveLoad
         }
     }
 
-    public GameObject SetObject(cells cell)
+    public void SetObject(cells cell)
     {
         GameObject[] placable = gridSys.GetInstance().placables;
-        Debug.Log(placable);
-        Debug.Log(getType());
-        GameObject scem = gridSys.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));
-        gridSys.grid[cell.x, cell.y].obj = scem;
+        if(gridSys.grid[cell.x, cell.y].obj == null)
+        {
+            gridSys.grid[cell.x, cell.y].obj = gridSys.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));
+        }
+        
 
-        return scem;
         GameObject getType()
         {
-
-            switch (cell.objType)
+            return cell.objType switch
             {
-                case ObjectTypes.DATAWIRE: return placable[0];
-                case ObjectTypes.DATAMINER: return placable[1];
-                case ObjectTypes.UPLOADSTATION: return placable[2];
-                default:
-                    return null;
-            }
+                ObjectTypes.DATAWIRE => placable[0],
+                ObjectTypes.DATAMINER => placable[1],
+                ObjectTypes.UPLOADSTATION => placable[2],
+                _ => null,
+            };
         }
     }
 }

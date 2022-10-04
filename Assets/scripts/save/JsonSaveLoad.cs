@@ -33,6 +33,7 @@ public class JsonSaveLoad
         gameSave.profile.Name = _name;
         gameSave.profile.DateMade = System.DateTime.Now;
         gameSave.map = new Map();
+        gameSave.profile.Statistics.Money += 200;
         ListProfile(_name);
     }
 
@@ -64,11 +65,10 @@ public class JsonSaveLoad
 
             byte[] encrypted = EncryptBytes(fileContent, personalAes.Key, personalAes.IV);
             writer.Write(personalAes.IV.Length);
-            Debug.Log(personalAes.IV.Length + "iv Written");
-            Debug.Log(Encoding.UTF8.GetString(personalAes.IV));
+
             writer.Write(personalAes.IV);
             writer.Write(encrypted.Length);
-            Debug.Log(encrypted.Length + "enc written");
+
             writer.Write(encrypted);
 
         }
@@ -173,9 +173,12 @@ public class JsonSaveLoad
         listed = new Listed();
         listed.lastPlayed = temp;
 
-        List<string> profiles = ReadListedProfiles().profiles;
+
+        List<string> profiles = null;
+            
         try
         {
+            profiles = ReadListedProfiles().profiles;
             foreach (string profile in profiles)
             {
                 listed.profiles.Add(profile);

@@ -12,11 +12,6 @@ public class uploadStation : MonoBehaviour
        
     }
 
-
-    void Update()
-    {
-    }
-
     public void Run()
     {
         List<GameObject> wires = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");

@@ -90,7 +90,6 @@ public class ProfileManager : MonoBehaviour
 
     public void Save()
     {
-
         //getting profile name 
         string ProfileName = gameSave.profile.Name;
         gameSave.profile.TimePlayed += System.DateTime.Now - startPlaying;
@@ -103,12 +102,10 @@ public class ProfileManager : MonoBehaviour
 
     private void Awake()
     {
-        gameSave.profile.Statistics.Money += 200;
         if (playing == true)
         {
             grid.GetComponent<gridSys>().Generate();
             JsonSaveLoad loader = new();
-            objects.LoadObjects();
         }
     }
 

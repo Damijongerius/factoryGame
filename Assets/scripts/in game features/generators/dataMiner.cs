@@ -73,24 +73,33 @@ public class dataMiner : MonoBehaviour
 
         if (miner.powered)
         {
-            miner.powerStored += 1.5f;
+            if (miner.powerStored  < 10f)
+            {
+                miner.powerStored += 1.5f;
+            }
 
-            if(miner.powerStored > 2f)
+            if(miner.powerStored > 2f  && miner.dataStored < 10f)
             {
                 miner.powerStored -= 1.5f;
-                miner.dataStored += 10;
-
+                miner.dataStored += 1;
             }
 
             if (miner.dataStored > 1f)
             {
                 if (chosenWire != null)
                 {
-                    chosenWire.GetComponent<dataWire>().wire.dataStored += 1;
-                }
-                miner.dataStored -= 1;
+                    if(chosenWire.GetComponent<dataWire>().wire.dataStored < 10)
+                    {
+                        chosenWire.GetComponent<dataWire>().wire.dataStored += 1;
 
+                        miner.dataStored -= 1;
+                    }
+                }
             }
+        }
+        else
+        {
+            miner.powered = true;
         }
     }
 }
