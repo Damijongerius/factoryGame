@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public class gridSys : MonoBehaviour
 {
+    public ObjectSaveLoad objects = new ObjectSaveLoad();
+
     public Material atlas;
     public float waterLevel = .4f;
     public float scale = .1f;
@@ -19,6 +22,10 @@ public class gridSys : MonoBehaviour
     void Start()
     {
         sys = this;
+        if (!ProfileManager.playing)
+        {
+            Generate();
+        }   
     }
     public void Generate()
     {
@@ -73,6 +80,7 @@ public class gridSys : MonoBehaviour
             }
         }
 
+        objects.LoadSavedObjects();
         DrawTerrainMesh(grid);
         DrawTexture(grid);
     }

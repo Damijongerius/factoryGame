@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public class Cell
 {
@@ -34,9 +35,10 @@ public class Cell
     {
         if (gridSys.grid[x, z].obj != null && gridSys.grid[x,z].obj.CompareTag(tag))
         {
-         return gridSys.grid[x, z].obj;
+            return gridSys.grid[x, z].obj;  
         }
         return null;
+        
     }
 
     public bool[] CheckNeighbour(int x, int z, string tag)
@@ -71,13 +73,10 @@ public class Cell
     {
         List<GameObject> Objects = new();
         
-            Objects.Add(GetCellObj(x, z + 1, tag));
-            Objects.Add(GetCellObj(x + 1, z, tag));
-            Objects.Add(GetCellObj(x, z - 1, tag));
-            Objects.Add(GetCellObj(x - 1, z, tag));
-
-
-
+        Objects.Add(GetCellObj(x, z + 1, tag));
+        Objects.Add(GetCellObj(x + 1, z, tag));
+        Objects.Add(GetCellObj(x, z - 1, tag));
+        Objects.Add(GetCellObj(x - 1, z, tag));
 
         return Objects;
     }

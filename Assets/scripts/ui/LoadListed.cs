@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,36 +8,59 @@ using UnityEngine.UI;
 public class LoadListed : MonoBehaviour
 {
     public GameObject Profile;
-    public Vector3 nextPos = new Vector3(0, -100, 0);
+    public Vector3 nextPos = new Vector3(0, -50, 0);
     public Button button;
     public Button escape;
 
+    private static LoadListed instance;
     private List<GameObject> profiles = new List<GameObject>();
+
+    private Scrollbar sb;
+    private float speed = 100;
+    private float lastP = 0;
+    private RectTransform trans;
     // Start is called before the first frame update
     private void Awake()
     {
+        sb = gameObject.GetComponentInParent<Scrollbar>();
+        Event e = new Event();
+
+        trans = gameObject.GetComponent<RectTransform>();
+
+        sb.onValueChanged.AddListener(Dragg);
+        
+           
+
+        instance = this;
         Master();
     }
 
-    void Start()
+    public void UpdateList()
     {
-        escape.onClick.AddListener(call: ClearList);
+        ClearList();
+
+        Master();
+
     }
 
 
     private void Master()
     {
         JsonSaveLoad load = new();
-        if (load.ReadListedProfiles() != null)
-        foreach (string name in load.ReadListedProfiles())
+        if (load.ReadListedProfiles().profiles != null)
         {
-            profiles.Add(Instantiate(Profile));
+            foreach (string name in load.ReadListedProfiles().profiles)
+            {
+                profiles.Add(Instantiate(Profile));
 
-            SetName(profiles[profiles.Count - 1], name);
-            SetPos(profiles[profiles.Count - 1]);
-            profiles[profiles.Count - 1].transform.Find("TimePlayed").GetComponent<TextMeshProUGUI>().text = "ooit";
-            profiles[profiles.Count - 1].transform.Find("LastPlayed").GetComponent<TextMeshProUGUI>().text = "niet nu"; 
+                SetName(profiles[profiles.Count - 1], name);
+                SetPos(profiles[profiles.Count - 1]);
+                profiles[profiles.Count - 1].transform.Find("TimePlayed").GetComponent<TextMeshProUGUI>().text = "ooit";
+                profiles[profiles.Count - 1].transform.Find("LastPlayed").GetComponent<TextMeshProUGUI>().text = "niet nu";
+                speed = nextPos.y - 500;
+            }
         }
+
 
         void SetName(GameObject profile, string name)
         {
@@ -55,12 +79,6 @@ public class LoadListed : MonoBehaviour
 
             nextPos -= new Vector3(0, -100, 0);
         }
-
-        void SetTime()
-        {
-
-        }
-
     }
 
     private void ClearList()
@@ -72,7 +90,24 @@ public class LoadListed : MonoBehaviour
         nextPos = new Vector3(0, 0, 0);
     }
 
+    private void Dragg(float pos)
+    {
+        if(nextPos.y <= 500)
+        {
+            sb.value = 1;
+        }
+        else
+        {
+            trans.anchoredPosition = new Vector2(trans.anchoredPosition.x + speed * (lastP - pos), trans.anchoredPosition.y);
+            lastP = pos;
+
+        }
+ 
+    }
 
 
-    // Update is called once per frame
+    public static LoadListed GetInstance()
+    {
+        return instance;
+    }
 }

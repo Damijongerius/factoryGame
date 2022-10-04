@@ -5,11 +5,12 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
+using System;
 
 // save en load class voor het saven van een profiel/lijst van profielen en laden
 public class JsonSaveLoad
 {
-
+    public Listed listed = new Listed();
     public SaveFile gameSave = SaveFile.GetInstance();
     //bestaat de file directory zo niet maakt hij hem ook meteen aan
     public void Exsisting(string _name)
@@ -32,6 +33,7 @@ public class JsonSaveLoad
         gameSave.profile.Name = _name;
         gameSave.profile.DateMade = System.DateTime.Now;
         gameSave.map = new Map();
+        gameSave.profile.Statistics.Money += 200;
         ListProfile(_name);
     }
 
@@ -63,11 +65,10 @@ public class JsonSaveLoad
 
             byte[] encrypted = EncryptBytes(fileContent, personalAes.Key, personalAes.IV);
             writer.Write(personalAes.IV.Length);
-            Debug.Log(personalAes.IV.Length + "iv Written");
-            Debug.Log(Encoding.UTF8.GetString(personalAes.IV));
+
             writer.Write(personalAes.IV);
             writer.Write(encrypted.Length);
-            Debug.Log(encrypted.Length + "enc written");
+
             writer.Write(encrypted);
 
         }
@@ -80,6 +81,7 @@ public class JsonSaveLoad
     //loads data stored in savefile
     public string Load(string _saveName)
     {
+        listed.lastPlayed = _saveName;
         string path = Application.persistentDataPath + "/profile/" + _saveName + "/Save.saveFile";
 
         string decrypterdContent = null;
@@ -96,14 +98,12 @@ public class JsonSaveLoad
 
             try
             {
-
+                Debug.Log("trying");
                 int IVLength = reader.ReadInt32();
                 byte[] IV = reader.ReadBytes(IVLength);
 
                 int encryptedBytesLength = reader.ReadInt32();
                 byte[] encryptedBytes = reader.ReadBytes(encryptedBytesLength);
-
-
 
                 personalAes.IV = IV;
                 decrypterdContent = DecryptBytes(encryptedBytes, personalAes.Key, personalAes.IV);
@@ -118,6 +118,7 @@ public class JsonSaveLoad
             }
             catch
             {
+                Debug.Log("fail");
                 reader.Close();
                 file.Close();
                 return null;
@@ -125,40 +126,87 @@ public class JsonSaveLoad
         }
     }
 
+    public void DeleteProfile(string _name)
+    {
+        string path = Application.persistentDataPath + "/profile/" + _name;
+
+        Directory.Delete(path, true);
+
+        DeleteListedProfile(_name);
+
+        LoadListed.GetInstance().UpdateList();
+    }
+
+    public void DeleteListedProfile(string _name)
+    {
+        List<string> profiles = ReadListedProfiles().profiles;
+        profiles.Remove(_name);
+
+        try
+        {
+            foreach (string profile in profiles)
+            {
+                listed.profiles.Add(profile);
+            }
+        }
+        catch
+        {
+            Debug.Log("no profiles saved in file");
+        }
+
+        using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
+        {
+            JsonSerializer serializer = new JsonSerializer();
+
+            using (StreamWriter writer = new StreamWriter(fs2))
+            {
+                serializer.Serialize(writer, listed);
+            }
+        }
+
+    }
+
     //zet het nieuw aangemaakte profiel in de lijst van profielen
     public void ListProfile(string _name)
     {
-        Listed listed = new Listed();
+        string temp = listed.lastPlayed;
+        listed = new Listed();
+        listed.lastPlayed = temp;
 
-            List<string> profiles = ReadListedProfiles();
-            try
+
+        List<string> profiles = null;
+            
+        try
+        {
+            profiles = ReadListedProfiles().profiles;
+            foreach (string profile in profiles)
             {
-                foreach (string profile in profiles)
-                {
-                    listed.profiles.Add(profile);
-                }
+                listed.profiles.Add(profile);
             }
-            catch
+        }
+        catch
+        {
+            Debug.Log("no profiles saved in file");
+        }    
+        listed.profiles.Add(_name);
+        listed.lastPlayed = _name;
+
+
+        using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
+        {
+            JsonSerializer serializer = new JsonSerializer();
+
+            using (StreamWriter writer = new StreamWriter(fs2))
             {
-                Debug.Log("no profiles saved in file");
-            }    
-            listed.profiles.Add(_name);
-
-
-            using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-
-                using (StreamWriter writer = new StreamWriter(fs2))
-                {
-                    serializer.Serialize(writer, listed);
-                }
+                serializer.Serialize(writer, listed);
             }
+        }
         
     }
+
     
     //vraagt om alle profielen in de file
-    public List<string> ReadListedProfiles()
+    public Listed ReadListedProfiles()
     {
         using (FileStream fs = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.OpenOrCreate, FileAccess.Read))
         {
@@ -169,10 +217,11 @@ public class JsonSaveLoad
                 Listed listed = JsonUtility.FromJson<Listed>(json);
                 try
                 {
-                    return listed.profiles;
+                    return listed;
                 }
-                catch
+                catch(Exception e)
                 {
+                    Debug.Log(e);
                     return null;
                 }
             }

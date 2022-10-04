@@ -5,4 +5,6 @@ using UnityEngine;
 public class Listed
 {
     public List<string> profiles = new List<string>();
+
+    public string lastPlayed;
 }

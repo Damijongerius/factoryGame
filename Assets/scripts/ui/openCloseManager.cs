@@ -20,8 +20,6 @@ public class openCloseManager : MonoBehaviour
     {
         button = gameObject.GetComponent<Button>();
         button.onClick.AddListener(HandleClick);
-        
-
     }
 
     [Obsolete]
@@ -34,8 +32,6 @@ public class openCloseManager : MonoBehaviour
         {
             CloseCanvas.gameObject.SetActive(!state);
         }
-
-
     }
 
     // Update is called once per frame
