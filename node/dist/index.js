@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const SaveFile_1 = require("./models/SaveFile");
 const { DB } = require("./DB/Database");
 const { saveFile } = require("./models/SaveFile");
 //node module express
@@ -21,18 +20,44 @@ app.listen(3000, function () {
 app.post("/senddata", function (req, res) {
     console.log(req.body);
     let a = JSON.parse(req.body.sendJson);
-    console.log(a.profile.Statistics.money);
+    console.log(a.Profile.Name);
+    console.log(a.Profile.statistics.money);
     //data = JSON.parse(req.body);
     // console.log(a.map.grid[0]);
 });
 app.post("/recieve", function (req, res) {
     let object = JSON.parse(req.body.sendJson);
-    SaveFile_1.savefFile.ConstructProfile(object.profile.Name, object.profile.DateMade, object.profile.DateSeen, object.profile.TimePlayed);
-    SaveFile_1.savefFile.Profile.ConstructStats(object.profile.networth, object.profile.money, object.profile.data, object.profile.xp, object.profile.level);
-    saveFile.ConstructMap(object.Map.xRange, object.Map.yRange);
-    for (let i; i < length; i++) {
-        saveFile.Map.ConstructCell(object.Map.cell.x, object.Map.cell.y, object.Map.cell.type);
-        saveFile.Map.cell[i].building(object.object.Map.cell.objectInfo.dataStored, object.object.Map.cell.objectInfo.powerStored, object.object.Map.cell.objectInfo.level, object.object.Map.cell.objectInfo.age, object.object.Map.cell.objectInfo.upkeepCost, object.object.Map.cell.objectInfo.dataMined, object.object.Map.cell.objectInfo.dataSold, object.object.Map.cell.objectInfo.dataTransferd);
-    }
+    console.log(object.Profile.statistics.money);
+    // savefFile.ConstructProfile(
+    //   object.profile.Name,
+    //   object.profile.DateMade,
+    //   object.profile.DateSeen,
+    //   object.profile.TimePlayed
+    // );
+    // savefFile.Profile.ConstructStats(
+    //   object.profile.networth,
+    //   object.profile.money,
+    //   object.profile.data,
+    //   object.profile.xp,
+    //   object.profile.level
+    // );
+    // saveFile.ConstructMap(object.Map.xRange, object.Map.yRange);
+    // for (let i; i < length; i++) {
+    //   saveFile.Map.ConstructCell(
+    //     object.Map.cell.x,
+    //     object.Map.cell.y,
+    //     object.Map.cell.type
+    //   );
+    //   saveFile.Map.cell[i].building(
+    //     object.object.Map.cell.objectInfo.dataStored,
+    //     object.object.Map.cell.objectInfo.powerStored,
+    //     object.object.Map.cell.objectInfo.level,
+    //     object.object.Map.cell.objectInfo.age,
+    //     object.object.Map.cell.objectInfo.upkeepCost,
+    //     object.object.Map.cell.objectInfo.dataMined,
+    //     object.object.Map.cell.objectInfo.dataSold,
+    //     object.object.Map.cell.objectInfo.dataTransferd
+    //   );
+    // }
 });
 //# sourceMappingURL=index.js.map

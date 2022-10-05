@@ -1,5 +1,5 @@
 import { profile } from "console";
-import { savefFile } from "./models/SaveFile";
+import type { SaveFile } from "./models/SaveFile";
 
 const { DB } = require("./DB/Database");
 
@@ -27,9 +27,11 @@ app.listen(3000, function () {
 });
 app.post("/senddata", function (req, res) {
   console.log(req.body);
-  let a = JSON.parse(req.body.sendJson);
+  let a: SaveFile = JSON.parse(req.body.sendJson);
 
-  console.log(a.profile.Statistics.money);
+  console.log(a.Profile.Name);
+
+  console.log(a.Profile.statistics.money);
 
   //data = JSON.parse(req.body);
 
@@ -37,41 +39,40 @@ app.post("/senddata", function (req, res) {
 });
 
 app.post("/recieve", function (req, res) {
-  let object = JSON.parse(req.body.sendJson);
+  let object: SaveFile = JSON.parse(req.body.sendJson);
+  console.log(object.Profile.statistics.money);
+  // savefFile.ConstructProfile(
+  //   object.profile.Name,
+  //   object.profile.DateMade,
+  //   object.profile.DateSeen,
+  //   object.profile.TimePlayed
+  // );
 
-  savefFile.ConstructProfile(
-    object.profile.Name,
-    object.profile.DateMade,
-    object.profile.DateSeen,
-    object.profile.TimePlayed
-  );
+  // savefFile.Profile.ConstructStats(
+  //   object.profile.networth,
+  //   object.profile.money,
+  //   object.profile.data,
+  //   object.profile.xp,
+  //   object.profile.level
+  // );
+  // saveFile.ConstructMap(object.Map.xRange, object.Map.yRange);
 
-  savefFile.Profile.ConstructStats(
-    object.profile.networth,
-    object.profile.money,
-    object.profile.data,
-    object.profile.xp,
-    object.profile.level
-  );
-  saveFile.ConstructMap(object.Map.xRange, object.Map.yRange);
+  // for (let i; i < length; i++) {
+  //   saveFile.Map.ConstructCell(
+  //     object.Map.cell.x,
+  //     object.Map.cell.y,
+  //     object.Map.cell.type
+  //   );
 
-
-  for (let i; i < length; i++) {
-    saveFile.Map.ConstructCell(
-      object.Map.cell.x,
-      object.Map.cell.y,
-      object.Map.cell.type
-    );
-
-    saveFile.Map.cell[i].building(
-      object.object.Map.cell.objectInfo.dataStored,
-      object.object.Map.cell.objectInfo.powerStored,
-      object.object.Map.cell.objectInfo.level,
-      object.object.Map.cell.objectInfo.age,
-      object.object.Map.cell.objectInfo.upkeepCost,
-      object.object.Map.cell.objectInfo.dataMined,
-      object.object.Map.cell.objectInfo.dataSold,
-      object.object.Map.cell.objectInfo.dataTransferd
-    );
-  }
+  //   saveFile.Map.cell[i].building(
+  //     object.object.Map.cell.objectInfo.dataStored,
+  //     object.object.Map.cell.objectInfo.powerStored,
+  //     object.object.Map.cell.objectInfo.level,
+  //     object.object.Map.cell.objectInfo.age,
+  //     object.object.Map.cell.objectInfo.upkeepCost,
+  //     object.object.Map.cell.objectInfo.dataMined,
+  //     object.object.Map.cell.objectInfo.dataSold,
+  //     object.object.Map.cell.objectInfo.dataTransferd
+  //   );
+  // }
 });
