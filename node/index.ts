@@ -1,5 +1,5 @@
 import { profile } from "console";
-import type { SaveFile } from "./models/SaveFile";
+import { SaveFile, Convert } from "./models/SaveFile";
 
 const { DB } = require("./DB/Database");
 
@@ -27,11 +27,11 @@ app.listen(3000, function () {
 });
 app.post("/senddata", function (req, res) {
   console.log(req.body);
-  let a: SaveFile = JSON.parse(req.body.sendJson);
+  let a = Convert.toSaveFile(req.body.sendJson);
 
-  console.log(a.Profile.Name);
+  console.log(a.profile.Name);
 
-  console.log(a.Profile.statistics.money);
+  console.log(a.profile.Statistics.money);
 
   //data = JSON.parse(req.body);
 
@@ -39,8 +39,10 @@ app.post("/senddata", function (req, res) {
 });
 
 app.post("/recieve", function (req, res) {
-  let object: SaveFile = JSON.parse(req.body.sendJson);
-  console.log(object.Profile.statistics.money);
+  let o: SaveFile = JSON.parse(req.body.sendJson);
+  console.log(o.profile.Statistics.money);
+  console.log(o.profile.Name);
+  res.body(Convert.saveFileToJson(o));
   // savefFile.ConstructProfile(
   //   object.profile.Name,
   //   object.profile.DateMade,

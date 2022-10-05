@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const SaveFile_1 = require("./models/SaveFile");
 const { DB } = require("./DB/Database");
 const { saveFile } = require("./models/SaveFile");
 //node module express
@@ -19,15 +20,16 @@ app.listen(3000, function () {
 });
 app.post("/senddata", function (req, res) {
     console.log(req.body);
-    let a = JSON.parse(req.body.sendJson);
-    console.log(a.Profile.Name);
-    console.log(a.Profile.statistics.money);
+    let a = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
+    console.log(a.profile.Name);
+    console.log(a.profile.Statistics.money);
     //data = JSON.parse(req.body);
     // console.log(a.map.grid[0]);
 });
 app.post("/recieve", function (req, res) {
-    let object = JSON.parse(req.body.sendJson);
-    console.log(object.Profile.statistics.money);
+    let o = JSON.parse(req.body.sendJson);
+    console.log(o.profile.Statistics.money);
+    console.log(o.profile.Name);
     // savefFile.ConstructProfile(
     //   object.profile.Name,
     //   object.profile.DateMade,
