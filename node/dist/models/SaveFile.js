@@ -1,6 +1,4 @@
 "use strict";
-// import type { Profile } from "./profile";
-// import type { Wep } from "./Map";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Convert = void 0;
 // Converts JSON strings to/from your types
@@ -146,7 +144,28 @@ const typeMap = {
     "Map": o([
         { json: "xRange", js: "xRange", typ: 3.14 },
         { json: "yRange", js: "yRange", typ: 3.14 },
-        { json: "grid", js: "grid", typ: a("any") },
+        { json: "grid", js: "grid", typ: a(r("Grid")) },
+    ], false),
+    "Grid": o([
+        { json: "x", js: "x", typ: 0 },
+        { json: "y", js: "y", typ: 0 },
+        { json: "objType", js: "objType", typ: 0 },
+        { json: "info", js: "info", typ: r("Info") },
+    ], false),
+    "Info": o([
+        { json: "exitPoints", js: "exitPoints", typ: u(undefined, true) },
+        { json: "powered", js: "powered", typ: u(undefined, true) },
+        { json: "dataStored", js: "dataStored", typ: 0 },
+        { json: "powerStored", js: "powerStored", typ: 3.14 },
+        { json: "level", js: "level", typ: 0 },
+        { json: "age", js: "age", typ: 0 },
+        { json: "upkeepCost", js: "upkeepCost", typ: 0 },
+        { json: "dataMined", js: "dataMined", typ: 0 },
+        { json: "dataSold", js: "dataSold", typ: 0 },
+        { json: "dataTransferd", js: "dataTransferd", typ: 0 },
+        { json: "Prio", js: "Prio", typ: u(undefined, a(0)) },
+        { json: "SelfPrio", js: "SelfPrio", typ: u(undefined, 0) },
+        { json: "updateSpeed", js: "updateSpeed", typ: u(undefined, 0) },
     ], false),
     "Profile": o([
         { json: "Name", js: "Name", typ: "" },

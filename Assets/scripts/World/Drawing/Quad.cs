@@ -19,10 +19,10 @@ public class Quad
 
     public class WaterUVs
     {
-        public Vector2 uv00 = new Vector2(0.51f, 0.51f);
-        public Vector2 uv10 = new Vector2(0.51f, 1);
-        public Vector2 uv01 = new Vector2(1f, 0.51f);
-        public Vector2 uv11 = new Vector2(1, 1);
+        Vector2 uv00 = new Vector2(0.54f, 0.54f);
+        Vector2 uv10 = new Vector2(0.54f, 0.96f);
+        Vector2 uv01 = new Vector2(0.96f, 0.54f);
+        Vector2 uv11 = new Vector2(0.96f, 0.96f);
         public Vector2[] uv;
 
         public WaterUVs()
@@ -33,10 +33,10 @@ public class Quad
 
     public  class GrassUVs
     {
-        public Vector2 uv00 = new Vector2(0, 0);
-        public Vector2 uv10 = new Vector2(0.49f, 0);
-        public Vector2 uv01 = new Vector2(0.49f, 0.49f);
-        public Vector2 uv11 = new Vector2(0, 0.49f);
+        Vector2 uv00 = new Vector2(0.04f, 0.04f);
+        Vector2 uv10 = new Vector2(0.46f, 0.04f);
+        Vector2 uv01 = new Vector2(0.46f, 0.46f);
+        Vector2 uv11 = new Vector2(0.04f, 0.46f);
         public Vector2[] uv;
         public GrassUVs()
         {
@@ -44,3 +44,4 @@ public class Quad
         }
     }
 }
+

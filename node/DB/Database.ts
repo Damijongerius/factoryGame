@@ -17,10 +17,8 @@ class Database {
     this.conn.connect();
   }
 
-  Checks() {}
-
-  select(table: string) {
-    this.conn.query(`SELECT * FROM ${table}`);
+  InsertInto(){
+    
   }
 
 }

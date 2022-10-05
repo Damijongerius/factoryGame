@@ -42,39 +42,10 @@ app.post("/recieve", function (req, res) {
   let o: SaveFile = JSON.parse(req.body.sendJson);
   console.log(o.profile.Statistics.money);
   console.log(o.profile.Name);
-  res.body(Convert.saveFileToJson(o));
-  // savefFile.ConstructProfile(
-  //   object.profile.Name,
-  //   object.profile.DateMade,
-  //   object.profile.DateSeen,
-  //   object.profile.TimePlayed
-  // );
+  res.send(Convert.saveFileToJson(o));
 
-  // savefFile.Profile.ConstructStats(
-  //   object.profile.networth,
-  //   object.profile.money,
-  //   object.profile.data,
-  //   object.profile.xp,
-  //   object.profile.level
-  // );
-  // saveFile.ConstructMap(object.Map.xRange, object.Map.yRange);
+});
 
-  // for (let i; i < length; i++) {
-  //   saveFile.Map.ConstructCell(
-  //     object.Map.cell.x,
-  //     object.Map.cell.y,
-  //     object.Map.cell.type
-  //   );
+app.post("/GetSF", function (req,res){
 
-  //   saveFile.Map.cell[i].building(
-  //     object.object.Map.cell.objectInfo.dataStored,
-  //     object.object.Map.cell.objectInfo.powerStored,
-  //     object.object.Map.cell.objectInfo.level,
-  //     object.object.Map.cell.objectInfo.age,
-  //     object.object.Map.cell.objectInfo.upkeepCost,
-  //     object.object.Map.cell.objectInfo.dataMined,
-  //     object.object.Map.cell.objectInfo.dataSold,
-  //     object.object.Map.cell.objectInfo.dataTransferd
-  //   );
-  // }
 });
