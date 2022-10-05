@@ -1,3 +1,0 @@
-class Wep {
-  grid: Building[];
-}

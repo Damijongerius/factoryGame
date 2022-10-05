@@ -41,22 +41,6 @@ class Database {
     select(table) {
         this.conn.query(`SELECT * FROM ${table}`);
     }
-    insert(table, param, obj) {
-        let sql = `INSTERT INTO ${table} (${this.ParamToString(param)})`;
-        this.conn.query(sql, obj, this.errorHandler.OnInsert);
-    }
-    ParamToString(param) {
-        let string;
-        for (let i = 0; i < param.length; i++) {
-            if (param.length != i) {
-                string += `${param[i]}, `;
-            }
-            else {
-                string += `${param[i]} `;
-            }
-        }
-        return string;
-    }
 }
 exports.DB = new Database("localhost", "root", "", "Factorygame");
 //# sourceMappingURL=Database.js.map

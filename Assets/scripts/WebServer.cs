@@ -12,7 +12,7 @@ public class WebServer
         Debug.Log("running court");
         WWWForm form = new WWWForm();
         form.AddField("sendJson", data);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/sendThis", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/recieve", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
