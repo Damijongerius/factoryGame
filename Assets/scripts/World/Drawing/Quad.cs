@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class Quad
 {
+    private WaterUVs water = new WaterUVs();
+    private GrassUVs grass = new GrassUVs();
 
+    public Vector2[] GetUVs(Cell2 _cell)
+    {
+        
+        if (_cell.isWater)
+            return water.uv;
+        else
+            return grass.uv;
+
+    }
 
     public class WaterUVs
     {
