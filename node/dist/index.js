@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const SaveFile_1 = require("./models/SaveFile");
-const { DB } = require("./DB/Database");
+const { DB, Tables } = require("./DB/Database");
 const { saveFile } = require("./models/SaveFile");
 //node module express
 const { response, request, json } = require("express");
@@ -27,9 +27,12 @@ app.post("/senddata", function (req, res) {
     // console.log(a.map.grid[0]);
 });
 app.post("/recieve", function (req, res) {
-    let o = JSON.parse(req.body.sendJson);
-    console.log(o.profile.Statistics.money);
-    console.log(o.profile.Name);
-    res.send(SaveFile_1.Convert.saveFileToJson(o));
+    //let o: SaveFile = JSON.parse(req.body.sendJson);
+    //console.log(o.profile.Statistics.money);
+    //console.log(o.profile.Name);
+    const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
+    DB.InsertInto("saveFile", Tables.SaveFile, saveFile.profile.Name);
+});
+app.post("/GetSF", function (req, res) {
 });
 //# sourceMappingURL=index.js.map

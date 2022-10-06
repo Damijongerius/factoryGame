@@ -1,7 +1,7 @@
 import { profile } from "console";
 import { SaveFile, Convert } from "./models/SaveFile";
 
-const { DB } = require("./DB/Database");
+const { DB, Tables } = require("./DB/Database");
 
 const { saveFile } = require("./models/SaveFile");
 //node module express
@@ -39,10 +39,8 @@ app.post("/senddata", function (req, res) {
 });
 
 app.post("/recieve", function (req, res) {
-  let o: SaveFile = JSON.parse(req.body.sendJson);
-  console.log(o.profile.Statistics.money);
-  console.log(o.profile.Name);
-  res.send(Convert.saveFileToJson(o));
+  const saveFile : SaveFile = Convert.toSaveFile(req.body.sendJson);
+  DB.InsertInto("saveFile", Tables.SaveFile, saveFile.profile.Name);
 
 });
 

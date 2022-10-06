@@ -14,12 +14,29 @@ class Database {
     });
 
     this.errorHandler = new EH.ErrorHandler();
-    this.conn.connect();
+    this.conn.connect(function(err) {
+      if (err) throw err;
+      console.log("Connected To DataBase!");
+    });
   }
 
-  InsertInto(){
-    
+  InsertInto(TableName : string, table : Tables, values : any){
+    var sql = `INSERT INTO ${TableName} (${table}) VALUES (${values})`;
+
+    this.conn.query(sql, function (err, result){
+      if(err) throw err;
+      console.log(result.affectedRows)
+    })
   }
 
 }
 export const DB = new Database("localhost", "root", "", "Factorygame");
+
+export enum Tables{
+  Cell = "x,y,ObjectTypes,Map",
+  Map = "xRange,yRange",
+  ObjectInfo = "dataStored,powerStored,Level,Age,upkeepCost,dataMined,dataSold,datTransferd",
+  Profile = "DateMade,DateSeen,TimePlayed",
+  SaveFile = "SaveName",
+  Statistics = "Networth,Money,Data,Xp,Level",
+}

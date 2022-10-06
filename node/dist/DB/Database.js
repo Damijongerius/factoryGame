@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DB = void 0;
+exports.Tables = exports.DB = void 0;
 const EH = __importStar(require("./ErrorHandler"));
 var mysql = require("mysql");
 class Database {
@@ -35,12 +35,29 @@ class Database {
             database: database,
         });
         this.errorHandler = new EH.ErrorHandler();
-        this.conn.connect();
+        this.conn.connect(function (err) {
+            if (err)
+                throw err;
+            console.log("Connected To DataBase!");
+        });
     }
-    Checks() { }
-    select(table) {
-        this.conn.query(`SELECT * FROM ${table}`);
+    InsertInto(TableName, table, values) {
+        var sql = `INSERT INTO ${TableName} (${table}) VALUES (${values})`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
+            console.log(result.affectedRows);
+        });
     }
 }
 exports.DB = new Database("localhost", "root", "", "Factorygame");
+var Tables;
+(function (Tables) {
+    Tables["Cell"] = "x,y,ObjectTypes,Map";
+    Tables["Map"] = "xRange,yRange";
+    Tables["ObjectInfo"] = "dataStored,powerStored,Level,Age,upkeepCost,dataMined,dataSold,datTransferd";
+    Tables["Profile"] = "DateMade,DateSeen,TimePlayed";
+    Tables["SaveFile"] = "SaveName";
+    Tables["Statistics"] = "Networth,Money,Data,Xp,Level";
+})(Tables = exports.Tables || (exports.Tables = {}));
 //# sourceMappingURL=Database.js.map
