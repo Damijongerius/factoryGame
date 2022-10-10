@@ -57,7 +57,7 @@ var Tables;
     Tables["Map"] = "xRange,yRange";
     Tables["ObjectInfo"] = "dataStored,powerStored,Level,Age,upkeepCost,dataMined,dataSold,datTransferd";
     Tables["Profile"] = "DateMade,DateSeen,TimePlayed";
-    Tables["SaveFile"] = "Id,SaveName";
+    Tables["SaveFile"] = "SaveName";
     Tables["Statistics"] = "Networth,Money,Data,Xp,Level";
 })(Tables = exports.Tables || (exports.Tables = {}));
 //# sourceMappingURL=Database.js.map

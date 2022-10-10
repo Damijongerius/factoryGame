@@ -28,9 +28,36 @@ app.post("/senddata", function (req, res) {
 });
 app.post("/recieve", function (req, res) {
     const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
-    const values = [1, `'${saveFile.profile.Name}'`];
-    DB.InsertInto("savefile", Tables.SaveFile, values);
+    console.log("1");
+    DB.InsertInto("savefile", Tables.SaveFile, `'${saveFile.profile.Name}'`);
+    console.log("2");
+    //for (let i = 0; i < saveFile.map.grid.length; i++) {
+    //  DB.InsertInto("Cell", Tables.Cell, `'${saveFile.map.grid[i]}'`);
+    //}
+    console.log("3");
+    //DB.InsertInto(
+    //  "Map",
+    //  Tables.Map,
+    //  `'${saveFile.map.xRange}','${saveFile.map.yRange}'`
+    //);
+    console.log("4");
+    //for (let i = 0; i < saveFile.map.grid.length; i++) {
+    //  DB.InsertInto(
+    //    "ObjectInfo",
+    ////    Tables.ObjectInfo,
+    //  `'${saveFile.map.grid[i].info}'`
+    //   );
+    //  }
+    console.log("5");
+    //DB.InsertInto("Profile", Tables.Profile, `'${saveFile.profile}'`);
+    console.log("6");
+    // DB.InsertInto("SaveFile", Tables.SaveFile, `'${saveFile}'`);
+    console.log("7");
+    // DB.InsertInto(
+    //  "Statistics",
+    //  Tables.Statistics,
+    //  `'${saveFile.profile.Statistics}'`
+    // );
 });
-app.post("/GetSF", function (req, res) {
-});
+app.post("/GetSF", function (req, res) { });
 //# sourceMappingURL=index.js.map
