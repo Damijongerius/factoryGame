@@ -46,7 +46,7 @@ class Database {
         this.conn.query(sql, function (err, result) {
             if (err)
                 throw err;
-            console.log(result.affectedRows);
+            console.log(result.insertId);
         });
     }
 }
@@ -54,7 +54,7 @@ exports.DB = new Database("localhost", "root", "", "Factorygame");
 var Tables;
 (function (Tables) {
     Tables["Cell"] = "x,y,ObjectTypes,Map";
-    Tables["Map"] = "xRange,yRange";
+    Tables["Map"] = "xRange,yRange,SaveFile_Id";
     Tables["ObjectInfo"] = "dataStored,powerStored,Level,Age,upkeepCost,dataMined,dataSold,datTransferd";
     Tables["Profile"] = "DateMade,DateSeen,TimePlayed";
     Tables["SaveFile"] = "SaveName";
