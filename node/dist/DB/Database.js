@@ -50,14 +50,14 @@ class Database {
         });
     }
 }
-exports.DB = new Database("localhost", "root", "", "Factorygame");
+exports.DB = new Database("localhost", "root", "", "factorygame");
 var Tables;
 (function (Tables) {
     Tables["Cell"] = "x,y,ObjectTypes,Map";
     Tables["Map"] = "xRange,yRange";
     Tables["ObjectInfo"] = "dataStored,powerStored,Level,Age,upkeepCost,dataMined,dataSold,datTransferd";
     Tables["Profile"] = "DateMade,DateSeen,TimePlayed";
-    Tables["SaveFile"] = "SaveName";
+    Tables["SaveFile"] = "Id,SaveName";
     Tables["Statistics"] = "Networth,Money,Data,Xp,Level";
 })(Tables = exports.Tables || (exports.Tables = {}));
 //# sourceMappingURL=Database.js.map

@@ -27,11 +27,9 @@ app.post("/senddata", function (req, res) {
     // console.log(a.map.grid[0]);
 });
 app.post("/recieve", function (req, res) {
-    //let o: SaveFile = JSON.parse(req.body.sendJson);
-    //console.log(o.profile.Statistics.money);
-    //console.log(o.profile.Name);
     const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
-    DB.InsertInto("saveFile", Tables.SaveFile, saveFile.profile.Name);
+    const values = [1, `'${saveFile.profile.Name}'`];
+    DB.InsertInto("savefile", Tables.SaveFile, values);
 });
 app.post("/GetSF", function (req, res) {
 });

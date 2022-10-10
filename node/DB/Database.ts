@@ -30,7 +30,7 @@ class Database {
   }
 
 }
-export const DB = new Database("localhost", "root", "", "Factorygame");
+export const DB = new Database("localhost", "root", "", "factorygame");
 
 export enum Tables{
   Cell = "x,y,ObjectTypes,Map",

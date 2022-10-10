@@ -40,7 +40,7 @@ app.post("/senddata", function (req, res) {
 
 app.post("/recieve", function (req, res) {
   const saveFile : SaveFile = Convert.toSaveFile(req.body.sendJson);
-  DB.InsertInto("saveFile", Tables.SaveFile, saveFile.profile.Name);
+  DB.InsertInto("savefile", Tables.SaveFile, `'${saveFile.profile.Name}'`);
 
 });
 
