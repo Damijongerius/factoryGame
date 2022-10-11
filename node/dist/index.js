@@ -28,8 +28,8 @@ app.post("/senddata", function (req, res) {
 });
 app.post("/recieve", function (req, res) {
     const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
-    const values = [1, `'${saveFile.profile.Name}'`];
-    DB.InsertInto("savefile", Tables.SaveFile, values);
+    DB.InsertInto("savefile", Tables.SaveFile, `'${saveFile.profile.Name}'`);
+    DB.InsertInto("Map", Tables.Map, [saveFile.map.xRange, saveFile.map.yRange]);
 });
 app.post("/GetSF", function (req, res) {
 });

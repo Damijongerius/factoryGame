@@ -1,5 +1,5 @@
 import { profile } from "console";
-import { SaveFile, Convert } from "./models/SaveFile";
+import { SaveFile, Convert, Map, Profile } from './models/SaveFile';
 
 const { DB, Tables } = require("./DB/Database");
 
@@ -42,8 +42,11 @@ app.post("/recieve", function (req, res) {
   const saveFile : SaveFile = Convert.toSaveFile(req.body.sendJson);
   DB.InsertInto("savefile", Tables.SaveFile, `'${saveFile.profile.Name}'`);
 
+  DB.InsertInto("Map", Tables.Map, [saveFile.map.xRange, saveFile.map.yRange, DB.GetLastInsterted()]);
+
+  DB.InsertInto("Profile", Tables.Profile, [`'${saveFile.profile.DateMade}'`, `'${saveFile.profile.DateSeen}'`, `'${saveFile.profile.TimePlayed}'`]);
 });
 
 app.post("/GetSF", function (req,res){
-
+  
 });
