@@ -34,8 +34,6 @@ public class Map2
     Map2(int[] size)
     {
         GenerateSeed();
-
-        //GenerateNoise();
     }
 //  \\ // \\ // \\ //
 
@@ -58,8 +56,6 @@ public class Map2
                 }
             }
         }
-
-
     }
 
 

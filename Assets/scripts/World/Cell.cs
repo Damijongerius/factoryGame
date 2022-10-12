@@ -5,5 +5,5 @@ using UnityEngine;
 public class Cell2
 {
     public bool isWater;
-
+    public int height;
 }

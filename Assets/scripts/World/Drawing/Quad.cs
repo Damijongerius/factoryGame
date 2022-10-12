@@ -29,6 +29,7 @@ public class Quad
         {
              uv = new Vector2[] { uv00, uv10, uv01, uv10, uv11, uv01 };
         }
+
     }
 
     public  class GrassUVs
@@ -42,6 +43,24 @@ public class Quad
         {
             uv = new Vector2[] { uv00, uv10, uv01, uv10, uv11, uv01 };
         }
+
+        //cube
+        Vector3 a = new Vector3(-.5f, 1,  .5f);
+        Vector3 b = new Vector3( .5f, 1,  .5f);
+        Vector3 c = new Vector3(-.5f, 1, -.5f);
+        Vector3 d = new Vector3( .5f, 1, -.5f);
+        Vector3 e = new Vector3(-.5f, 0,  .5f);
+        Vector3 f = new Vector3( .5f, 0,  .5f);
+        Vector3 g = new Vector3(-.5f, 0, -.5f);
+        Vector3 h = new Vector3( .5f, 0, -.5f);
+
+        //edges
+        Vector3 i = new Vector3(.6f, 1, .6f);
+        Vector3 j = new Vector3(.5f, 1, .5f);
+        Vector3 k = new Vector3(.5f, 1, .5f);
+        Vector3 l = new Vector3(.5f, 1, .5f);
+        Vector3 m = new Vector3(.5f, 1, .5f);
+        Vector3 n = new Vector3(.5f, 1, .5f);
     }
 }
 
