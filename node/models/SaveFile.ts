@@ -2,6 +2,7 @@
 export interface SaveFile {
   profile: Profile;
   map:     Map;
+  name:    string;
 }
 
 export interface Map {

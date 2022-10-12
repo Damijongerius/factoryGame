@@ -1,7 +1,7 @@
 import { profile } from "console";
 import { SaveFile, Convert, Map, Profile } from './models/SaveFile';
+import {DB, Tables} from "./DB/Database";
 
-const { DB, Tables } = require("./DB/Database");
 
 const { saveFile } = require("./models/SaveFile");
 //node module express
@@ -40,13 +40,29 @@ app.post("/senddata", function (req, res) {
 
 app.post("/recieve", function (req, res) {
   const saveFile : SaveFile = Convert.toSaveFile(req.body.sendJson);
-  DB.InsertInto("savefile", Tables.SaveFile, `'${saveFile.profile.Name}'`);
 
-  DB.InsertInto("Map", Tables.Map, [saveFile.map.xRange, saveFile.map.yRange, DB.GetLastInsterted()]);
-
-  DB.InsertInto("Profile", Tables.Profile, [`'${saveFile.profile.DateMade}'`, `'${saveFile.profile.DateSeen}'`, `'${saveFile.profile.TimePlayed}'`]);
+  const {map, profile } = saveFile;
+   var lastID = DB.InsertSaveFile(saveFile);
 });
 
 app.post("/GetSF", function (req,res){
   
 });
+
+// <=> <=> <=> <=>
+
+app.post("/CreateUser", function (req, res){
+
+})
+
+app.post("/FindUserWith", function (req, res){
+//needs uuid and password
+})
+
+app.post("/LoadUser", function (req, res){
+//needs uuid
+})
+
+app.post("/DeleteUser", function (req, res){
+//removes player with savefiles
+})
