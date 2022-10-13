@@ -1,6 +1,6 @@
 
 export interface SaveFile {
-  profile: Profile;
+  Info: Info;
   map:     Map;
   name:    string;
 }
@@ -34,8 +34,7 @@ export interface Info {
   updateSpeed?:  number;
 }
 
-export interface Profile {
-  Name:       string;
+export interface Info {
   DateMade:   Date;
   DateSeen:   Date;
   TimePlayed: string;

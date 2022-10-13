@@ -31,7 +31,7 @@ public class WebServer
         }
     }
 
-    public IEnumerator createUser(Guid GUID, string UserName, string password)
+    public IEnumerator CreateUser(Guid GUID, string UserName, string password)
     {
         WWWForm form = new WWWForm();
         form.AddField("GUID", GUID.ToString());
@@ -55,7 +55,7 @@ public class WebServer
         }
     }
 
-    public IEnumerator loadUser(string UserName, string password)
+    public IEnumerator loadUser(string UserName, string password, Func<string,bool> retrn)
     {
         WWWForm form = new WWWForm();
         form.AddField("UserName", UserName);
@@ -64,6 +64,8 @@ public class WebServer
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
+            Debug.Log(www.downloadHandler.text);
+            retrn();
 
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {

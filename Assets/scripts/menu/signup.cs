@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +14,7 @@ public class SignUp
     private readonly signingManager manager;
 
     private readonly WebServer ws = new WebServer();
-    private GUID userGUID;
+    private Guid userGUID;
 
     public SignUp(Button signingup,InputField userName, InputField password, signingManager sm)
     {
@@ -38,9 +38,9 @@ public class SignUp
             {
                 if (userpassword.Any(char.IsDigit))
                 {
-                    userGUID = GUID.Generate();
+                    userGUID = Guid.NewGuid();
 
-                    manager.StartCoroutine(ws.loadUser(user, userpassword));
+                    manager.StartCoroutine(ws.CreateUser(userGUID, user, userpassword));
                 }
                 else
                 {

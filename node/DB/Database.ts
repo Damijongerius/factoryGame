@@ -1,5 +1,6 @@
+import { stringify } from "querystring";
 import internal from "stream";
-import { Profile, SaveFile } from "../models/SaveFile";
+import { Info, SaveFile } from "../models/SaveFile";
 import * as EH from "./ErrorHandler";
 var mysql = require("mysql");
 
@@ -38,8 +39,11 @@ export class Database {
     return 0;
   }
 
-  InsertProfile(p: Profile, saveFileID: number): number{
-    var sql = `INSERT INTO saveFile (SaveName) VALUES (${name})`;
+  InsertInfo(p: Info, saveFileID: number): number{
+
+    const { DateMade, DateSeen, TimePlayed, } = p;
+
+    var sql = `INSERT INTO Info () VALUES (${DateMade},${DateSeen},${TimePlayed})`;
 
     this.conn.query(sql, function (err, result) {
       if(err) throw err;
@@ -48,6 +52,16 @@ export class Database {
     });
     
     return 0;
+  }
+
+  InsertUser(guid: string, name: string, password: Uint16Array){
+
+    var sql = `INSERT INTO Users (UserId,UserName,password) VALUES (${guid},${name},${password})`;
+
+    this.conn.query(sql, function (err, result) {
+      if(err) throw err;
+
+    });
   }
 
 }

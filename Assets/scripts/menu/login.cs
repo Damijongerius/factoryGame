@@ -29,7 +29,13 @@ public class Login
     {
         string user = userName.text.ToString();
         string userpassword = password.text.ToString();
-        manager.StartCoroutine(ws.loadUser(user,userpassword));
+        manager.StartCoroutine(ws.loadUser(user,userpassword, onResult));
+    }
+
+    public bool onResult(string json)
+    {
+        //set string as savefile
+        return true;
     }
 
 
