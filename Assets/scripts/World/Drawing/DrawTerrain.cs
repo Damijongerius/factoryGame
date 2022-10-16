@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class DrawTerrain
@@ -14,48 +15,60 @@ public class DrawTerrain
 
     private readonly int ChunkSize;
 
+    private readonly Material atlas;
+
+    private WorldManager worldManager;
+
     //  // \\ // \\ // \\
-    public DrawTerrain(Map2 _map)
+    public DrawTerrain(Map2 _map, Material atlas)
     {
         this.map = _map;
         this.ChunkSize = 16;
+        this.atlas = atlas;
+
+        worldManager = WorldManager.getInstance();
     }
 
-    public DrawTerrain(Map2 _map, int _ChunkSize)
+    public DrawTerrain(Map2 _map, int _ChunkSize, Material atlas)
     {
         this.map = _map;
         this.ChunkSize = _ChunkSize;
+        this.atlas = atlas;
     }
     //  \\ // \\ // \\ //
 
-    public void DrawMap(Cell2[,] _grid)
+    public bool StartDrawing(Cell2[,] _grid)
     {
-
+        CalculateChunks(_grid);
+        return true;
     }
-
     //  // \\ // \\ // \\
     private void CalculateChunks(Cell2[,] _grid)
     {
         int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
-        int chunksY = Mathf.CeilToInt(size[1] / ChunkSize);
+        int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
+        List<Mesh> meshes = new List<Mesh>();
         for (int xc = 0; xc < chunksX; xc++)
         {
-            for(int yc = 0; yc < chunksY; yc++)
+            for(int zc = 0; zc < chunksZ; zc++)
             {
                 if ( size[0] - (chunksX * xc) >= ChunkSize)
                 {
-                    if ( size[0] - (chunksY * yc) >= ChunkSize)
+                    if ( size[0] - (chunksZ * zc) >= ChunkSize)
                     {
                         int[,] chunkInfo = new int[2, 2];
                         chunkInfo[0, 0] = xc * ChunkSize;
                         chunkInfo[0, 1] = xc * ChunkSize + ChunkSize;
-                        chunkInfo[1, 0] = yc * ChunkSize;
-                        chunkInfo[1, 1] = yc * ChunkSize + ChunkSize;
+                        chunkInfo[1, 0] = zc * ChunkSize;
+                        chunkInfo[1, 1] = zc * ChunkSize + ChunkSize;
+                        meshes.Add(CalculateMesh(_grid, chunkInfo));
                     }
                 }
             }
         }
+        GenerateMap(meshes);
     }
+    // \\// \\ //  \\ //
 
     //  // \\ // \\ // \\
     private Mesh CalculateMesh(Cell2[,] _grid, int[,] _chunkInfo)
@@ -100,4 +113,25 @@ public class DrawTerrain
         return mesh;
     }
     //  \\ // \\ // \\ //
+
+    //  // \\ // \\ // \\
+    private void GenerateMap(List<Mesh> meshes)
+    {
+        int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
+        int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
+        GameObject chunk = new GameObject();
+        chunk.AddComponent<MeshRenderer>();
+        MeshRenderer  mr = new MeshRenderer();
+        mr.material = atlas;
+        chunk.AddComponent<MeshFilter>();
+
+        for(int x = 0; x < chunksX; x++)
+        {
+            for(int z = 0; z < chunksZ; z++)
+            {
+                Vector3 pos = new Vector3(x * ChunkSize, 0, z * ChunkSize);
+                //worldManager.Instantiate(mr, pos,Quaternion.Euler(0,0,0), worldManager.transform);
+            }
+        }
+    }
 }

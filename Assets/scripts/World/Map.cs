@@ -10,30 +10,37 @@ public class Map2
     //3d cell2 x y z
     private Cell2[,,] Grid;
 
-    private int[] size;
+    private readonly int[] size;
 
-    private readonly float[] seed;
+    private readonly float[] Seed = new float[2];
 
-    public float[] Seed => seed;
+    //public float[] Seed => seed;
 
     private readonly NoiseMap nm;
     private readonly DrawTerrain terrainGenerator;
     //constructors
     //  // \\ // \\ // \\
-    public Map2(float[] _seed, int[] _size)
+    public Map2(float[] _seed, int[] _size, Material _atlas)
     {
+        this.size = _size;
         GenerateSeed(_seed);
 
-        terrainGenerator = new DrawTerrain(this);
+        terrainGenerator = new DrawTerrain(this, _atlas);
 
         nm = new NoiseMap(_size, _seed, this);
         nm.GenerateNoise();
 
         Debug.Log(Mathf.PI);
     }
-    Map2(int[] size)
+    public Map2(int[] _size, Material _atlas)
     {
+        this.size = _size;
         GenerateSeed();
+
+        terrainGenerator = new DrawTerrain(this, _atlas);
+
+        nm = new NoiseMap(_size, Seed, this);
+        nm.GenerateNoise();
     }
 //  \\ // \\ // \\ //
 
@@ -41,6 +48,7 @@ public class Map2
 //  // \\ // \\ // \\
     public void CreateGrid(float[,] noiseMap)
     {
+        Debug.Log(size[0] +  "," + size[1]);
         Grid = new Cell2[size[0],1,size[1]];
 
         for(int x = 0; x < size[0]; x++)
@@ -51,6 +59,8 @@ public class Map2
                 {
                     if (noiseMap[x,z] < 0.45f)
                     {
+                        Debug.Log(x + "," + y + "," + z);
+                        Grid[x, y, z] = new Cell2();
                         Grid[x, y, z].isWater = true;
                     }
                 }
@@ -81,6 +91,6 @@ public class Map2
 
     public float[] getSeed()
     {
-        return seed;
+        return Seed;
     }
 }
