@@ -7,7 +7,11 @@ using UnityEngine.Networking;
 
 public class WebServer
 {
-
+    public IEnumerator DoNoting()
+    {
+        Debug.Log("het ligt aan de functie");
+        return null;
+    }
    public IEnumerator sendSaveFile(string data)
     {
         Debug.Log("running court");
@@ -31,8 +35,9 @@ public class WebServer
         }
     }
 
-    public IEnumerator CreateUser(Guid GUID, string UserName, string password)
+    public IEnumerator CreateUser(Guid GUID, string UserName, string password, Func<ReturnedData, bool> retrn)
     {
+        Debug.Log("done");
         WWWForm form = new WWWForm();
         form.AddField("GUID", GUID.ToString());
         form.AddField("UserName", UserName);
@@ -44,18 +49,32 @@ public class WebServer
 
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.Log(www.error);
-                www.Dispose();
+                
+                retrn(new ReturnedData("Error Connection Failed!!", ReturnedData.Returning.ConnectionError));
+
             }
             else
             {
-                Debug.Log(www.downloadHandler.text);
-                www.Dispose();
+                if(www.downloadHandler.text == "User Created")
+                {
+                    retrn(new ReturnedData("User has been created, Continue to login", ReturnedData.Returning.Success));
+                }
+                else if(www.downloadHandler.text == "AlreadyExists")
+                {
+                    retrn(new ReturnedData("Sorry This User Already Exists!!", ReturnedData.Returning.AlreadyExists));
+                }
+                else
+                {
+                    Debug.Log(www.downloadHandler.text);
+                    retrn(new ReturnedData("Could not Resolve Problem Error: " + www.result, ReturnedData.Returning.DefaultError));
+                }
+
             }
+            www.Dispose();
         }
     }
 
-    public IEnumerator loadUser(string UserName, string password, Func<string,bool> retrn)
+    public IEnumerator loadUser(string UserName, string password, Func<ReturnedData,bool> retrn)
     {
         WWWForm form = new WWWForm();
         form.AddField("UserName", UserName);
@@ -65,7 +84,6 @@ public class WebServer
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
             Debug.Log(www.downloadHandler.text);
-            retrn();
 
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {

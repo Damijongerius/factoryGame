@@ -1,36 +1,70 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const SaveFile_1 = require("./models/SaveFile");
-const { DB, Tables } = require("./DB/Database");
+const Database_1 = require("./DB/Database");
 const { saveFile } = require("./models/SaveFile");
 //node module express
 const { response, request, json } = require("express");
 const express = require("express");
-const app = express();
-app.use(express.json());
+const bcrypt = require('bcrypt');
 //node module body parser
 const bodyParser = require("body-parser");
+const app = express();
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.get("/ping", (req, res) => {
-    res.send("pong");
-});
 app.listen(3000, function () {
     console.log("server draai");
 });
-app.post("/senddata", function (req, res) {
-    console.log(req.body);
-    let a = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
-    console.log(a.profile.Name);
-    console.log(a.profile.Statistics.money);
-    //data = JSON.parse(req.body);
-    // console.log(a.map.grid[0]);
-});
+// // \\ // \\ // \\
 app.post("/recieve", function (req, res) {
     const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
-    DB.InsertInto("savefile", Tables.SaveFile, `'${saveFile.profile.Name}'`);
-    DB.InsertInto("Map", Tables.Map, [saveFile.map.xRange, saveFile.map.yRange]);
+    const { map, Info } = saveFile;
+    var lastID = Database_1.DB.InsertSaveFile(saveFile);
 });
+// \\ // \\ // \\  //
 app.post("/GetSF", function (req, res) {
 });
+app.post("/CreateUser", function (req, res) {
+    const asyncHash = EncryptPasswordASync(req.body.password);
+    asyncHash.then((h) => {
+        console.log(h);
+    });
+    //adding a user to database
+    console.log(`${req.body.GUID},${req.body.UserName},${asyncHash}`);
+    res.send(`${req.body.GUID},${req.body.UserName},${asyncHash}`);
+});
+app.post("/LoadUser", function (req, res) {
+    //needs uuid and password
+});
+app.post("/DeleteUser", function (req, res) {
+    //removes player with savefiles
+});
+function EncryptPasswordASync(password) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const hash = yield bcrypt.hash(password, 10)
+            .then(hash => {
+            return hash;
+        })
+            .catch(err => {
+            console.log(err);
+        });
+        return hash;
+    });
+}
+function comparePassword(password, hash) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const result = yield bcrypt.compare(password, hash);
+        return result;
+    });
+}
 //# sourceMappingURL=index.js.map

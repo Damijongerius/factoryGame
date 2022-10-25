@@ -4,19 +4,20 @@ using System.Linq;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SignUp
 {
     private readonly Button signUp;
-    private readonly InputField userName;
-    private readonly InputField password;
+    private readonly TMP_InputField userName;
+    private readonly TMP_InputField password;
 
     private readonly signingManager manager;
 
     private readonly WebServer ws = new WebServer();
     private Guid userGUID;
 
-    public SignUp(Button signingup,InputField userName, InputField password, signingManager sm)
+    public SignUp(Button signingup, TMP_InputField userName, TMP_InputField password, signingManager sm)
     {
         this.signUp = signingup;
         this.password = password;
@@ -29,33 +30,37 @@ public class SignUp
 
     private void SigningUp()
     {
-        string user = userName.text.ToString();
-        string userpassword = password.text.ToString();
-
-        if(userpassword.Length > 8)
+        if (password.text.Length > 8)
         {
-            if (userpassword.Any(char.IsUpper))
+            if (password.text.Any(char.IsUpper))
             {
-                if (userpassword.Any(char.IsDigit))
+                if (password.text.Any(char.IsDigit))
                 {
                     userGUID = Guid.NewGuid();
 
-                    manager.StartCoroutine(ws.CreateUser(userGUID, user, userpassword));
+                    manager.StartCoroutine(ws.CreateUser(Guid.NewGuid(), "dami", "password", onResult));
+                    //manager.CreateUser(userGUID, userName.text, password.text, onResult);
                 }
                 else
                 {
-                    requirements();
+                    requirements(Requirements.Digit);
                 }
             }
             else
             {
-                requirements();
+                requirements(Requirements.UpperCase);
             }
         }
         else
         {
-            requirements();
+            requirements(Requirements.Characters);
         }
+    }
+
+    public bool onResult(ReturnedData data)
+    {
+
+        return true;
     }
 
     private void AlreadyExists()
@@ -63,9 +68,25 @@ public class SignUp
         //mention problem
     }
 
-    private void requirements()
+    private void requirements(Requirements req)
     {
-        // mention problem
+        if (req == Requirements.UpperCase)
+        {
+            Debug.Log("missing uppercase");
+        } 
+        if (req == Requirements.Digit)
+        {
+            Debug.Log("missing Digit");
+        }
+        if(req == Requirements.Characters)
+        {
+            Debug.Log("missing Characters");
+        }
+    }
+
+    enum Requirements
+    {
+        Characters , UpperCase , Digit 
     }
 
 
