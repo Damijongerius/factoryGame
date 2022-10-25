@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Tables = exports.DB = exports.Database = void 0;
+exports.DB = exports.Database = void 0;
 const EH = __importStar(require("./ErrorHandler"));
 var mysql = require("mysql");
 class Database {
@@ -62,22 +62,22 @@ class Database {
         return 0;
     }
     InsertUser(guid, name, password) {
-        var sql = `INSERT INTO Users (UserId,UserName,password) VALUES (${guid},${name},${password})`;
-        this.conn.query(sql, function (err, result) {
-            if (err)
-                throw err;
+        var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
+        let returner = this.conn.query(sql, function (err, result) {
+            if (err) {
+                console.error(err);
+                return { "errorCode": 2, "message": err };
+            }
+            ;
+            return { "errorCode": 1, "message": "a new account has been created" };
         });
+        if (returner != null) {
+            console.log(returner);
+            //return returner;
+        }
+        return { "errorCode": 0, "message": "nothing seemed to happen" };
     }
 }
 exports.Database = Database;
 exports.DB = new Database("localhost", "root", "", "factorygame");
-var Tables;
-(function (Tables) {
-    Tables["Cell"] = "x,y,ObjectTypes,Map,Map_SaveFile_Id";
-    Tables["Map"] = "xRange,yRange,SaveFile_Id";
-    Tables["ObjectInfo"] = "dataStored,powerStored,Level,Age,upkeepCost,dataMined,dataSold,datTransferd,cells_profile_SaveFile_Id";
-    Tables["Profile"] = "DateMade,DateSeen,TimePlayed,SaveFile_Id";
-    Tables["SaveFile"] = "SaveName";
-    Tables["Statistics"] = "Networth,Money,Data,Xp,Level,SaveFile_Id";
-})(Tables = exports.Tables || (exports.Tables = {}));
 //# sourceMappingURL=Database.js.map

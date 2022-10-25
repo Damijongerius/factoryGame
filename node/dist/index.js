@@ -35,29 +35,21 @@ app.post("/recieve", function (req, res) {
 app.post("/GetSF", function (req, res) {
 });
 app.post("/CreateUser", function (req, res) {
-    const asyncHash = EncryptPasswordASync(req.body.password);
+    const asyncHash = EncryptPasswordASync(req.body.Password);
     asyncHash.then((h) => {
-        console.log(h);
+        const info = Database_1.DB.InsertUser(req.body.GUID, req.body.UserName, h);
+        res.send(JSON.stringify(info));
     });
-    //adding a user to database
-    console.log(`${req.body.GUID},${req.body.UserName},${asyncHash}`);
-    res.send(`${req.body.GUID},${req.body.UserName},${asyncHash}`);
 });
 app.post("/LoadUser", function (req, res) {
-    //needs uuid and password
+    //needs guid and password
 });
 app.post("/DeleteUser", function (req, res) {
     //removes player with savefiles
 });
 function EncryptPasswordASync(password) {
     return __awaiter(this, void 0, void 0, function* () {
-        const hash = yield bcrypt.hash(password, 10)
-            .then(hash => {
-            return hash;
-        })
-            .catch(err => {
-            console.log(err);
-        });
+        const hash = yield bcrypt.hash(password, 10);
         return hash;
     });
 }

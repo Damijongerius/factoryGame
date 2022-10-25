@@ -54,24 +54,25 @@ export class Database {
     return 0;
   }
 
-  InsertUser(guid: string, name: string, password: Uint16Array){
+  InsertUser(guid: string, name: string, password: Promise<any>): object{
 
-    var sql = `INSERT INTO Users (UserId,UserName,password) VALUES (${guid},${name},${password})`;
+    var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
 
-    this.conn.query(sql, function (err, result) {
-      if(err) throw err;
+    let returner : object = this.conn.query(sql, function (err, result): object {
+      if(err) {
+        console.error(err);
+        return {"errorCode" : 2, "message" : err};
+      };
 
+      return {"errorCode" : 1, "message" : "a new account has been created"};
     });
+
+    if(returner != null){
+      console.log(returner);
+      //return returner;
+    }
+    return {"errorCode" : 0, "message" : "nothing seemed to happen"};
   }
-
 }
+
 export const DB = new Database("localhost", "root", "", "factorygame");
-
-export enum Tables{
-  Cell = "x,y,ObjectTypes,Map,Map_SaveFile_Id",
-  Map = "xRange,yRange,SaveFile_Id",
-  ObjectInfo = "dataStored,powerStored,Level,Age,upkeepCost,dataMined,dataSold,datTransferd,cells_profile_SaveFile_Id",
-  Profile = "DateMade,DateSeen,TimePlayed,SaveFile_Id",
-  SaveFile = "SaveName",
-  Statistics = "Networth,Money,Data,Xp,Level,SaveFile_Id",
-}

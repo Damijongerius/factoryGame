@@ -1,7 +1,8 @@
 import { profile } from "console";
 import { SaveFile, Convert, Map, Info } from './models/SaveFile';
-import {DB, Tables} from "./DB/Database";
+import {DB} from "./DB/Database";
 import { Encoding, Hash, LargeNumberLike } from "crypto";
+import { stringify } from 'querystring';
 
 
 const { saveFile } = require("./models/SaveFile");
@@ -42,18 +43,15 @@ app.post("/GetSF", function (req,res){
 
 app.post("/CreateUser", function (req, res){
 
-const asyncHash = EncryptPasswordASync(req.body.password)
-asyncHash.then((h) => {
-  console.log(h)
+const asyncHash = EncryptPasswordASync(req.body.Password)
+asyncHash.then((h) => {  
+  const info : object = DB.InsertUser(req.body.GUID,req.body.UserName,h);
+  res.send(JSON.stringify(info));
 })
-
-//adding a user to database
-console.log(`${req.body.GUID},${req.body.UserName},${asyncHash}`);
-res.send(`${req.body.GUID},${req.body.UserName},${asyncHash}`);
 })
 
 app.post("/LoadUser", function (req, res){
-//needs uuid and password
+//needs guid and password
 })
 
 app.post("/DeleteUser", function (req, res){

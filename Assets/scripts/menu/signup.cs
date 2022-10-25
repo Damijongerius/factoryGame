@@ -38,7 +38,7 @@ public class SignUp
                 {
                     userGUID = Guid.NewGuid();
 
-                    manager.StartCoroutine(ws.CreateUser(Guid.NewGuid(), "dami", "password", onResult));
+                    manager.StartCoroutine(ws.CreateUser(Guid.NewGuid(), userName.text, password.text, onResult));
                     //manager.CreateUser(userGUID, userName.text, password.text, onResult);
                 }
                 else
