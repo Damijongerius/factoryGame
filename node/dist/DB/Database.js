@@ -62,20 +62,22 @@ class Database {
         return 0;
     }
     InsertUser(guid, name, password) {
+        let returndata = null;
         var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
-        let returner = this.conn.query(sql, function (err, result) {
+        this.conn.query(sql, function (err, result) {
             if (err) {
                 console.error(err);
-                return { "errorCode": 2, "message": err };
+                returndata = { "errorCode": 2, "message": err };
             }
-            ;
-            return { "errorCode": 1, "message": "a new account has been created" };
+            if (!err) {
+                returndata = { "errorCode": 1, "message": "a new account has been created" };
+            }
         });
-        if (returner != null) {
-            console.log(returner);
-            //return returner;
+        if (returndata != null) {
+            return returndata;
         }
-        return { "errorCode": 0, "message": "nothing seemed to happen" };
+        else {
+        }
     }
 }
 exports.Database = Database;

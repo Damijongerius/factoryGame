@@ -1,3 +1,4 @@
+import { debug } from "console";
 import { stringify } from "querystring";
 import internal from "stream";
 import { Info, SaveFile } from "../models/SaveFile";
@@ -58,21 +59,27 @@ export class Database {
 
     var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
 
-    let returner : object = this.conn.query(sql, function (err, result): object {
-      if(err) {
-        console.error(err);
-        return {"errorCode" : 2, "message" : err};
-      };
+    const returnData = this.insertUser(sql)
+    returnData.then((RtD) => {  
+      return RtD;
+    })
 
-      return {"errorCode" : 1, "message" : "a new account has been created"};
-    });
-
-    if(returner != null){
-      console.log(returner);
-      //return returner;
-    }
-    return {"errorCode" : 0, "message" : "nothing seemed to happen"};
   }
-}
+
+    async insertUser(sql : string): Promise<object>{
+      this.conn.query(sql, function (err, result){
+        if(err) {
+          console.error(err);
+          return {"errorCode" : 2, "message" : err};
+        }
+        if(!err){
+          return {"errorCode" : 1, "message" : "a new account has been created"};
+        }
+  
+      })
+       return {"errorCode" : 1, "message" : "a new account has been created"};
+    }
+
+  }
 
 export const DB = new Database("localhost", "root", "", "factorygame");
