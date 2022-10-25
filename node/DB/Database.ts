@@ -54,7 +54,7 @@ export class Database {
     return 0;
   }
 
-  InsertUser(guid: string, name: string, password: Uint16Array){
+  InsertUser(guid: string, name: string, password : Promise<any>){
 
     var sql = `INSERT INTO Users (UserId,UserName,password) VALUES (${guid},${name},${password})`;
 

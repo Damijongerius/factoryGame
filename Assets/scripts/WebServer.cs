@@ -65,7 +65,7 @@ public class WebServer
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
             Debug.Log(www.downloadHandler.text);
-            retrn();
+            retrn("a");
 
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {

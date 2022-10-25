@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Tables = exports.DB = void 0;
+exports.Tables = exports.DB = exports.Database = void 0;
 const EH = __importStar(require("./ErrorHandler"));
 var mysql = require("mysql");
 class Database {
@@ -41,23 +41,43 @@ class Database {
             console.log("Connected To DataBase!");
         });
     }
-    InsertInto(TableName, table, values) {
-        var sql = `INSERT INTO ${TableName} (${table}) VALUES (${values})`;
+    InsertSaveFile(sf) {
+        const { name } = sf;
+        var sql = `INSERT INTO saveFile (SaveName) VALUES (${name})`;
         this.conn.query(sql, function (err, result) {
             if (err)
                 throw err;
-            console.log(result.insertId);
+            return result.insertId;
+        });
+        return 0;
+    }
+    InsertInfo(p, saveFileID) {
+        const { DateMade, DateSeen, TimePlayed, } = p;
+        var sql = `INSERT INTO Info () VALUES (${DateMade},${DateSeen},${TimePlayed})`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
+            return result.insertId;
+        });
+        return 0;
+    }
+    InsertUser(guid, name, password) {
+        var sql = `INSERT INTO Users (UserId,UserName,password) VALUES (${guid},${name},${password})`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
         });
     }
 }
+exports.Database = Database;
 exports.DB = new Database("localhost", "root", "", "factorygame");
 var Tables;
 (function (Tables) {
-    Tables["Cell"] = "x,y,ObjectTypes,Map";
+    Tables["Cell"] = "x,y,ObjectTypes,Map,Map_SaveFile_Id";
     Tables["Map"] = "xRange,yRange,SaveFile_Id";
-    Tables["ObjectInfo"] = "dataStored,powerStored,Level,Age,upkeepCost,dataMined,dataSold,datTransferd";
-    Tables["Profile"] = "DateMade,DateSeen,TimePlayed";
-    Tables["SaveFile"] = "Id,SaveName";
-    Tables["Statistics"] = "Networth,Money,Data,Xp,Level";
+    Tables["ObjectInfo"] = "dataStored,powerStored,Level,Age,upkeepCost,dataMined,dataSold,datTransferd,cells_profile_SaveFile_Id";
+    Tables["Profile"] = "DateMade,DateSeen,TimePlayed,SaveFile_Id";
+    Tables["SaveFile"] = "SaveName";
+    Tables["Statistics"] = "Networth,Money,Data,Xp,Level,SaveFile_Id";
 })(Tables = exports.Tables || (exports.Tables = {}));
 //# sourceMappingURL=Database.js.map

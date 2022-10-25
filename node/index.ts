@@ -54,8 +54,12 @@ app.post("/GetSF", function (req,res){
 
 app.post("/CreateUser", function (req, res){
 //adding a user to database
-
-DB.InsertUser(req.body.GUID,req.body.UserName,EncryptPassword(req.body.password))
+console.log(req.body)
+const asyncHash = EncryptPasswordASync(req.body.Password)
+asyncHash.then((h) => {
+  DB.InsertUser(req.body.GUID,req.body.UserName,h);
+  res.send({h});
+})
 })
 
 app.post("/LoadUser", function (req, res){
@@ -68,28 +72,7 @@ app.post("/DeleteUser", function (req, res){
 
 const bcrypt = require ('bcrypt');
 
-// what type is hash???
-function EncryptPassword(password : string): any{
-
-  bcrypt.genSalt(saltRounds, function(err, salt) {
-    bcrypt.hash(password, salt, function(err, hash) {
-    // returns hash
-    console.log(hash);
-    return hash;
-    });
-  });
-}
-
-// still dont know what type hash is
-function ComparePassword(password: string, hash : any): boolean{
-
-  bcrypt.compare(password, hash, function(err, result) {
-    if (result) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  });
-  return false;
+async function EncryptPasswordASync(password) {
+  const hash = await bcrypt.hash(password, 10);
+  return hash
 }
