@@ -31,7 +31,7 @@ public class signingManager : MonoBehaviour
         try
         {
             switchLogging = transform.Find("login").GetComponent<Button>();
-            switchSigning = transform.Find("signUp").GetComponent<Button>();
+            switchSigning = transform.Find("signup").GetComponent<Button>();
 
             logging = transform.Find("loginButton").GetComponent<Button>();
             signing = transform.Find("signupButton").GetComponent<Button>();
