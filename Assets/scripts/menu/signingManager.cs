@@ -30,8 +30,8 @@ public class signingManager : MonoBehaviour
     {
         try
         {
-            switchLogging = transform.Find("Login").GetComponent<Button>();
-            switchSigning = transform.Find("SignUp").GetComponent<Button>();
+            switchLogging = transform.Find("login").GetComponent<Button>();
+            switchSigning = transform.Find("signUp").GetComponent<Button>();
 
             logging = transform.Find("loginButton").GetComponent<Button>();
             signing = transform.Find("signupButton").GetComponent<Button>();
@@ -60,12 +60,12 @@ public class signingManager : MonoBehaviour
         if (switchSigning.IsActive())
         {
             switchSigning.gameObject.SetActive(false);
-            signing.gameObject.SetActive(true);
+            logging.gameObject.SetActive(false);
         }
         else
         {
             switchSigning.gameObject.SetActive(true);
-            signing.gameObject.SetActive(false);
+            logging.gameObject.SetActive(true);
         }
     }
 
