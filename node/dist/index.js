@@ -31,14 +31,17 @@ app.post("/recieve", function (req, res) {
     const { map, Info } = saveFile;
     var lastID = Database_1.DB.InsertSaveFile(saveFile);
 });
-// \\ // \\ // \\  //
+// \\ // \\ // \\ //
 app.post("/GetSF", function (req, res) {
 });
 app.post("/CreateUser", function (req, res) {
-    const asyncHash = EncryptPasswordASync(req.body.Password);
-    asyncHash.then((h) => {
-        const info = Database_1.DB.InsertUser(req.body.GUID, req.body.UserName, h);
-        res.send(JSON.stringify(info));
+    return __awaiter(this, void 0, void 0, function* () {
+        const asyncHash = yield EncryptPasswordASync(req.body.Password);
+        const err = Database_1.DB.InsertUser(req.body.GUID, req.body.UserName, asyncHash);
+        if (err) {
+            res.send(JSON.stringify({ "status": 0, "Message": "was not able to make profile" }));
+        }
+        res.send(JSON.stringify({ "status": 1, "Message": "account sucsessfully created" }));
     });
 });
 app.post("/LoadUser", function (req, res) {

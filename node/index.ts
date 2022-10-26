@@ -41,13 +41,13 @@ app.post("/GetSF", function (req,res){
 });
 
 
-app.post("/CreateUser", function (req, res){
-
-const asyncHash = EncryptPasswordASync(req.body.Password)
-asyncHash.then((h) => {  
-  const info : object = DB.InsertUser(req.body.GUID,req.body.UserName,h);
-  res.send(JSON.stringify(info));
-})
+app.post("/CreateUser", async function (req, res){
+const asyncHash = await EncryptPasswordASync(req.body.Password) 
+  const err = DB.InsertUser(req.body.GUID,req.body.UserName,asyncHash);
+  if (err) {
+    res.send(JSON.stringify({"status": 0, "Message" : "was not able to make profile"}))
+  }
+  res.send(JSON.stringify({"status": 1, "Message": "account sucsessfully created"}));
 })
 
 app.post("/LoadUser", function (req, res){

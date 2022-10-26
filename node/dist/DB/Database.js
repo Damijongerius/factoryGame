@@ -52,7 +52,7 @@ class Database {
         return 0;
     }
     InsertInfo(p, saveFileID) {
-        const { DateMade, DateSeen, TimePlayed, } = p;
+        const { DateMade, DateSeen, TimePlayed } = p;
         var sql = `INSERT INTO Info () VALUES (${DateMade},${DateSeen},${TimePlayed})`;
         this.conn.query(sql, function (err, result) {
             if (err)
@@ -62,22 +62,13 @@ class Database {
         return 0;
     }
     InsertUser(guid, name, password) {
-        let returndata = null;
         var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
-        this.conn.query(sql, function (err, result) {
+        return this.conn.query(sql, function (err, result) {
             if (err) {
                 console.error(err);
-                returndata = { "errorCode": 2, "message": err };
-            }
-            if (!err) {
-                returndata = { "errorCode": 1, "message": "a new account has been created" };
+                return err;
             }
         });
-        if (returndata != null) {
-            return returndata;
-        }
-        else {
-        }
     }
 }
 exports.Database = Database;

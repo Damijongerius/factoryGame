@@ -20,7 +20,7 @@ export class Database {
     });
 
     this.errorHandler = new EH.ErrorHandler();
-    this.conn.connect(function(err) {
+    this.conn.connect(function (err) {
       if (err) throw err;
       console.log("Connected To DataBase!");
     });
@@ -32,7 +32,7 @@ export class Database {
     var sql = `INSERT INTO saveFile (SaveName) VALUES (${name})`;
 
     this.conn.query(sql, function (err, result) {
-      if(err) throw err;
+      if (err) throw err;
 
       return result.insertId;
     });
@@ -40,46 +40,30 @@ export class Database {
     return 0;
   }
 
-  InsertInfo(p: Info, saveFileID: number): number{
-
-    const { DateMade, DateSeen, TimePlayed, } = p;
+  InsertInfo(p: Info, saveFileID: number): number {
+    const { DateMade, DateSeen, TimePlayed } = p;
 
     var sql = `INSERT INTO Info () VALUES (${DateMade},${DateSeen},${TimePlayed})`;
 
     this.conn.query(sql, function (err, result) {
-      if(err) throw err;
+      if (err) throw err;
 
       return result.insertId;
     });
-    
+
     return 0;
   }
 
-  InsertUser(guid: string, name: string, password: Promise<any>): object{
-
+  InsertUser(guid: string, name: string, password: string): any {
     var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
 
-    const returnData = this.insertUser(sql)
-    returnData.then((RtD) => {  
-      return RtD;
-    })
-
+    return this.conn.query(sql, function (err, result) {
+      if (err) {
+        console.error(err);
+        return err
+      }
+    });
   }
-
-    async insertUser(sql : string): Promise<object>{
-      this.conn.query(sql, function (err, result){
-        if(err) {
-          console.error(err);
-          return {"errorCode" : 2, "message" : err};
-        }
-        if(!err){
-          return {"errorCode" : 1, "message" : "a new account has been created"};
-        }
-  
-      })
-       return {"errorCode" : 1, "message" : "a new account has been created"};
-    }
-
-  }
+}
 
 export const DB = new Database("localhost", "root", "", "factorygame");
