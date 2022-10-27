@@ -61,12 +61,17 @@ class Database {
         });
         return 0;
     }
-    InsertUser(guid, name, password) {
+    InsertUser(guid, name, password, callback) {
         var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
-        return this.conn.query(sql, function (err, result) {
+        this.conn.query(sql, function (err, result) {
             if (err) {
-                console.error(err);
-                return err;
+                console.error("err");
+                callback({ "status": 0, "message": `${result.message}` });
+            }
+            else {
+                console.error("not error");
+                callback({ "status": 1, "message": `${result.message}` });
+                console.log(result);
             }
         });
     }

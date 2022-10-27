@@ -54,13 +54,18 @@ export class Database {
     return 0;
   }
 
-  InsertUser(guid: string, name: string, password: string): any {
+  InsertUser(guid: string, name: string, password: string, callback: any): any {
     var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
 
-    return this.conn.query(sql, function (err, result) {
+    this.conn.query(sql, function (err, result) {
       if (err) {
-        console.error(err);
-        return err
+        console.error("err");
+        callback({"status": 0, "message": "was not able to create your account"});
+
+      }else{
+        console.error("not error");
+        callback({"status": 1, "message": "your account has been created"});
+        console.log(result);
       }
     });
   }

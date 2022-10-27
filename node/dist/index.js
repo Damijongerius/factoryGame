@@ -36,11 +36,11 @@ app.post("/GetSF", function (req, res) { });
 app.post("/CreateUser", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const asyncHash = yield EncryptPasswordASync(req.body.Password);
-        const err = Database_1.DB.InsertUser(req.body.GUID, req.body.UserName, asyncHash);
-        if (err) {
-            res.send(JSON.stringify({ status: 0, Message: "was not able to make profile" }));
+        Database_1.DB.InsertUser(req.body.GUID, req.body.UserName, asyncHash, function (info) {
+            res.send(JSON.stringify(info));
+        });
+        function result() {
         }
-        res.send(JSON.stringify({ status: 1, Message: "account sucsessfully created" }));
     });
 });
 app.post("/LoadUser", function (req, res) {

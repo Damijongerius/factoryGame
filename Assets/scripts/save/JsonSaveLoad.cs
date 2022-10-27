@@ -10,6 +10,7 @@ using System;
 // save en load class voor het saven van een profiel/lijst van profielen en laden
 public class JsonSaveLoad
 {
+    public User user;
     public Listed listed = new Listed();
     public SaveFile gameSave = SaveFile.GetInstance();
     //bestaat de file directory zo niet maakt hij hem ook meteen aan
@@ -40,14 +41,14 @@ public class JsonSaveLoad
     //save file to filestream
     public bool Save(string _saveName, SaveFile _saveData)
     {
-        string prePath = Application.persistentDataPath + "/profile/" + _saveName;
+        string prePath = Application.persistentDataPath + "/" + user.UserName + "/profile/" + _saveName;
 
         if (!Directory.Exists(prePath))
         {
             Directory.CreateDirectory(prePath);
         }
 
-        string path = Application.persistentDataPath + "/profile/" + _saveName + "/Save.saveFile";
+        string path = Application.persistentDataPath + "/" + user.UserName + "/profile/" + _saveName + "/Save.saveFile";
 
         FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write);
 
@@ -82,7 +83,7 @@ public class JsonSaveLoad
     public string Load(string _saveName)
     {
         listed.lastPlayed = _saveName;
-        string path = Application.persistentDataPath + "/profile/" + _saveName + "/Save.saveFile";
+        string path = Application.persistentDataPath + "/" + user.UserName + "/profile/" + _saveName + "/Save.saveFile";
 
         string decrypterdContent = null;
         if (!File.Exists(path))
@@ -128,7 +129,7 @@ public class JsonSaveLoad
 
     public void DeleteProfile(string _name)
     {
-        string path = Application.persistentDataPath + "/profile/" + _name;
+        string path = Application.persistentDataPath + "/" + user.UserName + "/profile/" + _name;
 
         Directory.Delete(path, true);
 
@@ -154,7 +155,7 @@ public class JsonSaveLoad
             Debug.Log("no profiles saved in file");
         }
 
-        using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
+        using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/" + user.UserName + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
         {
             JsonSerializer serializer = new JsonSerializer();
 
@@ -192,7 +193,7 @@ public class JsonSaveLoad
         listed.lastPlayed = _name;
 
 
-        using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
+        using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/" + user.UserName + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
         {
             JsonSerializer serializer = new JsonSerializer();
 
@@ -208,7 +209,7 @@ public class JsonSaveLoad
     //vraagt om alle profielen in de file
     public Listed ReadListedProfiles()
     {
-        using (FileStream fs = new FileStream(Application.persistentDataPath + "/profile/Profiles.Manager", FileMode.OpenOrCreate, FileAccess.Read))
+        using (FileStream fs = new FileStream(Application.persistentDataPath + "/" + user.UserName + "/profile/Profiles.Manager", FileMode.OpenOrCreate, FileAccess.Read))
         {
             using (StreamReader reader = new StreamReader(fs))
             {

@@ -3,6 +3,7 @@ import { SaveFile, Convert, Map, Info } from "./models/SaveFile";
 import { DB } from "./DB/Database";
 import { Encoding, Hash, LargeNumberLike } from "crypto";
 import { stringify } from "querystring";
+import { callbackify } from "util";
 
 const { saveFile } = require("./models/SaveFile");
 //node module express
@@ -39,15 +40,17 @@ app.post("/GetSF", function (req, res) {});
 
 app.post("/CreateUser", async function (req, res) {
   const asyncHash = await EncryptPasswordASync(req.body.Password);
-  const err = DB.InsertUser(req.body.GUID, req.body.UserName, asyncHash);
-  if (err) {
+  DB.InsertUser(req.body.GUID, req.body.UserName, asyncHash, function(info: object){
+
     res.send(
-      JSON.stringify({ status: 0, Message: "was not able to make profile" })
+      JSON.stringify(info)
     );
+  });
+  
+
+  function result(){
+
   }
-  res.send(
-    JSON.stringify({ status: 1, Message: "account sucsessfully created" })
-  );
 });
 
 app.post("/LoadUser", function (req, res) {
