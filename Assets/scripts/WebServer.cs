@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -45,12 +46,15 @@ public class WebServer
 
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {
-                retrn(new ReturnedData("Error Connection Failed!!", ReturnedData.Returning.ConnectionError));
 
             }
             else
             {
                 Debug.Log(www.downloadHandler.text);
+                ReturnedData RD = new ReturnedData();
+
+                RD = JsonConvert.DeserializeObject<ReturnedData>(www.downloadHandler.text);
+                retrn(RD);
             }
             www.Dispose();
         }
@@ -74,6 +78,11 @@ public class WebServer
             else
             {
                 Debug.Log(www.downloadHandler.text);
+
+                ReturnedData RD = new ReturnedData();
+
+                RD = JsonConvert.DeserializeObject<ReturnedData>(www.downloadHandler.text);
+                retrn(RD);
                 www.Dispose();
             }
         }

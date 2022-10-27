@@ -11,6 +11,7 @@ public class SignUp
     private readonly Button signUp;
     private readonly TMP_InputField userName;
     private readonly TMP_InputField password;
+    private GameObject FailBackground;
 
     private readonly signingManager manager;
 
@@ -24,6 +25,7 @@ public class SignUp
         this.userName = userName;
         this.manager = sm;
 
+        FailBackground = sm.transform.Find("FailBackground").gameObject;
         signUp.onClick.AddListener(SigningUp);
 
     }
@@ -59,7 +61,21 @@ public class SignUp
 
     public bool onResult(ReturnedData data)
     {
+        switch (data.status)
+        {
+            case 0:
+            Debug.Log("error");
+                FailBackground.gameObject.SetActive(true);
+                break;
 
+        case 1:
+        Debug.Log("succes");
+                break;
+
+            default:
+                Debug.Log("Nee");
+                break;
+        } 
         return true;
     }
 

@@ -15,7 +15,7 @@ const { saveFile } = require("./models/SaveFile");
 //node module express
 const { response, request, json } = require("express");
 const express = require("express");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 //node module body parser
 const bodyParser = require("body-parser");
 const app = express();
@@ -32,16 +32,15 @@ app.post("/recieve", function (req, res) {
     var lastID = Database_1.DB.InsertSaveFile(saveFile);
 });
 // \\ // \\ // \\ //
-app.post("/GetSF", function (req, res) {
-});
+app.post("/GetSF", function (req, res) { });
 app.post("/CreateUser", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const asyncHash = yield EncryptPasswordASync(req.body.Password);
         const err = Database_1.DB.InsertUser(req.body.GUID, req.body.UserName, asyncHash);
         if (err) {
-            res.send(JSON.stringify({ "status": 0, "Message": "was not able to make profile" }));
+            res.send(JSON.stringify({ status: 0, Message: "was not able to make profile" }));
         }
-        res.send(JSON.stringify({ "status": 1, "Message": "account sucsessfully created" }));
+        res.send(JSON.stringify({ status: 1, Message: "account sucsessfully created" }));
     });
 });
 app.post("/LoadUser", function (req, res) {
