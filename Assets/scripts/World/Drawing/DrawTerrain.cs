@@ -20,30 +20,32 @@ public class DrawTerrain
     private WorldManager worldManager;
 
     //  // \\ // \\ // \\
-    public DrawTerrain(Map2 _map, Material atlas)
+    public DrawTerrain(Map2 _map, Material atlas, int[] _size)
     {
         this.map = _map;
         this.ChunkSize = 16;
         this.atlas = atlas;
+        this.size = _size;
 
         worldManager = WorldManager.getInstance();
     }
 
-    public DrawTerrain(Map2 _map, int _ChunkSize, Material atlas)
+    public DrawTerrain(Map2 _map, int _ChunkSize, Material atlas, int[] _size)
     {
         this.map = _map;
         this.ChunkSize = _ChunkSize;
         this.atlas = atlas;
+        this.size = _size;
     }
     //  \\ // \\ // \\ //
 
-    public bool StartDrawing(Cell2[,] _grid)
+    public bool StartDrawing(Cell2[,,] _grid)
     {
         CalculateChunks(_grid);
         return true;
     }
     //  // \\ // \\ // \\
-    private void CalculateChunks(Cell2[,] _grid)
+    private void CalculateChunks(Cell2[,,] _grid)
     {
         int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
         int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
@@ -61,6 +63,7 @@ public class DrawTerrain
                         chunkInfo[0, 1] = xc * ChunkSize + ChunkSize;
                         chunkInfo[1, 0] = zc * ChunkSize;
                         chunkInfo[1, 1] = zc * ChunkSize + ChunkSize;
+                        Debug.Log(chunkInfo[0, 0] + "," + chunkInfo[0, 1] + "," + chunkInfo[1, 0] + "," + chunkInfo[1, 1]);
                         meshes.Add(CalculateMesh(_grid, chunkInfo));
                     }
                 }
@@ -71,7 +74,7 @@ public class DrawTerrain
     // \\// \\ //  \\ //
 
     //  // \\ // \\ // \\
-    private Mesh CalculateMesh(Cell2[,] _grid, int[,] _chunkInfo)
+    private Mesh CalculateMesh(Cell2[,,] _grid, int[,] _chunkInfo)
     {
         Mesh mesh = new Mesh();
         List<Vector3> vertices = new List<Vector3>();
@@ -83,7 +86,7 @@ public class DrawTerrain
             {
                 for( int z = _chunkInfo[1, 0]; z < _chunkInfo[1, 1]; z++)
                 {
-                    Cell2 cell = _grid[x, y];
+                    Cell2 cell = _grid[x,0, y];
 
 
                     //verplaats naar quad
@@ -120,8 +123,7 @@ public class DrawTerrain
         int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
         int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
         GameObject chunk = new GameObject();
-        chunk.AddComponent<MeshRenderer>();
-        MeshRenderer  mr = new MeshRenderer();
+        MeshRenderer mr =chunk.AddComponent<MeshRenderer>();
         mr.material = atlas;
         chunk.AddComponent<MeshFilter>();
 

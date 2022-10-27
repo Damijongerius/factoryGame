@@ -25,19 +25,17 @@ public class Map2
         this.size = _size;
         GenerateSeed(_seed);
 
-        terrainGenerator = new DrawTerrain(this, _atlas);
+        terrainGenerator = new DrawTerrain(this, _atlas, _size);
 
         nm = new NoiseMap(_size, _seed, this);
         nm.GenerateNoise();
-
-        Debug.Log(Mathf.PI);
     }
     public Map2(int[] _size, Material _atlas)
     {
         this.size = _size;
         GenerateSeed();
 
-        terrainGenerator = new DrawTerrain(this, _atlas);
+        terrainGenerator = new DrawTerrain(this, _atlas, _size);
 
         nm = new NoiseMap(_size, Seed, this);
         nm.GenerateNoise();
@@ -66,6 +64,7 @@ public class Map2
                 }
             }
         }
+        terrainGenerator.StartDrawing(Grid);
     }
 
 
