@@ -12,6 +12,7 @@ public class SignUp
     private readonly TMP_InputField userName;
     private readonly TMP_InputField password;
     private GameObject FailBackground;
+    private GameObject Plane;
 
     private readonly signingManager manager;
 
@@ -26,6 +27,7 @@ public class SignUp
         this.manager = sm;
 
         FailBackground = sm.transform.Find("FailBackground").gameObject;
+        Plane = sm.transform.Find("Plane").gameObject;
         signUp.onClick.AddListener(SigningUp);
 
     }
@@ -41,7 +43,7 @@ public class SignUp
                     userGUID = Guid.NewGuid();
 
                     manager.StartCoroutine(ws.CreateUser(Guid.NewGuid(), userName.text, password.text, onResult));
-                    //manager.CreateUser(userGUID, userName.text, password.text, onResult);
+                    Plane.SetActive(true);
                 }
                 else
                 {
@@ -70,32 +72,42 @@ public class SignUp
 
         case 1:
         Debug.Log("succes");
+                Login();
                 break;
 
             default:
+            {
                 Debug.Log("Nee");
+                Plane.SetActive(false);
                 break;
+            }
         } 
         return true;
     }
 
-    private void AlreadyExists()
+    private void Login()
     {
-        //mention problem
+        User user = User.GetInstance();
+        user.guid = this.userGUID;
+        user.UserName = this.userName.text;
+
     }
 
     private void requirements(Requirements req)
     {
         if (req == Requirements.UpperCase)
         {
+            //show requirement
             Debug.Log("missing uppercase");
         } 
         if (req == Requirements.Digit)
         {
+            //show requirement
             Debug.Log("missing Digit");
         }
         if(req == Requirements.Characters)
         {
+            //show requirement
             Debug.Log("missing Characters");
         }
     }

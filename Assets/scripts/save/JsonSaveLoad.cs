@@ -17,10 +17,10 @@ public class JsonSaveLoad
     public void Exsisting(string _name)
     {
 
-        if (!Directory.Exists(Application.persistentDataPath + "/profile/" + _name))
+        if (!Directory.Exists(Application.persistentDataPath + "/" + user.UserName + "/profile/" + _name))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/profile/" + _name);
-            Debug.Log(Application.persistentDataPath + "/profile/" + _name);
+            Directory.CreateDirectory(Application.persistentDataPath + "/" + user.UserName + "/profile/" + _name);
+            Debug.Log(Application.persistentDataPath + "/" + user.UserName + "/profile/" + _name);
 
         }
 
