@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const SaveFile_1 = require("./models/SaveFile");
 const Database_1 = require("./DB/Database");
 const { saveFile } = require("./models/SaveFile");
 //node module express
@@ -27,9 +26,9 @@ app.listen(3000, function () {
 });
 // // \\ // \\ // \\
 app.post("/recieve", function (req, res) {
-    const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
-    const { map, Info } = saveFile;
-    var lastID = Database_1.DB.InsertSaveFile(saveFile);
+    //const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
+    //const { map, Info } = saveFile;
+    //var lastID = DB.InsertSaveFile(saveFile);
 });
 // \\ // \\ // \\ //
 app.post("/GetSF", function (req, res) { });
@@ -39,15 +38,68 @@ app.post("/CreateUser", function (req, res) {
         Database_1.DB.InsertUser(req.body.GUID, req.body.UserName, asyncHash, function (info) {
             res.send(JSON.stringify(info));
         });
-        function result() {
-        }
+        function result() { }
     });
 });
 app.post("/LoadUser", function (req, res) {
-    //needs guid and password
+    return __awaiter(this, void 0, void 0, function* () {
+        //needs guid username and password
+        let data = { UserName: req.body.UserName, Password: req.body.Password };
+        if (req.body.GUID != null) {
+            data.GUID = req.body.GUID;
+        }
+        Database_1.DB.SelectUser(data, function (info) {
+            return __awaiter(this, void 0, void 0, function* () {
+                switch (info.status) {
+                    case 3: {
+                        res.send({
+                            Status: 3,
+                            message: `no existing user with name ${data.UserName}`,
+                        });
+                        break;
+                    }
+                    case 2: {
+                        info.result.forEach(function (i, idx, array) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                comparePassword(req.body.Password, array[idx].password, function (params) {
+                                    if (params) {
+                                        res.send({
+                                            Status: 4,
+                                            message: `the password matches ${data.UserName}`,
+                                            Info: {
+                                                UserName: array[idx].UserName,
+                                                GUID: array[idx].UserId
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        if (i === array.length - 1) {
+                                            res.send({
+                                                Status: 5,
+                                                message: "incorrect password try again",
+                                            });
+                                        }
+                                    }
+                                });
+                            });
+                        });
+                        break;
+                    }
+                    default: {
+                        res.send({
+                            Status: 101,
+                            message: "error on our end"
+                        });
+                        break;
+                    }
+                }
+            });
+        });
+    });
 });
 app.post("/DeleteUser", function (req, res) {
     //removes player with savefiles
+    //deletes profile with saved guid
 });
 function EncryptPasswordASync(password) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -55,10 +107,9 @@ function EncryptPasswordASync(password) {
         return hash;
     });
 }
-function comparePassword(password, hash) {
+function comparePassword(password, hash, callback) {
     return __awaiter(this, void 0, void 0, function* () {
-        const result = yield bcrypt.compare(password, hash);
-        return result;
+        callback(yield bcrypt.compare(password, hash));
     });
 }
 //# sourceMappingURL=index.js.map

@@ -100,6 +100,13 @@ public class ProfileManager : MonoBehaviour
         saver.Save(ProfileName, gameSave);
     }
 
+    public void BackToMainMenu()
+    {
+        Save();
+        playing = false;
+        SceneManager.LoadScene("MainMenu");
+    }
+
     private void Awake()
     {
         if (playing == true)

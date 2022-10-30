@@ -42,7 +42,7 @@ public class SignUp
                 {
                     userGUID = Guid.NewGuid();
 
-                    manager.StartCoroutine(ws.CreateUser(Guid.NewGuid(), userName.text, password.text, onResult));
+                    manager.StartCoroutine(ws.CreateUser(userGUID, userName.text, password.text, onResult));
                     Plane.SetActive(true);
                 }
                 else
@@ -89,7 +89,10 @@ public class SignUp
     {
         User user = User.GetInstance();
         user.guid = this.userGUID;
+        Debug.Log(this.userGUID);
         user.UserName = this.userName.text;
+        manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+
 
     }
 

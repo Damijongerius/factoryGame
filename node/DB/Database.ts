@@ -54,18 +54,41 @@ export class Database {
     return 0;
   }
 
-  InsertUser(guid: string, name: string, password: string, callback: any): any {
+  InsertUser(
+    guid: string,
+    name: string,
+    password: string,
+    callback: Function
+  ): any {
     var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
 
     this.conn.query(sql, function (err, result) {
       if (err) {
-        console.error("err");
-        callback({"status": 0, "message": "was not able to create your account"});
+        callback({ status: 0, message: "was not able to create your account" });
+      } else {
+        callback({ status: 1, message: "your account has been created" });
+      }
+    });
+  }
 
-      }else{
-        console.error("not error");
-        callback({"status": 1, "message": "your account has been created"});
-        console.log(result);
+  SelectUser(data: any, callback: Function) {
+    let sql;
+    if (data.GUID == null) {
+      sql = `SELECT * FROM Users WHERE UserName = "${data.UserName}" `;
+    } else {
+      sql = `SELECT * FROM Users WHERE UserId = "${data.GUID}"`;
+    }
+
+    this.conn.query(sql, function (err, result) {
+      if (err) {
+        callback({ status: 3, message: "Was not able to find user" });
+        console.log(err);
+      } else {
+        callback({
+          status: 2,
+          message: "This is what i found",
+          result: result,
+        });
       }
     });
   }

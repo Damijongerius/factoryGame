@@ -18,7 +18,7 @@ public class openCloseManager : MonoBehaviour
     void Start()
     {
         button = gameObject.GetComponent<Button>();
-        button.onClick.AddListener(HandleClick);
+        if(button != null) button.onClick.AddListener(HandleClick);
     }
 
     public void HandleClick()
@@ -31,14 +31,4 @@ public class openCloseManager : MonoBehaviour
             CloseCanvas.gameObject.SetActive(!state);
         }
     }
-
-    // Update is called once per frame
-
-
-    
-    
-
-
-   
-
 }
