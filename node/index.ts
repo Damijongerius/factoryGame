@@ -1,9 +1,5 @@
-import { info, profile } from "console";
 import { SaveFile, Convert, Map, Info, Statistics } from "./models/SaveFile";
-import { DB } from "./DB/Database";
-import { Encoding, Hash, LargeNumberLike } from "crypto";
-import { stringify } from "querystring";
-import { callbackify } from "util";
+import { DB } from "./DB/Database";;
 
 const { saveFile } = require("./models/SaveFile");
 //node module express
@@ -31,7 +27,11 @@ app.listen(3000, function () {
 app.post("/recieve", function (req, res) {
   const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
   const { map, Info } = saveFile;
-  var lastID = DB.InsertSaveFile(saveFile);
+  var lastID = DB.InsertSaveFile(saveFile, req.body.GUID, function (insertId: number) {
+    DB.InsertInfo(Info, insertId); 
+      
+    DB.InstertStatistics
+  });
 });
 // \\ // \\ // \\ //
 

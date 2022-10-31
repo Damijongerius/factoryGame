@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Database_1 = require("./DB/Database");
+;
 const { saveFile } = require("./models/SaveFile");
 //node module express
 const { response, request, json } = require("express");
@@ -38,7 +39,6 @@ app.post("/CreateUser", function (req, res) {
         Database_1.DB.InsertUser(req.body.GUID, req.body.UserName, asyncHash, function (info) {
             res.send(JSON.stringify(info));
         });
-        function result() { }
     });
 });
 app.post("/LoadUser", function (req, res) {
