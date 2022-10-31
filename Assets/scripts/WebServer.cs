@@ -77,6 +77,34 @@ public class WebServer
             }
             else
             {
+
+                ReturnedData RD = new ReturnedData();
+
+                RD = JsonConvert.DeserializeObject<ReturnedData>(www.downloadHandler.text);
+                retrn(RD);
+                www.Dispose();
+            }
+        }
+    }
+
+    public IEnumerator loadUser(string GUID,string UserName, string password, Func<ReturnedData, bool> retrn)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("GUID", GUID);
+        form.AddField("UserName", UserName);
+        form.AddField("Password", password);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/LoadUser", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer();
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log(www.error);
+                www.Dispose();
+            }
+            else
+            {
                 Debug.Log(www.downloadHandler.text);
 
                 ReturnedData RD = new ReturnedData();

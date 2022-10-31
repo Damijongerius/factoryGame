@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class signingManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class signingManager : MonoBehaviour
 
     private Login login;
     private SignUp signUp;
+    private Offline offline;
 
     private Button switchLogging;
     private Button switchSigning;
@@ -23,11 +25,6 @@ public class signingManager : MonoBehaviour
     private void Start()
     {
         ws = new WebServer();
-        setter();
-    }
-
-    private bool setter()
-    {
         try
         {
             switchLogging = transform.Find("login").GetComponent<Button>();
@@ -44,15 +41,19 @@ public class signingManager : MonoBehaviour
 
             login = new Login(logging, username, password, this);
             signUp = new SignUp(signing, username, password, this);
-
-            return true;
+            offline = new Offline(this);
         }
         catch (Exception e)
         {
             Debug.LogError(e);
-            return false;
         }
 
+        
+    }
+
+    public void GoOffline()
+    {
+        offline.Set();
     }
 
     private void Switch()
@@ -69,8 +70,11 @@ public class signingManager : MonoBehaviour
         }
     }
 
-    public void CreateUser(Guid GUID, string UserName, string password, Func<ReturnedData, bool> retrn)
+    private void Awake()
     {
-        //StartCoroutine(ws.CreateUser(GUID, UserName, password, retrn));
+        if(User.GetInstance().UserName != null)
+        {
+            transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+        }
     }
 }

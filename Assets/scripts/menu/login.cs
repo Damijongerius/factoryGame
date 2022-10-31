@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -9,7 +11,9 @@ public class Login
 {
     private readonly Button login;
     private readonly TMP_InputField userName;
-    private readonly TMP_InputField password;
+    private TMP_InputField password;
+
+    private GameObject plane;
 
     private readonly signingManager manager;
 
@@ -20,6 +24,7 @@ public class Login
         this.login = login;
         this.password = password;
         this.userName = userName;
+        plane = sm.transform.Find("Plane").gameObject;
         this.manager = sm;
 
         login.onClick.AddListener(LoggingIn);
@@ -28,27 +33,42 @@ public class Login
 
     private void LoggingIn()
     {
-        Debug.Log("click");
-        //manager.StartCoroutine(ws.loadUser(userName.text, password.text, onResult));
+        plane.SetActive(true);
+        manager.StartCoroutine(ws.loadUser(userName.text, password.text, onResult));
     }
 
-    public bool onResult(ReturnedData json)
+    public bool onResult(ReturnedData rd)
     {
-        //set string as savefile
-        
-        //if logged in execute cloud sync
-        //Test by last time logged in
+        switch (rd.status)
+        {
+            case 4:
+                {
+                    //correct password
+                    Debug.Log(rd.Message);
+                    User user = User.GetInstance();
+
+                    user.guid = new Guid(rd.info.GUID);
+                    user.UserName = rd.info.UserName;
+                    manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+                    break;
+                }
+            case 3:
+                {
+                    //if usersavefile contains this profile delete
+                    break;
+                }
+            case 5:
+                {
+                    //incorrect password
+                    password.text = "";
+                    break;
+                }
+            case 6:
+                {
+                    //sorry problem on our end pls play offline or try again later
+                    break;
+                }
+        }
         return true;
-    }
-
-
-    private void OnWrongPassword()
-    {
-
-    }
-
-    private void OnUnexistingUser()
-    {
-
     }
 }
