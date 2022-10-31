@@ -12,5 +12,6 @@ public class ReturnedData
     {
         public string UserName;
         public string GUID;
+        public string time;
     }
 }

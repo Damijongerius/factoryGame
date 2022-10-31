@@ -6,6 +6,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using static ReturnedData;
 
 public class Login
 {
@@ -16,6 +17,7 @@ public class Login
     private GameObject plane;
 
     private readonly signingManager manager;
+    private LoginSave loginSave;
 
     private readonly WebServer ws = new WebServer();
 
@@ -29,12 +31,15 @@ public class Login
 
         login.onClick.AddListener(LoggingIn);
 
+        loginSave = new LoginSave();
     }
 
     private void LoggingIn()
     {
         plane.SetActive(true);
         manager.StartCoroutine(ws.loadUser(userName.text, password.text, onResult));
+
+
     }
 
     public bool onResult(ReturnedData rd)
@@ -50,6 +55,9 @@ public class Login
                     user.guid = new Guid(rd.info.GUID);
                     user.UserName = rd.info.UserName;
                     manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+
+                    //functie uit loginsave met arguments (rd.info.GUID, en tijd)
+                    loginSave.makeLog(rd.info);
                     break;
                 }
             case 3:
