@@ -1,5 +1,5 @@
-import { SaveFile, Convert, Map, Info, Statistics } from "./models/SaveFile";
-import { DB } from "./DB/Database";;
+import { SaveFile, Convert, Map, Statistics } from "./models/SaveFile";
+import { DB } from "./DB/Database";
 
 const { saveFile } = require("./models/SaveFile");
 //node module express
@@ -26,15 +26,19 @@ app.listen(3000, function () {
 // // \\ // \\ // \\
 app.post("/recieve", function (req, res) {
   const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
-  console.log(saveFile)
-  const { map, profile } = saveFile;
-  var lastID = DB.InsertSaveFile(saveFile, req.body.GUID, function (insertId: number) {
-    DB.InsertInfo(profile, insertId); 
-      
-    //DB.InstertStatistics
-  });
-  console.log(lastID)
-  DB.InsertInfo(profile, lastID)
+  console.log(saveFile);
+  const { map, Profile } = saveFile;
+  var lastID = DB.InsertSaveFile(
+    saveFile,
+    req.body.GUID,
+    function (insertId: number) {
+      DB.InsertInfo(Profile, insertId);
+
+      //DB.InstertStatistics
+    }
+  );
+  console.log(lastID);
+  DB.InsertInfo(Profile, lastID);
 });
 // \\ // \\ // \\ //
 
@@ -50,7 +54,6 @@ app.post("/CreateUser", async function (req, res) {
       res.send(JSON.stringify(info));
     }
   );
-
 });
 
 app.post("/LoadUser", async function (req, res) {
@@ -80,9 +83,9 @@ app.post("/LoadUser", async function (req, res) {
                   Status: 4,
                   message: `the password matches ${data.UserName}`,
                   Info: {
-                    UserName:  array[idx].UserName,
-                    GUID:  array[idx].UserId
-                  }
+                    UserName: array[idx].UserName,
+                    GUID: array[idx].UserId,
+                  },
                 });
               } else {
                 if (i === array.length - 1) {
@@ -99,9 +102,9 @@ app.post("/LoadUser", async function (req, res) {
       }
       default: {
         res.send({
-           Status: 101,
-            message: "error on our end" 
-          });
+          Status: 101,
+          message: "error on our end",
+        });
         break;
       }
     }

@@ -1,7 +1,13 @@
 import { debug } from "console";
 import { stringify } from "querystring";
 import internal from "stream";
-import { Info, Map, SaveFile, Statistics } from "../models/SaveFile";
+import {
+  Map,
+  ObjInfo,
+  Profile,
+  SaveFile,
+  Statistics,
+} from "../models/SaveFile";
 import * as EH from "./ErrorHandler";
 var mysql = require("mysql");
 
@@ -26,10 +32,10 @@ export class Database {
     });
   }
 
-  InsertSaveFile(sf: SaveFile, GUID: string, callBack: Function): number{
-    const { Name } = sf.profile;
+  InsertSaveFile(sf: SaveFile, GUID: string, callBack: Function): number {
+    const { Name } = sf.Profile;
 
-    let lastId: number = -1
+    let lastId: number = -1;
 
     var sql = `INSERT INTO saveFile (SaveName, users_UserId) VALUES ("${Name}", "${GUID}")`;
 
@@ -44,7 +50,7 @@ export class Database {
     // callBack(0);
   }
 
-  InsertInfo(p: Info, saveFileID: number): number {
+  InsertInfo(p: Profile, saveFileID: number): number {
     const { DateMade, DateSeen, TimePlayed } = p;
 
     var sql = `INSERT INTO Info (DateMade,DateSeen,TimePlayed,savefile_ID) VALUES ("${DateMade}","${DateSeen}","${TimePlayed}", ${saveFileID})`;
@@ -58,31 +64,39 @@ export class Database {
     return 0;
   }
 
-  Insertstatistics(p: Statistics, saveFileId: number){
-    const { networth,money,data,xp,Level} = p;
+  Insertstatistics(p: Statistics, saveFileId: number) {
+    const { networth, money, data, xp, Level } = p;
 
-    var sql = `INSERT INTO statistics (Networth,Money,Data,Xp,Level, _savefile_ID) VALUES (${networth},${money},${data},${xp},${Level},${saveFileId})`
+    var sql = `INSERT INTO statistics (Networth,Money,Data,Xp,Level, _savefile_ID) VALUES (${networth},${money},${data},${xp},${Level},${saveFileId})`;
 
-    this.conn.query(sql, function (err, result){
+    this.conn.query(sql, function (err, result) {
       if (err) throw err;
     });
   }
 
-  InsertMap(p: Map, saveFileId: number){
-    const {xRange, yRange} = p
+  InsertMap(p: Map, saveFileId: number) {
+    const { xRange, yRange } = p;
 
     var sql = `INSERT INTO map (xRange,yRange,savefile_ID) VALUES (${xRange},${yRange},${saveFileId})`;
 
-    this.conn.query(sql, function (err, result){
+    this.conn.query(sql, function (err, result) {
       if (err) throw err;
-
     });
   }
 
-  Insertobjectinfo(p: Info, saveFileId: number){
-    const {dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd} = p;
+  InsertobjectObjinfo(p: ObjInfo, saveFileId: number) {
+    const {
+      dataStored,
+      powerStored,
+      level,
+      age,
+      upkeepCost,
+      dataMined,
+      dataSold,
+      dataTransferd,
+    } = p;
 
-    var sql = `INSERT INTO objectinfo (dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, map_savefile_ID) VALUES ()`
+    var sql = `INSERT INTO objectinfo (dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, map_savefile_ID) VALUES ()`;
   }
 
   InsertUser(

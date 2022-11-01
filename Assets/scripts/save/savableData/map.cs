@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+        using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,5 +20,5 @@ public class cells
     public int y;
 
     public ObjectTypes objType;
-    public ObjInfo info = new ObjInfo();
+    public ObjInfo ObjInfo = new ObjInfo();
 }
