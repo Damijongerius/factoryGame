@@ -41,9 +41,21 @@ class Database {
             console.log("Connected To DataBase!");
         });
     }
-    InsertSaveFile(sf) {
-        const { name } = sf;
-        var sql = `INSERT INTO saveFile (SaveName) VALUES (${name})`;
+    InsertSaveFile(sf, GUID, callBack) {
+        const { Name } = sf.profile;
+        let lastId = -1;
+        var sql = `INSERT INTO saveFile (SaveName, users_UserId) VALUES ("${Name}", "${GUID}")`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
+            lastId = result.insertId;
+        });
+        return lastId;
+        // callBack(0);
+    }
+    InsertInfo(p, saveFileID) {
+        const { DateMade, DateSeen, TimePlayed } = p;
+        var sql = `INSERT INTO Info (DateMade,DateSeen,TimePlayed,savefile_ID) VALUES ("${DateMade}","${DateSeen}","${TimePlayed}", ${saveFileID})`;
         this.conn.query(sql, function (err, result) {
             if (err)
                 throw err;
@@ -51,15 +63,25 @@ class Database {
         });
         return 0;
     }
-    InsertInfo(p, saveFileID) {
-        const { DateMade, DateSeen, TimePlayed } = p;
-        var sql = `INSERT INTO Info () VALUES (${DateMade},${DateSeen},${TimePlayed})`;
+    Insertstatistics(p, saveFileId) {
+        const { networth, money, data, xp, Level } = p;
+        var sql = `INSERT INTO statistics (Networth,Money,Data,Xp,Level, _savefile_ID) VALUES (${networth},${money},${data},${xp},${Level},${saveFileId})`;
         this.conn.query(sql, function (err, result) {
             if (err)
                 throw err;
-            return result.insertId;
         });
-        return 0;
+    }
+    InsertMap(p, saveFileId) {
+        const { xRange, yRange } = p;
+        var sql = `INSERT INTO map (xRange,yRange,savefile_ID) VALUES (${xRange},${yRange},${saveFileId})`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
+        });
+    }
+    Insertobjectinfo(p, saveFileId) {
+        const { dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd } = p;
+        var sql = `INSERT INTO objectinfo (dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, map_savefile_ID) VALUES ()`;
     }
     InsertUser(guid, name, password, callback) {
         var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;

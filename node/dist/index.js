@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const SaveFile_1 = require("./models/SaveFile");
 const Database_1 = require("./DB/Database");
 ;
 const { saveFile } = require("./models/SaveFile");
@@ -27,9 +28,15 @@ app.listen(3000, function () {
 });
 // // \\ // \\ // \\
 app.post("/recieve", function (req, res) {
-    //const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
-    //const { map, Info } = saveFile;
-    //var lastID = DB.InsertSaveFile(saveFile);
+    const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
+    console.log(saveFile);
+    const { map, profile } = saveFile;
+    var lastID = Database_1.DB.InsertSaveFile(saveFile, req.body.GUID, function (insertId) {
+        Database_1.DB.InsertInfo(profile, insertId);
+        //DB.InstertStatistics
+    });
+    console.log(lastID);
+    Database_1.DB.InsertInfo(profile, lastID);
 });
 // \\ // \\ // \\ //
 app.post("/GetSF", function (req, res) { });

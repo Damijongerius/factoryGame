@@ -26,18 +26,22 @@ export class Database {
     });
   }
 
-  InsertSaveFile(sf: SaveFile, GUID: string, callBack: Function){
-    const { name } = sf;
+  InsertSaveFile(sf: SaveFile, GUID: string, callBack: Function): number{
+    const { Name } = sf.profile;
 
-    var sql = `INSERT INTO saveFile (SaveName, User_UserId) VALUES ("${name}", "${GUID}")`;
+    let lastId: number = -1
+
+    var sql = `INSERT INTO saveFile (SaveName, users_UserId) VALUES ("${Name}", "${GUID}")`;
 
     this.conn.query(sql, function (err, result) {
       if (err) throw err;
 
-      callBack(result.insertId);
+      lastId = result.insertId;
     });
 
-    callBack(0);
+    return lastId;
+
+    // callBack(0);
   }
 
   InsertInfo(p: Info, saveFileID: number): number {

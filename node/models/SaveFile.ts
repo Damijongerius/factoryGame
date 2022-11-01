@@ -1,8 +1,7 @@
 
 export interface SaveFile {
-  Info: Info;
+  profile: Info;
   map:     Map;
-  name:    string;
 }
 
 export interface Map {
@@ -39,6 +38,7 @@ export interface Info {
   DateSeen:   Date;
   TimePlayed: string;
   Statistics: Statistics;
+  Name: string;
 }
 
 export interface Statistics {

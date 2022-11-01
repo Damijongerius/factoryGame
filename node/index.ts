@@ -26,12 +26,15 @@ app.listen(3000, function () {
 // // \\ // \\ // \\
 app.post("/recieve", function (req, res) {
   const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
-  const { map, Info } = saveFile;
+  console.log(saveFile)
+  const { map, profile } = saveFile;
   var lastID = DB.InsertSaveFile(saveFile, req.body.GUID, function (insertId: number) {
-    DB.InsertInfo(Info, insertId); 
+    DB.InsertInfo(profile, insertId); 
       
-    DB.InstertStatistics
+    //DB.InstertStatistics
   });
+  console.log(lastID)
+  DB.InsertInfo(profile, lastID)
 });
 // \\ // \\ // \\ //
 
