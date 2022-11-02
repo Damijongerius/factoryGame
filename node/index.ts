@@ -1,5 +1,6 @@
 import { SaveFile, Convert, Map, Statistics } from "./models/SaveFile";
 import { DB } from "./DB/Database";
+import { isNativeError } from "util/types";
 
 const { saveFile } = require("./models/SaveFile");
 //node module express
@@ -27,18 +28,15 @@ app.listen(3000, function () {
 app.post("/recieve", function (req, res) {
   const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
   console.log(saveFile);
-  const { map, Profile } = saveFile;
-  var lastID = DB.InsertSaveFile(
-    saveFile,
-    req.body.GUID,
-    function (insertId: number) {
-      DB.InsertInfo(Profile, insertId);
+  const { map, profile } = saveFile;
+  //als joris vraagt waarom je het weer naar callback hebt veranderd de return... was eerder dan dat de sql klaar was eventuele oplossing is await maar gaap nee
+  let lastId = 0;
+  DB.InsertSaveFile(saveFile,req.body.GUID, function (insertedID: number){
+    lastId = insertedID;
+    console.log(lastId);
+  });
 
-      //DB.InstertStatistics
-    }
-  );
-  console.log(lastID);
-  DB.InsertInfo(Profile, lastID);
+  console.log(lastId);
 });
 // \\ // \\ // \\ //
 

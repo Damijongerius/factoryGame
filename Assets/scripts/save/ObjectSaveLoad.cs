@@ -23,7 +23,7 @@ public class ObjectSaveLoad
                     cell.objType = GetType(grid[x, y].obj.tag);
 
 
-                    cell.info = GetInfo(cell.objType, grid, x, y);
+                    cell.ObjInfo = GetInfo(cell.objType, grid, x, y);
 
                     newGrid.Add(cell);
                 }
@@ -74,20 +74,20 @@ public class ObjectSaveLoad
                 case ObjectTypes.DATAWIRE:
                     {
                         scem.GetComponent<dataWire>().wire = new Wires();
-                        scem.GetComponent<dataWire>().wire.Settings(cell.info);
+                        scem.GetComponent<dataWire>().wire.Settings(cell.ObjInfo);
                         scem.tag = "dataWire";
                     }
                     break;
                 case ObjectTypes.DATAMINER:
                     {
                         scem.GetComponent<dataMiner>().miner = new Miner();
-                        scem.GetComponent<dataMiner>().miner.Settings(cell.info);
+                        scem.GetComponent<dataMiner>().miner.Settings(cell.ObjInfo);
                     }
                     break;
                 case ObjectTypes.UPLOADSTATION:
                     {
                         scem.GetComponent<uploadStation>().station = new UploadStation();
-                        scem.GetComponent<uploadStation>().station.Settings(cell.info);
+                        scem.GetComponent<uploadStation>().station.Settings(cell.ObjInfo);
                     }
                     break;
                 default:

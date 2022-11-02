@@ -1,4 +1,5 @@
 import { debug } from "console";
+import { umask } from "process";
 import { stringify } from "querystring";
 import internal from "stream";
 import {
@@ -32,8 +33,8 @@ export class Database {
     });
   }
 
-  InsertSaveFile(sf: SaveFile, GUID: string, callBack: Function): number {
-    const { Name } = sf.Profile;
+  InsertSaveFile(sf: SaveFile, GUID: string, callback: Function){
+    const { Name } = sf.profile;
 
     let lastId: number = -1;
 
@@ -42,12 +43,8 @@ export class Database {
     this.conn.query(sql, function (err, result) {
       if (err) throw err;
 
-      lastId = result.insertId;
+      callback(result.insertId);
     });
-
-    return lastId;
-
-    // callBack(0);
   }
 
   InsertInfo(p: Profile, saveFileID: number): number {

@@ -61,6 +61,7 @@ public class JsonSaveLoad
 
             string fileContent = JsonConvert.SerializeObject(_saveData);
             ProfileManager.getObject().StartSendCoroutine(fileContent);
+            Debug.Log(fileContent);
 
             byte[] encrypted = EncryptBytes(fileContent, personalAes.Key, personalAes.IV);
             writer.Write(personalAes.IV.Length);

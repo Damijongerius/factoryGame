@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const SaveFile_1 = require("./models/SaveFile");
 const Database_1 = require("./DB/Database");
-;
 const { saveFile } = require("./models/SaveFile");
 //node module express
 const { response, request, json } = require("express");
@@ -31,12 +30,13 @@ app.post("/recieve", function (req, res) {
     const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
     console.log(saveFile);
     const { map, profile } = saveFile;
-    var lastID = Database_1.DB.InsertSaveFile(saveFile, req.body.GUID, function (insertId) {
-        Database_1.DB.InsertInfo(profile, insertId);
-        //DB.InstertStatistics
+    //als joris vraagt waarom je het weer naar callback hebt veranderd de return... was eerder dan dat de sql klaar was eventuele oplossing is await maar gaap nee
+    let lastId = 0;
+    Database_1.DB.InsertSaveFile(saveFile, req.body.GUID, function (insertedID) {
+        lastId = insertedID;
+        console.log(lastId);
     });
-    console.log(lastID);
-    Database_1.DB.InsertInfo(profile, lastID);
+    console.log(lastId);
 });
 // \\ // \\ // \\ //
 app.post("/GetSF", function (req, res) { });
@@ -75,8 +75,8 @@ app.post("/LoadUser", function (req, res) {
                                             message: `the password matches ${data.UserName}`,
                                             Info: {
                                                 UserName: array[idx].UserName,
-                                                GUID: array[idx].UserId
-                                            }
+                                                GUID: array[idx].UserId,
+                                            },
                                         });
                                     }
                                     else {
@@ -95,7 +95,7 @@ app.post("/LoadUser", function (req, res) {
                     default: {
                         res.send({
                             Status: 101,
-                            message: "error on our end"
+                            message: "error on our end",
                         });
                         break;
                     }
