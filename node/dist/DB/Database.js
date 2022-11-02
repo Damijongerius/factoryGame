@@ -25,6 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DB = exports.Database = void 0;
 const EH = __importStar(require("./ErrorHandler"));
+const Insert_1 = require("./Insert");
 var mysql = require("mysql");
 class Database {
     constructor(host, user, password, database) {
@@ -40,67 +41,7 @@ class Database {
                 throw err;
             console.log("Connected To DataBase!");
         });
-    }
-    InsertSaveFile(sf, GUID) {
-        const { Name } = sf.profile;
-        let lastId = -1;
-        var sql = `INSERT INTO savefile (SaveName, users_UserId) VALUES ("${Name}", "${GUID}")`;
-        return new Promise((resolve, reject) => {
-            this.conn.query(sql, (err, result) => {
-                return err ? reject(err) : resolve(result.insertId);
-            });
-        });
-    }
-    InsertProfile(p, saveFileID) {
-        const { DateMade, DateSeen, TimePlayed } = p;
-        var sql = `INSERT INTO profile (DateMade,DateSeen,TimePlayed,savefile_ID) VALUES ("${DateMade}","${DateSeen}","${TimePlayed}", ${saveFileID})`;
-        this.conn.query(sql, function (err, result) {
-            if (err)
-                throw err;
-        });
-    }
-    Insertstatistics(p, saveFileId) {
-        const { networth, money, data, xp, Level } = p;
-        var sql = `INSERT INTO statistics (Networth,Money,Data,Xp,Level, _savefile_ID) VALUES (${networth},${money},${data},${xp},${Level},${saveFileId})`;
-        this.conn.query(sql, function (err, result) {
-            if (err)
-                throw err;
-        });
-    }
-    InsertMap(p, saveFileId) {
-        const { xRange, yRange } = p;
-        var sql = `INSERT INTO map (xRange,yRange,savefile_ID) VALUES (${xRange},${yRange},${saveFileId})`;
-        this.conn.query(sql, function (err, result) {
-            if (err)
-                throw err;
-        });
-    }
-    InsertCell(p, saveFileId) {
-        const { x, y, objType } = p;
-        var sql = `INSERT INTO cells ( x, y, ObjectTypes,map_savefile_ID) VALUES (${x},${y},${objType},${saveFileId})`;
-        this.conn.query(sql, function (err, result) {
-            if (err)
-                throw err;
-        });
-    }
-    InsertObjinfo(p, x, y) {
-        const { dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, } = p;
-        var sql = `INSERT INTO objectinfo (dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, cells_x, cells_y) VALUES (${dataStored}, ${powerStored}, ${level}, ${age}, ${upkeepCost}, ${dataMined}, ${dataSold}, ${dataTransferd}, ${x}, ${y})`;
-        this.conn.query(sql, function (err, result) {
-            if (err)
-                throw err;
-        });
-    }
-    InsertUser(guid, name, password, callback) {
-        var sql = `INSERT INTO users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
-        this.conn.query(sql, function (err, result) {
-            if (err) {
-                callback({ status: 0, message: "was not able to create your account" });
-            }
-            else {
-                callback({ status: 1, message: "your account has been created" });
-            }
-        });
+        this.insert = new Insert_1.Insert(this.conn);
     }
     SelectUser(data, callback) {
         let sql;

@@ -31,14 +31,14 @@ app.post("/recieve", function (req, res) {
         const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
         console.log(saveFile);
         const { map, profile } = saveFile;
-        const result = yield Database_1.DB.InsertSaveFile(saveFile, req.body.GUID);
+        const result = yield Database_1.DB.insert.SaveFile(saveFile, req.body.GUID);
         console.log(result);
-        Database_1.DB.InsertProfile(profile, result);
-        Database_1.DB.Insertstatistics(profile.Statistics, result);
-        Database_1.DB.InsertMap(map, result);
+        Database_1.DB.insert.Profile(profile, result);
+        Database_1.DB.insert.statistics(profile.Statistics, result);
+        Database_1.DB.insert.Map(map, result);
         map.grid.forEach((element, index, array) => {
-            Database_1.DB.InsertCell(element, result);
-            Database_1.DB.InsertObjinfo(element.ObjInfo, element.x, element.y);
+            Database_1.DB.insert.Cell(element, result);
+            Database_1.DB.insert.Objinfo(element.ObjInfo, element.x, element.y);
         });
     });
 });
@@ -47,7 +47,7 @@ app.post("/GetSF", function (req, res) { });
 app.post("/CreateUser", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const asyncHash = yield EncryptPasswordASync(req.body.Password);
-        Database_1.DB.InsertUser(req.body.GUID, req.body.UserName, asyncHash, function (info) {
+        Database_1.DB.insert.User(req.body.GUID, req.body.UserName, asyncHash, function (info) {
             res.send(JSON.stringify(info));
         });
     });

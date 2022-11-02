@@ -16,7 +16,7 @@ public class WebServer
         WWWForm form = new WWWForm();
         form.AddField("sendJson", data);
         form.AddField("GUID", User.GetInstance().guid.ToString());
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/recieve", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/SaveFile", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();

@@ -25,7 +25,7 @@ app.listen(3000, function () {
 });
 
 // // \\ // \\ // \\
-app.post("/recieve", async function (req, res) {
+app.post("/SaveFile", async function (req, res) {
   const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
   console.log(saveFile);
   const { map, profile } = saveFile;
@@ -61,7 +61,7 @@ app.post("/LoadUser", async function (req, res) {
   if (req.body.GUID != null) {
     data.GUID = req.body.GUID;
   }
-  DB.SelectUser(data, async function (info: any) {
+  DB.select.User(data, async function (info: any) {
     switch (info.status) {
       case 3: {
         res.send({

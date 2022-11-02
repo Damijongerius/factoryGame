@@ -12,6 +12,8 @@ import {
 import * as EH from "./ErrorHandler";
 import { cells } from "../models/SaveFile";
 import { Insert } from './Insert';
+import { Update } from './Update';
+import { Select } from './Select';
 var mysql = require("mysql");
 
 export class Database {
@@ -19,6 +21,8 @@ export class Database {
   errorHandler: EH.ErrorHandler;
 
   insert: Insert;
+  update: Update;
+  select: Select;
 
   constructor(host: string, user: string, password: string, database: string) {
     this.conn = mysql.createConnection({
@@ -35,29 +39,9 @@ export class Database {
     });
 
     this.insert = new Insert(this.conn);
+    this.update = new Update(this.conn);
+    this.select = new Select(this.conn);
   } 
-
-  SelectUser(data: any, callback: Function) {
-    let sql;
-    if (data.GUID == null) {
-      sql = `SELECT * FROM users WHERE UserName = "${data.UserName}" `;
-    } else {
-      sql = `SELECT * FROM users WHERE UserId = "${data.GUID}"`;
-    }
-
-    this.conn.query(sql, function (err, result) {
-      if (err) {
-        callback({ status: 3, message: "Was not able to find user" });
-        console.log(err);
-      } else {
-        callback({
-          status: 2,
-          message: "This is what i found",
-          result: result,
-        });
-      }
-    });
-  }
 }
 
 export const DB = new Database("localhost", "root", "", "factorygame");
