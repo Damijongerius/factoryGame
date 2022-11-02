@@ -41,25 +41,23 @@ class Database {
             console.log("Connected To DataBase!");
         });
     }
-    InsertSaveFile(sf, GUID, callback) {
+    InsertSaveFile(sf, GUID) {
         const { Name } = sf.profile;
         let lastId = -1;
-        var sql = `INSERT INTO saveFile (SaveName, users_UserId) VALUES ("${Name}", "${GUID}")`;
-        this.conn.query(sql, function (err, result) {
-            if (err)
-                throw err;
-            callback(result.insertId);
+        var sql = `INSERT INTO savefile (SaveName, users_UserId) VALUES ("${Name}", "${GUID}")`;
+        return new Promise((resolve, reject) => {
+            this.conn.query(sql, (err, result) => {
+                return err ? reject(err) : resolve(result.insertId);
+            });
         });
     }
-    InsertInfo(p, saveFileID) {
+    InsertProfile(p, saveFileID) {
         const { DateMade, DateSeen, TimePlayed } = p;
-        var sql = `INSERT INTO Info (DateMade,DateSeen,TimePlayed,savefile_ID) VALUES ("${DateMade}","${DateSeen}","${TimePlayed}", ${saveFileID})`;
+        var sql = `INSERT INTO profile (DateMade,DateSeen,TimePlayed,savefile_ID) VALUES ("${DateMade}","${DateSeen}","${TimePlayed}", ${saveFileID})`;
         this.conn.query(sql, function (err, result) {
             if (err)
                 throw err;
-            return result.insertId;
         });
-        return 0;
     }
     Insertstatistics(p, saveFileId) {
         const { networth, money, data, xp, Level } = p;
@@ -77,12 +75,24 @@ class Database {
                 throw err;
         });
     }
-    InsertobjectObjinfo(p, saveFileId) {
+    InsertCell(p, saveFileId) {
+        const { x, y, objType } = p;
+        var sql = `INSERT INTO cells ( x, y, ObjectTypes,map_savefile_ID) VALUES (${x},${y},${objType},${saveFileId})`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
+        });
+    }
+    InsertObjinfo(p, x, y) {
         const { dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, } = p;
-        var sql = `INSERT INTO objectinfo (dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, map_savefile_ID) VALUES ()`;
+        var sql = `INSERT INTO objectinfo (dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, cells_x, cells_y) VALUES (${dataStored}, ${powerStored}, ${level}, ${age}, ${upkeepCost}, ${dataMined}, ${dataSold}, ${dataTransferd}, ${x}, ${y})`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
+        });
     }
     InsertUser(guid, name, password, callback) {
-        var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
+        var sql = `INSERT INTO users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
         this.conn.query(sql, function (err, result) {
             if (err) {
                 callback({ status: 0, message: "was not able to create your account" });
@@ -95,10 +105,10 @@ class Database {
     SelectUser(data, callback) {
         let sql;
         if (data.GUID == null) {
-            sql = `SELECT * FROM Users WHERE UserName = "${data.UserName}" `;
+            sql = `SELECT * FROM users WHERE UserName = "${data.UserName}" `;
         }
         else {
-            sql = `SELECT * FROM Users WHERE UserId = "${data.GUID}"`;
+            sql = `SELECT * FROM users WHERE UserId = "${data.GUID}"`;
         }
         this.conn.query(sql, function (err, result) {
             if (err) {

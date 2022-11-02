@@ -27,16 +27,20 @@ app.listen(3000, function () {
 });
 // // \\ // \\ // \\
 app.post("/recieve", function (req, res) {
-    const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
-    console.log(saveFile);
-    const { map, profile } = saveFile;
-    //als joris vraagt waarom je het weer naar callback hebt veranderd de return... was eerder dan dat de sql klaar was eventuele oplossing is await maar gaap nee
-    let lastId = 0;
-    Database_1.DB.InsertSaveFile(saveFile, req.body.GUID, function (insertedID) {
-        lastId = insertedID;
-        console.log(lastId);
+    return __awaiter(this, void 0, void 0, function* () {
+        const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
+        console.log(saveFile);
+        const { map, profile } = saveFile;
+        const result = yield Database_1.DB.InsertSaveFile(saveFile, req.body.GUID);
+        console.log(result);
+        Database_1.DB.InsertProfile(profile, result);
+        Database_1.DB.Insertstatistics(profile.Statistics, result);
+        Database_1.DB.InsertMap(map, result);
+        map.grid.forEach((element, index, array) => {
+            Database_1.DB.InsertCell(element, result);
+            Database_1.DB.InsertObjinfo(element.ObjInfo, element.x, element.y);
+        });
     });
-    console.log(lastId);
 });
 // \\ // \\ // \\ //
 app.post("/GetSF", function (req, res) { });

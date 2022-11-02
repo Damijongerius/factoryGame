@@ -25,18 +25,19 @@ app.listen(3000, function () {
 });
 
 // // \\ // \\ // \\
-app.post("/recieve", function (req, res) {
+app.post("/recieve", async function (req, res) {
   const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
   console.log(saveFile);
   const { map, profile } = saveFile;
-  //als joris vraagt waarom je het weer naar callback hebt veranderd de return... was eerder dan dat de sql klaar was eventuele oplossing is await maar gaap nee
-  let lastId = 0;
-  DB.InsertSaveFile(saveFile,req.body.GUID, function (insertedID: number){
-    lastId = insertedID;
-    console.log(lastId);
+  const result = await DB.insert.SaveFile(saveFile, req.body.GUID);
+  console.log(result);
+  DB.insert.Profile(profile, result);
+  DB.insert.statistics(profile.Statistics, result);
+  DB.insert.Map(map, result);
+  map.grid.forEach((element, index, array) => {
+    DB.insert.Cell(element, result);
+    DB.insert.Objinfo(element.ObjInfo, element.x, element.y);
   });
-
-  console.log(lastId);
 });
 // \\ // \\ // \\ //
 
@@ -44,7 +45,7 @@ app.post("/GetSF", function (req, res) {});
 
 app.post("/CreateUser", async function (req, res) {
   const asyncHash = await EncryptPasswordASync(req.body.Password);
-  DB.InsertUser(
+  DB.insert.User(
     req.body.GUID,
     req.body.UserName,
     asyncHash,

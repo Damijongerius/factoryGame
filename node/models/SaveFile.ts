@@ -6,10 +6,10 @@ export interface SaveFile {
 export interface Map {
   xRange: number;
   yRange: number;
-  grid:   Grid[];
+  grid:   cells[];
 }
 
-export interface Grid {
+export interface cells {
   x:       number;
   y:       number;
   objType: number;
