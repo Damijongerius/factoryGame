@@ -1,10 +1,24 @@
-import { Profile, SaveFile, Statistics, Map, cells, ObjInfo } from "../models/SaveFile";
+import { Profile, SaveFile, Statistics, Map, cells, ObjInfo } from '../models/SaveFile';
 
 export class Select{
     conn: any;
     constructor(conn: any) {
       this.conn = conn;
     }
+
+    SaveFile(Info: any) {
+        if(Info.UserID != null){
+            
+        }else if(Info.saveFileID != null){
+
+        }
+    
+        var sql = `SELECT * FROM savefile WHERE SaveName = ${} AND users_UserId = ${}`;
+    
+        this.conn.query(sql, function (err, result) {
+            if (err) throw err;
+          });
+      }
   
     Profile(saveFileID: number) {
       var sql = `SELECT * FROM profile WHERE savefile_ID = ${saveFileID}`;
