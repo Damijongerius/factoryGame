@@ -12,7 +12,7 @@ class Convert {
     }
 }
 exports.Convert = Convert;
-function invalidValue(typ, val, key = '') {
+function invalidValue(typ, val, key = "") {
     if (key) {
         throw Error(`Invalid value for key "${key}". Expected type ${JSON.stringify(typ)} but got ${JSON.stringify(val)}`);
     }
@@ -21,7 +21,7 @@ function invalidValue(typ, val, key = '') {
 function jsonToJSProps(typ) {
     if (typ.jsonToJS === undefined) {
         const map = {};
-        typ.props.forEach((p) => map[p.json] = { key: p.js, typ: p.typ });
+        typ.props.forEach((p) => (map[p.json] = { key: p.js, typ: p.typ }));
         typ.jsonToJS = map;
     }
     return typ.jsonToJS;
@@ -29,12 +29,12 @@ function jsonToJSProps(typ) {
 function jsToJSONProps(typ) {
     if (typ.jsToJSON === undefined) {
         const map = {};
-        typ.props.forEach((p) => map[p.js] = { key: p.json, typ: p.typ });
+        typ.props.forEach((p) => (map[p.js] = { key: p.json, typ: p.typ }));
         typ.jsToJSON = map;
     }
     return typ.jsToJSON;
 }
-function transform(val, typ, getProps, key = '') {
+function transform(val, typ, getProps, key = "") {
     function transformPrimitive(typ, val) {
         if (typeof typ === typeof val)
             return val;
@@ -61,7 +61,7 @@ function transform(val, typ, getProps, key = '') {
         // val must be an array with no invalid elements
         if (!Array.isArray(val))
             return invalidValue("array", val);
-        return val.map(el => transform(el, typ, getProps));
+        return val.map((el) => transform(el, typ, getProps));
     }
     function transformDate(val) {
         if (val === null) {
@@ -78,12 +78,14 @@ function transform(val, typ, getProps, key = '') {
             return invalidValue("object", val);
         }
         const result = {};
-        Object.getOwnPropertyNames(props).forEach(key => {
+        Object.getOwnPropertyNames(props).forEach((key) => {
             const prop = props[key];
-            const v = Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
+            const v = Object.prototype.hasOwnProperty.call(val, key)
+                ? val[key]
+                : undefined;
             result[prop.key] = transform(v, prop.typ, getProps, prop.key);
         });
-        Object.getOwnPropertyNames(val).forEach(key => {
+        Object.getOwnPropertyNames(val).forEach((key) => {
             if (!Object.prototype.hasOwnProperty.call(props, key)) {
                 result[key] = transform(val[key], additional, getProps, key);
             }
@@ -105,9 +107,12 @@ function transform(val, typ, getProps, key = '') {
     if (Array.isArray(typ))
         return transformEnum(typ, val);
     if (typeof typ === "object") {
-        return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems") ? transformArray(typ.arrayItems, val)
-                : typ.hasOwnProperty("props") ? transformObject(getProps(typ), typ.additional, val)
+        return typ.hasOwnProperty("unionMembers")
+            ? transformUnion(typ.unionMembers, val)
+            : typ.hasOwnProperty("arrayItems")
+                ? transformArray(typ.arrayItems, val)
+                : typ.hasOwnProperty("props")
+                    ? transformObject(getProps(typ), typ.additional, val)
                     : invalidValue(typ, val);
     }
     // Numbers can be parsed by Date but shouldn't be.
@@ -137,22 +142,22 @@ function r(name) {
     return { ref: name };
 }
 const typeMap = {
-    "SaveFile": o([
+    SaveFile: o([
         { json: "profile", js: "profile", typ: r("Profile") },
         { json: "map", js: "map", typ: r("Map") },
     ], false),
-    "Map": o([
+    Map: o([
         { json: "xRange", js: "xRange", typ: 3.14 },
         { json: "yRange", js: "yRange", typ: 3.14 },
         { json: "grid", js: "grid", typ: a(r("Grid")) },
     ], false),
-    "Grid": o([
+    Grid: o([
         { json: "x", js: "x", typ: 0 },
         { json: "y", js: "y", typ: 0 },
         { json: "objType", js: "objType", typ: 0 },
         { json: "info", js: "info", typ: r("Info") },
     ], false),
-    "Info": o([
+    Info: o([
         { json: "exitPoints", js: "exitPoints", typ: u(undefined, true) },
         { json: "powered", js: "powered", typ: u(undefined, true) },
         { json: "dataStored", js: "dataStored", typ: 0 },
@@ -167,14 +172,14 @@ const typeMap = {
         { json: "SelfPrio", js: "SelfPrio", typ: u(undefined, 0) },
         { json: "updateSpeed", js: "updateSpeed", typ: u(undefined, 0) },
     ], false),
-    "Profile": o([
+    Profile: o([
         { json: "Name", js: "Name", typ: "" },
         { json: "DateMade", js: "DateMade", typ: Date },
         { json: "DateSeen", js: "DateSeen", typ: Date },
         { json: "TimePlayed", js: "TimePlayed", typ: "" },
         { json: "Statistics", js: "Statistics", typ: r("Statistics") },
     ], false),
-    "Statistics": o([
+    Statistics: o([
         { json: "networth", js: "networth", typ: 0 },
         { json: "money", js: "money", typ: 0 },
         { json: "data", js: "data", typ: 0 },

@@ -42,7 +42,7 @@ class Database {
         });
     }
     InsertSaveFile(sf, GUID, callBack) {
-        const { Name } = sf.profile;
+        const { Name } = sf.Profile;
         let lastId = -1;
         var sql = `INSERT INTO saveFile (SaveName, users_UserId) VALUES ("${Name}", "${GUID}")`;
         this.conn.query(sql, function (err, result) {
@@ -79,8 +79,8 @@ class Database {
                 throw err;
         });
     }
-    Insertobjectinfo(p, saveFileId) {
-        const { dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd } = p;
+    InsertobjectObjinfo(p, saveFileId) {
+        const { dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, } = p;
         var sql = `INSERT INTO objectinfo (dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, map_savefile_ID) VALUES ()`;
     }
     InsertUser(guid, name, password, callback) {

@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const SaveFile_1 = require("./models/SaveFile");
 const Database_1 = require("./DB/Database");
-;
 const { saveFile } = require("./models/SaveFile");
 //node module express
 const { response, request, json } = require("express");
@@ -30,13 +29,13 @@ app.listen(3000, function () {
 app.post("/recieve", function (req, res) {
     const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
     console.log(saveFile);
-    const { map, profile } = saveFile;
+    const { map, Profile } = saveFile;
     var lastID = Database_1.DB.InsertSaveFile(saveFile, req.body.GUID, function (insertId) {
-        Database_1.DB.InsertInfo(profile, insertId);
+        Database_1.DB.InsertInfo(Profile, insertId);
         //DB.InstertStatistics
     });
     console.log(lastID);
-    Database_1.DB.InsertInfo(profile, lastID);
+    Database_1.DB.InsertInfo(Profile, lastID);
 });
 // \\ // \\ // \\ //
 app.post("/GetSF", function (req, res) { });
@@ -75,8 +74,8 @@ app.post("/LoadUser", function (req, res) {
                                             message: `the password matches ${data.UserName}`,
                                             Info: {
                                                 UserName: array[idx].UserName,
-                                                GUID: array[idx].UserId
-                                            }
+                                                GUID: array[idx].UserId,
+                                            },
                                         });
                                     }
                                     else {
@@ -95,7 +94,7 @@ app.post("/LoadUser", function (req, res) {
                     default: {
                         res.send({
                             Status: 101,
-                            message: "error on our end"
+                            message: "error on our end",
                         });
                         break;
                     }
