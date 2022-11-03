@@ -42,6 +42,9 @@ app.post("/Save/savefile", async function (req, res) {
 });
 // \\ // \\ // \\ //
 
+app.post("/load/profiles", function (req,res){
+  
+});
 // // \\ // \\ // \\
 app.post("/Load/savefile", function (req, res){
   req.body.LastSeen;
