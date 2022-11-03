@@ -23,10 +23,10 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.listen(3000, function () {
-    console.log("server draai");
+    console.log("server running");
 });
 // // \\ // \\ // \\
-app.post("/SaveFile", function (req, res) {
+app.post("/Save/savefile", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
         console.log(saveFile);
@@ -43,7 +43,64 @@ app.post("/SaveFile", function (req, res) {
     });
 });
 // \\ // \\ // \\ //
-app.post("/GetSF", function (req, res) { });
+app.post("/load/profiles", function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (req.body.GUID != null) {
+            const result = yield Database_1.DB.select.SaveFile(req.body.GUID);
+            if (result != null) {
+                let respond = new Array;
+                for (const rs of result) {
+                    const profiles = yield Database_1.DB.select.Profile(rs.ID);
+                    respond.push(profiles[0]);
+                }
+                res.send({ profiles: respond, saveFiles: result });
+            }
+            else {
+                res.send({ status: 101, message: "unknown ERROR" });
+            }
+        }
+        else {
+            res.send({ status: 11, message: "need valid GUID" });
+        }
+    });
+});
+// // \\ // \\ // \\
+app.post("/Load/savefile", function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const ID = req.body.SaveFile_ID;
+        const GUID = req.body.GUID;
+        if (GUID != null) {
+            if (ID instanceof (Array)) {
+            }
+            else if (ID instanceof Number) {
+                GenerateSaveFile(ID);
+            }
+            else {
+                res.send({ status: 13, message: "need valid ID" });
+            }
+        }
+        else {
+            res.send({ status: 11, message: "need valid GUID" });
+        }
+        function GenerateSaveFile(ID) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let saveFile;
+                const sf = yield Database_1.DB.select.SaveFile(GUID);
+                const profile = yield Database_1.DB.select.Profile(ID);
+                const map = yield Database_1.DB.select.Map(ID);
+                const statistics = yield Database_1.DB.select.statistics(ID);
+                const cells = yield Database_1.DB.select.Cell(ID);
+                let objectinfos;
+                for (const cell in cells) {
+                    const objInfo = yield Database_1.DB.select.Objinfo(cell.x, cell.y, GUID);
+                    objectinfos.push(objInfo[0]);
+                }
+                //const objInfo = await DB.select.SaveFile(GUID);
+            });
+        }
+    });
+});
+// \\ // \\ // \\ //
 app.post("/CreateUser", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const asyncHash = yield EncryptPasswordASync(req.body.Password);

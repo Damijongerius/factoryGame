@@ -1,4 +1,4 @@
-import { SaveFile, Convert, Map, Statistics } from "./models/SaveFile";
+import { SaveFile, Convert, Map, Statistics, Profile, ObjInfo, cells } from './models/SaveFile';
 import { DB } from "./DB/Database";
 import { isNativeError } from "util/types";
 import { stringify } from 'querystring';
@@ -42,30 +42,60 @@ app.post("/Save/savefile", async function (req, res) {
 });
 // \\ // \\ // \\ //
 
-app.post("/load/profiles", function (req,res){
-  
+app.post("/load/profiles", async function (req,res){
+  if(req.body.GUID  != null){
+    const result: any = await DB.select.SaveFile(req.body.GUID);
+    if(result != null){
+      let respond: Array<Profile> = new Array<Profile>;
+      for(const rs of result){
+        const profiles: any = await DB.select.Profile(rs.ID);
+        respond.push(profiles[0]);
+      }
+        res.send({profiles: respond, saveFiles: result});
+    }
+    else{
+      res.send({status: 101, message: "unknown ERROR"});
+    }
+  }
+  else{
+    res.send({status: 11, message: "need valid GUID"});
+  }
 });
 // // \\ // \\ // \\
-app.post("/Load/savefile", function (req, res){
-  req.body.LastSeen;
-  req.body.lastSeen[0];
+app.post("/Load/savefile", async function (req, res){
+  const ID = req.body.SaveFile_ID;
+  const GUID = req.body.GUID;
+  if(GUID != null){
+  if(ID instanceof Array<number>){
 
-  req.body.SaveName
-  if(req.body.GUID !=null){
-    if(req.body.SaveName instanceof Array){
-      //get all savefiles with no lastseen time
-      //or outdated
-    }
-    else if(req.body.SaveName != null){
-      //find 1 savefile
-    }
-    else{
-     res.send({status: 10, message: "there was not enough information need LastSeen"});
-     }
-    }
-    else{
-      res.send({status: 11, message: "need valid GUID"});
-    }
+  }else if(ID instanceof Number){
+    GenerateSaveFile(ID);
+  }else{
+    res.send({status: 13, message: "need valid ID"});
+  }
+}
+else{
+  res.send({status: 11, message: "need valid GUID"});
+}
+
+async function GenerateSaveFile(ID: Number){
+  let saveFile: SaveFile;
+  const sf = await DB.select.SaveFile(GUID);
+  const profile = await DB.select.Profile(ID);
+  const map = await DB.select.Map(ID);
+  const statistics = await DB.select.statistics(ID);
+  const cells: object[] = await DB.select.Cell(ID);
+
+  let objectinfos;
+  if(cells instanceof Array<Object>)
+  for(var cell in cells){
+    const objInfo: any = await DB.select.Objinfo(cell.x, cell.y, GUID);
+    objectinfos.push(objInfo[0]);
+  }
+  
+  //const objInfo = await DB.select.SaveFile(GUID);
+}
+
   });
 // \\ // \\ // \\ //
 

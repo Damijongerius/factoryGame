@@ -1,22 +1,19 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class WebServer
 {
-    public IEnumerator DoNoting()
-    {
-        Debug.Log("het ligt aan de functie");
-        return null;
-    }
    public IEnumerator sendSaveFile(string data)
     {
         WWWForm form = new WWWForm();
         form.AddField("sendJson", data);
         form.AddField("GUID", User.GetInstance().guid.ToString());
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/SaveFile", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Save/savefile", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
@@ -34,24 +31,41 @@ public class WebServer
         }
     }
 
-    public IEnumerator GetProfiles()
+    public IEnumerator GetSaveFilesAsync()
     {
-        WWWForm form = new WWWForm();
-        form.AddField("GUID", User.GetInstance().guid.ToString());
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Load/profiles", form))
-        {
-            www.downloadHandler = new DownloadHandlerBuffer();
-            yield return www.SendWebRequest();
+        string profiles = GetProfilesFromGUID();
 
-            if (www.result == UnityWebRequest.Result.ConnectionError)
+        if(profiles != null)
+        {
+            Profile[] pf = JsonConvert.DeserializeObject<Profile[]>(profiles);
+            Debug.Log(pf[0]);
+
+        }
+        else
+        {
+            return null;
+        }
+
+        return null;
+
+        string GetProfilesFromGUID()
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("GUID", User.GetInstance().guid.ToString());
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Load/profiles", form))
             {
-                Debug.Log(www.error);
-                www.Dispose();
-            }
-            else
-            {
-                Debug.Log(www.downloadHandler.text);
-                www.Dispose();
+                www.downloadHandler = new DownloadHandlerBuffer();
+                www.SendWebRequest();
+
+                if (www.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    return www.error;
+                }
+                else
+                {
+                    return www.downloadHandler.text;
+
+                }
             }
         }
     }

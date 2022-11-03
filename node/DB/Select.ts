@@ -8,7 +8,7 @@ export class Select{
     }
 
     SaveFile(GUID: string){
-        var sql = `SELECT * FROM savefile WHERE users_UserId = ${GUID}`;
+        var sql = `SELECT * FROM savefile WHERE users_UserId = "${GUID}"`;
     
         return new Promise<unknown>((resolve, reject) => {
           this.conn.query(sql, (err, result) => {
@@ -17,7 +17,7 @@ export class Select{
         });
       }
   
-    Profile(saveFileID: number) {
+    Profile(saveFileID: Number) {
       var sql = `SELECT * FROM profile WHERE savefile_ID = ${saveFileID}`;
   
       return new Promise<unknown>((resolve, reject) => {
@@ -27,7 +27,7 @@ export class Select{
       });
     }
   
-    statistics(saveFileId: number) {
+    statistics(saveFileId: Number) {
   
       var sql = `SELECT * FROM statistics WHERE savefile_ID = ${saveFileId}`;
   
@@ -38,7 +38,7 @@ export class Select{
       });
     }
   
-    Map(saveFileId: number) {  
+    Map(saveFileId: Number) {  
       var sql = `SELECT * FROM map WHERE savefile_ID = ${saveFileId}`;
   
       return new Promise<unknown>((resolve, reject) => {
@@ -48,18 +48,18 @@ export class Select{
       });
     }
   
-    Cell(saveFileId: number) {
+    Cell(saveFileId: Number) {
       var sql = `SELECT * FROM cells WHERE savefile_ID = ${saveFileId}`;
   
-      return new Promise<unknown>((resolve, reject) => {
+      return new Promise<Array<object>>((resolve, reject) => {
         this.conn.query(sql, (err, result) => {
           return err ? reject(err) : resolve(result);
         });
       });
     }
   
-    Objinfo(x: number, y: number) { 
-      var sql = `SELECT * FROM objectinfo WHERE cells_x = ${x} AND cells_y = ${y}`;
+    Objinfo(x: Number, y: Number, saveFileId: Number) { 
+      var sql = `SELECT * FROM objectinfo WHERE cells_x = ${x} AND cells_y = ${y}  AND savefile_ID  = ${saveFileId}`;
   
       return new Promise<unknown>((resolve, reject) => {
         this.conn.query(sql, (err, result) => {
