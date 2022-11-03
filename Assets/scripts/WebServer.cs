@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine.Networking;
 
 public class WebServer
 {
-   public IEnumerator sendSaveFile(string data)
+    public IEnumerator sendSaveFile(string data)
     {
         WWWForm form = new WWWForm();
         form.AddField("sendJson", data);
@@ -31,7 +32,7 @@ public class WebServer
         }
     }
 
-    public IEnumerator GetSaveFilesAsync()
+    public IEnumerator GetSaveFiles()
     {
         string profiles = GetProfilesFromGUID();
 
@@ -59,7 +60,7 @@ public class WebServer
 
                 if (www.result == UnityWebRequest.Result.ConnectionError)
                 {
-                    return www.error;
+                    return www.error.ToString();
                 }
                 else
                 {
@@ -68,6 +69,63 @@ public class WebServer
                 }
             }
         }
+
+        string getSaveFile(int id)
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("ID", id);
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Load/savefile", form))
+            {
+                www.downloadHandler = new DownloadHandlerBuffer();
+                www.SendWebRequest();
+
+                if (www.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    return www.error.ToString();
+                }
+                else
+                {
+                    return www.downloadHandler.text;
+
+                }
+            }
+        }
+
+        string getSaveFiles(List<int> id)
+        {
+            WWWForm form = new WWWForm();
+            string idS = "[";
+            foreach (int idItem in id)
+            {
+                idS = idS + idItem;
+
+                if (idItem != id[id.Count])
+                {
+                    idS = idS + ",";
+                }
+                else
+                {
+                    idS = idS + "]";
+                }
+            }
+            form.AddField("ID", idS);
+            form.AddField("GUID", User.GetInstance().guid.ToString());
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Load/savefile", form))
+            {
+                www.downloadHandler = new DownloadHandlerBuffer();
+                www.SendWebRequest();
+
+                if (www.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    return www.error.ToString();
+                }
+                else
+                {
+                    return www.downloadHandler.text;
+                }
+            }
+        }
+
     }
 
     public IEnumerator CreateUser(Guid GUID, string UserName, string password, Func<ReturnedData, bool> retrn)

@@ -63,7 +63,7 @@ app.post("/load/profiles", async function (req,res){
 });
 // // \\ // \\ // \\
 app.post("/Load/savefile", async function (req, res){
-  const ID = req.body.SaveFile_ID;
+  const ID = req.body.ID;
   const GUID = req.body.GUID;
   if(GUID != null){
   if(ID instanceof Array<number>){
