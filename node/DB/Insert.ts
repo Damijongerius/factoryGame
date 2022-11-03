@@ -32,7 +32,7 @@ export class Insert{
     statistics(p: Statistics, saveFileId: number) {
       const { networth, money, data, xp, Level } = p;
   
-      var sql = `INSERT INTO statistics (Networth,Money,Data,Xp,Level, _savefile_ID) VALUES (${networth},${money},${data},${xp},${Level},${saveFileId})`;
+      var sql = `INSERT INTO statistics (Networth,Money,Data,Xp,Level, savefile_ID) VALUES (${networth},${money},${data},${xp},${Level},${saveFileId})`;
   
       this.conn.query(sql, function (err, result) {
         if (err) throw err;
@@ -53,14 +53,14 @@ export class Insert{
       const { x, y, objType } = p;
   
   
-      var sql = `INSERT INTO cells ( x, y, ObjectTypes,map_savefile_ID) VALUES (${x},${y},${objType},${saveFileId})`;
+      var sql = `INSERT INTO cells ( x, y, ObjectTypes,savefile_ID) VALUES (${x},${y},${objType},${saveFileId})`;
   
       this.conn.query(sql, function (err, result) {
         if (err) throw err;
       });
     }
   
-    Objinfo(p: ObjInfo, x: number, y: number) {
+    Objinfo(p: ObjInfo, x: number, y: number, saveFileId: number) {
       const {
         dataStored,
         powerStored,
@@ -72,7 +72,7 @@ export class Insert{
         dataTransferd,
       } = p;
   
-      var sql = `INSERT INTO objectinfo (dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, cells_x, cells_y) VALUES (${dataStored}, ${powerStored}, ${level}, ${age}, ${upkeepCost}, ${dataMined}, ${dataSold}, ${dataTransferd}, ${x}, ${y})`;
+      var sql = `INSERT INTO objectinfo (dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, cells_x, cells_y,savefile_ID) VALUES (${dataStored}, ${powerStored}, ${level}, ${age}, ${upkeepCost}, ${dataMined}, ${dataSold}, ${dataTransferd}, ${x}, ${y}, ${saveFileId})`;
   
       this.conn.query(sql, function (err, result) {
         if (err) throw err;

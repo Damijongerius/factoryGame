@@ -1,6 +1,7 @@
 import { SaveFile, Convert, Map, Statistics } from "./models/SaveFile";
 import { DB } from "./DB/Database";
 import { isNativeError } from "util/types";
+import { stringify } from 'querystring';
 
 const { saveFile } = require("./models/SaveFile");
 //node module express
@@ -21,11 +22,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.listen(3000, function () {
-  console.log("server draai");
+  console.log("server running");
 });
 
 // // \\ // \\ // \\
-app.post("/SaveFile", async function (req, res) {
+app.post("/Save/savefile", async function (req, res) {
   const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
   console.log(saveFile);
   const { map, profile } = saveFile;
@@ -36,12 +37,34 @@ app.post("/SaveFile", async function (req, res) {
   DB.insert.Map(map, result);
   map.grid.forEach((element, index, array) => {
     DB.insert.Cell(element, result);
-    DB.insert.Objinfo(element.ObjInfo, element.x, element.y);
+    DB.insert.Objinfo(element.ObjInfo, element.x, element.y, result);
   });
 });
 // \\ // \\ // \\ //
 
-app.post("/GetSF", function (req, res) {});
+// // \\ // \\ // \\
+app.post("/Load/savefile", function (req, res){
+  req.body.LastSeen;
+  req.body.lastSeen[0];
+
+  req.body.SaveName
+  if(req.body.GUID !=null){
+    if(req.body.SaveName instanceof Array){
+      //get all savefiles with no lastseen time
+      //or outdated
+    }
+    else if(req.body.SaveName != null){
+      //find 1 savefile
+    }
+    else{
+     res.send({status: 10, message: "there was not enough information need LastSeen"});
+     }
+    }
+    else{
+      res.send({status: 11, message: "need valid GUID"});
+    }
+  });
+// \\ // \\ // \\ //
 
 app.post("/CreateUser", async function (req, res) {
   const asyncHash = await EncryptPasswordASync(req.body.Password);

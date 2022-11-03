@@ -26,7 +26,7 @@ app.listen(3000, function () {
     console.log("server draai");
 });
 // // \\ // \\ // \\
-app.post("/recieve", function (req, res) {
+app.post("/SaveFile", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
         console.log(saveFile);
@@ -38,7 +38,7 @@ app.post("/recieve", function (req, res) {
         Database_1.DB.insert.Map(map, result);
         map.grid.forEach((element, index, array) => {
             Database_1.DB.insert.Cell(element, result);
-            Database_1.DB.insert.Objinfo(element.ObjInfo, element.x, element.y);
+            Database_1.DB.insert.Objinfo(element.ObjInfo, element.x, element.y, result);
         });
     });
 });
@@ -59,7 +59,7 @@ app.post("/LoadUser", function (req, res) {
         if (req.body.GUID != null) {
             data.GUID = req.body.GUID;
         }
-        Database_1.DB.SelectUser(data, function (info) {
+        Database_1.DB.select.User(data, function (info) {
             return __awaiter(this, void 0, void 0, function* () {
                 switch (info.status) {
                     case 3: {

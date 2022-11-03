@@ -19,7 +19,7 @@ export class Update{
     statistics(p: Statistics, saveFileId: number) {
       const { networth, money, data, xp, Level } = p;
   
-      var sql = `UPDATE statistics SET Networth = ${networth}, Money = ${money}, Data = ${data}, Xp = ${xp},Level = ${Level} WHERE _savefile_ID = ${saveFileId}`;
+      var sql = `UPDATE statistics SET Networth = ${networth}, Money = ${money}, Data = ${data}, Xp = ${xp},Level = ${Level} WHERE savefile_ID = ${saveFileId}`;
   
       this.conn.query(sql, function (err, result) {
         if (err) throw err;
@@ -30,14 +30,14 @@ export class Update{
       const { x, y, objType } = p;
   
   
-      var sql = `UPDATE cells SET x = ${x}, y = ${y}, ObjectTypes = ${objType} WHERE map_savefile_ID = ${saveFileId}`;
+      var sql = `UPDATE cells SET x = ${x}, y = ${y}, ObjectTypes = ${objType} WHERE savefile_ID = ${saveFileId}`;
   
       this.conn.query(sql, function (err, result) {
         if (err) throw err;
       });
     }
   
-    Objinfo(p: ObjInfo, x: number, y: number) {
+    Objinfo(p: ObjInfo, x: number, y: number, saveFileId: number) {
       const {
         dataStored,
         powerStored,
@@ -49,7 +49,7 @@ export class Update{
         dataTransferd,
       } = p;
   
-      var sql = `UPDATE objectinfo SET dataStored = ${dataStored}, powerStored = ${powerStored}, level = ${level}, age  = ${age}, upkeepCost = ${upkeepCost}, dataMined = ${dataMined}, dataSold = ${dataSold}, dataTransferd ${dataTransferd} WHERE cells_x = ${x} AND cells_y = ${y}`;
+      var sql = `UPDATE objectinfo SET dataStored = ${dataStored}, powerStored = ${powerStored}, level = ${level}, age  = ${age}, upkeepCost = ${upkeepCost}, dataMined = ${dataMined}, dataSold = ${dataSold}, dataTransferd ${dataTransferd} WHERE cells_x = ${x} AND cells_y = ${y} AND savefile_ID`;
   
       this.conn.query(sql, function (err, result) {
         if (err) throw err;

@@ -1,3 +1,4 @@
+import { rejects } from 'assert';
 import { Profile, SaveFile, Statistics, Map, cells, ObjInfo } from '../models/SaveFile';
 
 export class Select{
@@ -6,59 +7,64 @@ export class Select{
       this.conn = conn;
     }
 
-    SaveFile(Info: any) {
-        if(Info.UserID != null){
-            
-        }else if(Info.saveFileID != null){
-
-        }
+    SaveFile(GUID: string){
+        var sql = `SELECT * FROM savefile WHERE users_UserId = ${GUID}`;
     
-        var sql = `SELECT * FROM savefile WHERE SaveName = ${} AND users_UserId = ${}`;
-    
-        this.conn.query(sql, function (err, result) {
-            if (err) throw err;
+        return new Promise<unknown>((resolve, reject) => {
+          this.conn.query(sql, (err, result) => {
+            return err ? reject(err) : resolve(result);
           });
+        });
       }
   
     Profile(saveFileID: number) {
       var sql = `SELECT * FROM profile WHERE savefile_ID = ${saveFileID}`;
   
-      this.conn.query(sql, function (err, result) {
-        if (err) throw err;
+      return new Promise<unknown>((resolve, reject) => {
+        this.conn.query(sql, (err, result) => {
+          return err ? reject(err) : resolve(result);
+        });
       });
     }
   
-    statistics(p: Statistics, saveFileId: number) {
-      const { networth, money, data, xp, Level } = p;
+    statistics(saveFileId: number) {
   
-      var sql = `SELECT * FROM statistics WHERE _savefile_ID = ${saveFileId}`;
+      var sql = `SELECT * FROM statistics WHERE savefile_ID = ${saveFileId}`;
   
-      this.conn.query(sql, function (err, result) {
-        if (err) throw err;
+      return new Promise<unknown>((resolve, reject) => {
+        this.conn.query(sql, (err, result) => {
+          return err ? reject(err) : resolve(result);
+        });
       });
     }
   
     Map(saveFileId: number) {  
       var sql = `SELECT * FROM map WHERE savefile_ID = ${saveFileId}`;
   
-      this.conn.query(sql, function (err, result) {
-        if (err) throw err;
+      return new Promise<unknown>((resolve, reject) => {
+        this.conn.query(sql, (err, result) => {
+          return err ? reject(err) : resolve(result);
+        });
       });
     }
   
     Cell(saveFileId: number) {
-      var sql = `SELECT * FROM cells WHERE map_savefile_ID = ${saveFileId}`;
+      var sql = `SELECT * FROM cells WHERE savefile_ID = ${saveFileId}`;
   
-      this.conn.query(sql, function (err, result) {
-        if (err) throw err;
+      return new Promise<unknown>((resolve, reject) => {
+        this.conn.query(sql, (err, result) => {
+          return err ? reject(err) : resolve(result);
+        });
       });
     }
   
     Objinfo(x: number, y: number) { 
       var sql = `SELECT * FROM objectinfo WHERE cells_x = ${x} AND cells_y = ${y}`;
   
-      this.conn.query(sql, function (err, result) {
-        if (err) throw err;
+      return new Promise<unknown>((resolve, reject) => {
+        this.conn.query(sql, (err, result) => {
+          return err ? reject(err) : resolve(result);
+        });
       });
     }
   

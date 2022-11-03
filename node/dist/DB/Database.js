@@ -26,6 +26,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DB = exports.Database = void 0;
 const EH = __importStar(require("./ErrorHandler"));
 const Insert_1 = require("./Insert");
+const Update_1 = require("./Update");
+const Select_1 = require("./Select");
 var mysql = require("mysql");
 class Database {
     constructor(host, user, password, database) {
@@ -42,28 +44,8 @@ class Database {
             console.log("Connected To DataBase!");
         });
         this.insert = new Insert_1.Insert(this.conn);
-    }
-    SelectUser(data, callback) {
-        let sql;
-        if (data.GUID == null) {
-            sql = `SELECT * FROM users WHERE UserName = "${data.UserName}" `;
-        }
-        else {
-            sql = `SELECT * FROM users WHERE UserId = "${data.GUID}"`;
-        }
-        this.conn.query(sql, function (err, result) {
-            if (err) {
-                callback({ status: 3, message: "Was not able to find user" });
-                console.log(err);
-            }
-            else {
-                callback({
-                    status: 2,
-                    message: "This is what i found",
-                    result: result,
-                });
-            }
-        });
+        this.update = new Update_1.Update(this.conn);
+        this.select = new Select_1.Select(this.conn);
     }
 }
 exports.Database = Database;

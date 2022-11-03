@@ -34,6 +34,28 @@ public class WebServer
         }
     }
 
+    public IEnumerator GetProfiles()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("GUID", User.GetInstance().guid.ToString());
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Load/profiles", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer();
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log(www.error);
+                www.Dispose();
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                www.Dispose();
+            }
+        }
+    }
+
     public IEnumerator CreateUser(Guid GUID, string UserName, string password, Func<ReturnedData, bool> retrn)
     {
         WWWForm form = new WWWForm();
@@ -59,6 +81,8 @@ public class WebServer
             }
             www.Dispose();
         }
+
+
     }
 
     public IEnumerator loadUser(string UserName, string password, Func<ReturnedData,bool> retrn)
