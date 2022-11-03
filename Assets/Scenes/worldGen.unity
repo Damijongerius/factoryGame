@@ -266,6 +266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   atlas: {fileID: 2100000, guid: ce58b2c5515a444458d3381b52a47e8c, type: 2}
+  pref: {fileID: 5513929445886063240, guid: 16ba69aed52b9604f967ddfda5fd3066, type: 3}
   size: 3200000032000000
 --- !u!1 &1867774887
 GameObject:

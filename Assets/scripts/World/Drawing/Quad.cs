@@ -9,11 +9,12 @@ public class Quad
 
     public Vector2[] GetUVs(Cell2 _cell)
     {
-        
-        if (_cell.isWater)
-            return water.uv;
+        if(_cell != null)
+        return _cell.isWater ? water.uv : grass.uv;
         else
-            return grass.uv;
+        {
+            return water.uv;
+        }
 
     }
 

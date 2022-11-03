@@ -11,6 +11,7 @@ public class Map2
     private Cell2[,,] Grid;
 
     private readonly int[] size;
+    public GameObject pref; 
 
     private readonly float[] Seed = new float[2];
 
@@ -20,9 +21,10 @@ public class Map2
     private readonly DrawTerrain terrainGenerator;
     //constructors
     //  // \\ // \\ // \\
-    public Map2(float[] _seed, int[] _size, Material _atlas)
+    public Map2(GameObject pref,float[] _seed, int[] _size, Material _atlas)
     {
         this.size = _size;
+        this.pref = pref;
         GenerateSeed(_seed);
 
         terrainGenerator = new DrawTerrain(this, _atlas, _size);
@@ -30,9 +32,10 @@ public class Map2
         nm = new NoiseMap(_size, _seed, this);
         nm.GenerateNoise();
     }
-    public Map2(int[] _size, Material _atlas)
+    public Map2(GameObject pref,int[] _size, Material _atlas)
     {
         this.size = _size;
+        this.pref = pref;
         GenerateSeed();
 
         terrainGenerator = new DrawTerrain(this, _atlas, _size);
@@ -57,15 +60,14 @@ public class Map2
                 {
                     if (noiseMap[x,z] < 0.45f)
                     {
-                        Debug.Log(x + "," + y + "," + z);
-                        Grid[x, y, z] = new Cell2();
-                        Grid[x, y, z].isWater = true;
+                        Grid[x, y, z] = new Cell2(true);
                     }
                 }
             }
         }
         terrainGenerator.StartDrawing(Grid);
     }
+//  \\ // \\ // \\ //
 
 
     //generating the world seed

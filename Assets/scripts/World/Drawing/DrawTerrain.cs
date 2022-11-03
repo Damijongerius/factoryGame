@@ -23,7 +23,7 @@ public class DrawTerrain
     public DrawTerrain(Map2 _map, Material atlas, int[] _size)
     {
         this.map = _map;
-        this.ChunkSize = 16;
+        this.ChunkSize = 10;
         this.atlas = atlas;
         this.size = _size;
 
@@ -41,6 +41,7 @@ public class DrawTerrain
 
     public bool StartDrawing(Cell2[,,] _grid)
     {
+        Debug.Log("start drawing");
         CalculateChunks(_grid);
         return true;
     }
@@ -69,6 +70,7 @@ public class DrawTerrain
                 }
             }
         }
+        Debug.Log(meshes.Count);
         GenerateMap(meshes);
     }
     // \\// \\ //  \\ //
@@ -76,6 +78,7 @@ public class DrawTerrain
     //  // \\ // \\ // \\
     private Mesh CalculateMesh(Cell2[,,] _grid, int[,] _chunkInfo)
     {
+        Debug.Log("mesh");
         Mesh mesh = new Mesh();
         List<Vector3> vertices = new List<Vector3>();
         List<int> triangles = new List<int>();
@@ -86,14 +89,14 @@ public class DrawTerrain
             {
                 for( int z = _chunkInfo[1, 0]; z < _chunkInfo[1, 1]; z++)
                 {
-                    Cell2 cell = _grid[x,0, y];
+                    Cell2 cell = _grid[x,0, z];
 
 
                     //verplaats naar quad
-                    Vector3 a = new Vector3(x - .5f, 0, y + .5f);
-                    Vector3 b = new Vector3(x + .5f, 0, y + .5f);
-                    Vector3 c = new Vector3(x - .5f, 0, y - .5f);
-                    Vector3 d = new Vector3(x + .5f, 0, y - .5f);
+                    Vector3 a = new Vector3(x - .5f, 0, z + .5f);
+                    Vector3 b = new Vector3(x + .5f, 0, z + .5f);
+                    Vector3 c = new Vector3(x - .5f, 0, z - .5f);
+                    Vector3 d = new Vector3(x + .5f, 0, z - .5f);
                     //
 
                     Vector3[] v = new Vector3[] { a, b, c, b, d, c };
@@ -113,6 +116,7 @@ public class DrawTerrain
         mesh.triangles = triangles.ToArray();
         mesh.uv = uvs.ToArray();
         mesh.RecalculateNormals();
+        Debug.Log("return mesh");
         return mesh;
     }
     //  \\ // \\ // \\ //
@@ -122,17 +126,16 @@ public class DrawTerrain
     {
         int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
         int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
-        GameObject chunk = new GameObject();
-        MeshRenderer mr =chunk.AddComponent<MeshRenderer>();
-        mr.material = atlas;
-        chunk.AddComponent<MeshFilter>();
+        GameObject chunk = map.pref;
+        chunk.GetComponent<MeshRenderer>().material = atlas;
 
         for(int x = 0; x < chunksX; x++)
         {
             for(int z = 0; z < chunksZ; z++)
             {
-                Vector3 pos = new Vector3(x * ChunkSize, 0, z * ChunkSize);
-                //worldManager.Instantiate(mr, pos,Quaternion.Euler(0,0,0), worldManager.transform);
+                chunk.GetComponent<MeshFilter>().mesh = meshes[x + z];
+                Vector3 pos = new Vector3(0, 0, 0);
+                worldManager.init(chunk, pos);
             }
         }
     }
