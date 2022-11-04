@@ -104,7 +104,7 @@ public class DrawTerrain
                         for (int k = 0; k < 6; k++)
                         {
                             vertices.Add(v[k]);
-                            Wtriangles.Add(Wtriangles.Count);
+                            Wtriangles.Add(vertices.Count - 1);
                             uvs.Add(uv[k]);
                         }
                     }
@@ -113,7 +113,7 @@ public class DrawTerrain
                         for (int k = 0; k < 6; k++)
                         {
                             vertices.Add(v[k]);
-                            Gtriangles.Add(Gtriangles.Count);
+                            Gtriangles.Add(vertices.Count - 1);
                             uvs.Add(uv[k]);
                         }
                     }
@@ -131,7 +131,7 @@ public class DrawTerrain
                             for (int k = 0; k < 6; k++)
                             {
                                 vertices.Add(ev[k]);
-                                Etriangles.Add(Etriangles.Count);
+                                Etriangles.Add(vertices.Count - 1);
                                 uvs.Add(euv[k]);
                             }
                         }
@@ -142,7 +142,7 @@ public class DrawTerrain
                             for (int k = 0; k < 6; k++)
                             {
                                 vertices.Add(ev[k]);
-                                Etriangles.Add(Etriangles.Count);
+                                Etriangles.Add(vertices.Count - 1);
                                 uvs.Add(euv[k]);
                             }
                         }
@@ -153,7 +153,7 @@ public class DrawTerrain
                             for (int k = 0; k < 6; k++)
                             {
                                 vertices.Add(ev[k]);
-                                Etriangles.Add(Etriangles.Count);
+                                Etriangles.Add(vertices.Count - 1);
                                 uvs.Add(euv[k]);
                             }
                         }
@@ -164,7 +164,7 @@ public class DrawTerrain
                             for (int k = 0; k < 6; k++)
                             {
                                 vertices.Add(ev[k]);
-                                Etriangles.Add(Etriangles.Count);
+                                Etriangles.Add(vertices.Count - 1);
                                 uvs.Add(euv[k]);
                             }
                         }
@@ -173,8 +173,8 @@ public class DrawTerrain
             }
         }
 
-        mesh.vertices = vertices.ToArray();
-        mesh.uv = uvs.ToArray();
+        mesh.SetVertices(vertices);
+        mesh.SetUVs(0,uvs);
 
         mesh.SetTriangles(Gtriangles.ToArray(),0, true, 0);
         mesh.SetTriangles(Etriangles.ToArray(), 1, true, 0);
