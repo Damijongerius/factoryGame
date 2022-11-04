@@ -62,13 +62,8 @@ public class NoiseMap
             {
                 float xv = x / (float)size[0] * 2 - 1;
                 float yv = y / (float)size[1] * 2 - 1;
-
                 float v = Mathf.Max(Mathf.Abs(xv), Mathf.Abs(yv));
-
-                //positive theory
-                float vw = Mathf.Max(Mathf.Abs(v - 1), Mathf.Abs(yv - 1));
-
-                noiseMap[x, y] -= Mathf.Pow(v + vw, 3f) / (Mathf.Pow(v + vw, 3f) + Mathf.Pow(2.2f - 2.2f * v + vw, 3f));
+                noiseMap[x, y] -= Mathf.Pow(v, 3f) / (Mathf.Pow(v, 3f) + Mathf.Pow(2.2f - 2.2f * v, 3f));
             }
         }
         return noiseMap;
