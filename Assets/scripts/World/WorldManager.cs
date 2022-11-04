@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WorldManager : MonoBehaviour
 {
-    public Material atlas;
+    public Material[] atlas;
     public GameObject pref;
     public int[] size = new int[2];
 
@@ -25,7 +25,7 @@ public class WorldManager : MonoBehaviour
 
     public void init(GameObject obj, Vector3 pos)
     {
-        GameObject newc = Instantiate(obj);
+        GameObject newc = Instantiate(obj,transform,true);
         newc.transform.position = pos;
     }
 }

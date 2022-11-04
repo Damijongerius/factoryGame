@@ -21,7 +21,7 @@ public class Map2
     private readonly DrawTerrain terrainGenerator;
     //constructors
     //  // \\ // \\ // \\
-    public Map2(GameObject pref,float[] _seed, int[] _size, Material _atlas)
+    public Map2(GameObject pref,float[] _seed, int[] _size, Material[] _atlas)
     {
         this.size = _size;
         this.pref = pref;
@@ -32,7 +32,7 @@ public class Map2
         nm = new NoiseMap(_size, _seed, this);
         nm.GenerateNoise();
     }
-    public Map2(GameObject pref,int[] _size, Material _atlas)
+    public Map2(GameObject pref,int[] _size, Material[] _atlas)
     {
         this.size = _size;
         this.pref = pref;
@@ -58,7 +58,11 @@ public class Map2
             {
                 for(int z = 0; z < size[1]; z++)
                 {
-                    if (noiseMap[x,z] < 0.45f)
+                    if (noiseMap[x,z] > 0.3f)
+                    {
+                        Grid[x, y, z] = new Cell2(false);
+                    }
+                    else
                     {
                         Grid[x, y, z] = new Cell2(true);
                     }

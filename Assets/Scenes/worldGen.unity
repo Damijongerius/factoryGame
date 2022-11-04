@@ -265,9 +265,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ceaa657b3e30449a3686bca050aca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atlas: {fileID: 2100000, guid: ce58b2c5515a444458d3381b52a47e8c, type: 2}
+  atlas:
+  - {fileID: 2100000, guid: ce58b2c5515a444458d3381b52a47e8c, type: 2}
   pref: {fileID: 5513929445886063240, guid: 16ba69aed52b9604f967ddfda5fd3066, type: 3}
-  size: 3200000032000000
+  size: 6400000064000000
 --- !u!1 &1867774887
 GameObject:
   m_ObjectHideFlags: 0

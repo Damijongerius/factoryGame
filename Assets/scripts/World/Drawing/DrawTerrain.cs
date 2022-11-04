@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class DrawTerrain
@@ -15,12 +16,12 @@ public class DrawTerrain
 
     private readonly int ChunkSize;
 
-    private readonly Material atlas;
+    private readonly Material[] atlas;
 
     private WorldManager worldManager;
 
     //  // \\ // \\ // \\
-    public DrawTerrain(Map2 _map, Material atlas, int[] _size)
+    public DrawTerrain(Map2 _map, Material[] atlas, int[] _size)
     {
         this.map = _map;
         this.ChunkSize = 10;
@@ -30,7 +31,7 @@ public class DrawTerrain
         worldManager = WorldManager.getInstance();
     }
 
-    public DrawTerrain(Map2 _map, int _ChunkSize, Material atlas, int[] _size)
+    public DrawTerrain(Map2 _map, int _ChunkSize, Material[] atlas, int[] _size)
     {
         this.map = _map;
         this.ChunkSize = _ChunkSize;
@@ -41,7 +42,6 @@ public class DrawTerrain
 
     public bool StartDrawing(Cell2[,,] _grid)
     {
-        Debug.Log("start drawing");
         CalculateChunks(_grid);
         return true;
     }
@@ -50,7 +50,7 @@ public class DrawTerrain
     {
         int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
         int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
-        List<Mesh> meshes = new List<Mesh>();
+        Mesh[,] meshes = new Mesh[chunksX,chunksZ];
         for (int xc = 0; xc < chunksX; xc++)
         {
             for(int zc = 0; zc < chunksZ; zc++)
@@ -64,13 +64,11 @@ public class DrawTerrain
                         chunkInfo[0, 1] = xc * ChunkSize + ChunkSize;
                         chunkInfo[1, 0] = zc * ChunkSize;
                         chunkInfo[1, 1] = zc * ChunkSize + ChunkSize;
-                        Debug.Log(chunkInfo[0, 0] + "," + chunkInfo[0, 1] + "," + chunkInfo[1, 0] + "," + chunkInfo[1, 1]);
-                        meshes.Add(CalculateMesh(_grid, chunkInfo));
+                        meshes[xc,zc] = CalculateMesh(_grid, chunkInfo);
                     }
                 }
             }
         }
-        Debug.Log(meshes.Count);
         GenerateMap(meshes);
     }
     // \\// \\ //  \\ //
@@ -78,28 +76,19 @@ public class DrawTerrain
     //  // \\ // \\ // \\
     private Mesh CalculateMesh(Cell2[,,] _grid, int[,] _chunkInfo)
     {
-        Debug.Log("mesh");
         Mesh mesh = new Mesh();
         List<Vector3> vertices = new List<Vector3>();
         List<int> triangles = new List<int>();
         List<Vector2> uvs = new List<Vector2>();
-        for (int x = _chunkInfo[0, 0]; x < _chunkInfo[0, 1]; x++)
+        for (int x = 0; x + _chunkInfo[0,0] < _chunkInfo[0, 1]; x++)
         {
             for (int y = 0; y < 1; y++)
             {
-                for( int z = _chunkInfo[1, 0]; z < _chunkInfo[1, 1]; z++)
+                for( int z = 0; z + _chunkInfo[1, 0] < _chunkInfo[1, 1]; z++)
                 {
-                    Cell2 cell = _grid[x,0, z];
+                    Cell2 cell = _grid[(x + _chunkInfo[0, 0]), 0, (z + _chunkInfo[1, 0])];
 
-
-                    //verplaats naar quad
-                    Vector3 a = new Vector3(x - .5f, 0, z + .5f);
-                    Vector3 b = new Vector3(x + .5f, 0, z + .5f);
-                    Vector3 c = new Vector3(x - .5f, 0, z - .5f);
-                    Vector3 d = new Vector3(x + .5f, 0, z - .5f);
-                    //
-
-                    Vector3[] v = new Vector3[] { a, b, c, b, d, c };
+                    Vector3[] v = quad.GetVerts(cell,x,z);
                     Vector2[] uv = quad.GetUVs(cell);
 
                     for (int k = 0; k < 6; k++)
@@ -109,6 +98,56 @@ public class DrawTerrain
                         uvs.Add(uv[k]);
                     }
 
+                    bool[] water;
+                    if (!_grid[(x + _chunkInfo[0, 0]), 0, (z + _chunkInfo[1, 0])].isWater)
+                    {
+                        water = cell.GetWaters(_grid, (x + _chunkInfo[0, 0]), (z + _chunkInfo[1, 0]));
+
+                        if (water[0] == true)
+                        {
+                            Vector3[] ev = quad.GetEdges(Quad.direction.NORTH, x, z);
+                            Vector2[] euv = quad.EdgeUVs();
+                            for (int k = 0; k < 6; k++)
+                            {
+                                vertices.Add(ev[k]);
+                                triangles.Add(triangles.Count);
+                                uvs.Add(euv[k]);
+                            }
+                        }
+                        if (water[1] == true)
+                        {
+                            Vector3[] ev = quad.GetEdges(Quad.direction.EAST, x, z);
+                            Vector2[] euv = quad.EdgeUVs();
+                            for (int k = 0; k < 6; k++)
+                            {
+                                vertices.Add(ev[k]);
+                                triangles.Add(triangles.Count);
+                                uvs.Add(euv[k]);
+                            }
+                        }
+                        if (water[2] == true)
+                        {
+                            Vector3[] ev = quad.GetEdges(Quad.direction.SOUTH, x, z);
+                            Vector2[] euv = quad.EdgeUVs();
+                            for (int k = 0; k < 6; k++)
+                            {
+                                vertices.Add(ev[k]);
+                                triangles.Add(triangles.Count);
+                                uvs.Add(euv[k]);
+                            }
+                        }
+                        if (water[3] == true)
+                        {
+                            Vector3[] ev = quad.GetEdges(Quad.direction.WEST, x, z);
+                            Vector2[] euv = quad.EdgeUVs();
+                            for (int k = 0; k < 6; k++)
+                            {
+                                vertices.Add(ev[k]);
+                                triangles.Add(triangles.Count);
+                                uvs.Add(euv[k]);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -116,25 +155,25 @@ public class DrawTerrain
         mesh.triangles = triangles.ToArray();
         mesh.uv = uvs.ToArray();
         mesh.RecalculateNormals();
-        Debug.Log("return mesh");
+
         return mesh;
     }
     //  \\ // \\ // \\ //
 
     //  // \\ // \\ // \\
-    private void GenerateMap(List<Mesh> meshes)
+    private void GenerateMap(Mesh[,] meshes)
     {
         int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
         int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
         GameObject chunk = map.pref;
-        chunk.GetComponent<MeshRenderer>().material = atlas;
+        chunk.GetComponent<MeshRenderer>().material = atlas[0];
 
         for(int x = 0; x < chunksX; x++)
         {
             for(int z = 0; z < chunksZ; z++)
             {
-                chunk.GetComponent<MeshFilter>().mesh = meshes[x + z];
-                Vector3 pos = new Vector3(0, 0, 0);
+                chunk.GetComponent<MeshFilter>().mesh = meshes[x , z];
+                Vector3 pos = new Vector3((x * ChunkSize), 0, (z * ChunkSize));
                 worldManager.init(chunk, pos);
             }
         }
