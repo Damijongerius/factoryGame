@@ -124,19 +124,19 @@ public class Quad
             {
                 case (direction)0:
                     {
-                        return new Vector3[] { c, b, a, c, a, d };
+                        return new Vector3[] { a, b, c, d, a, c };
                     }
                 case (direction)1:
                     {
-                        return new Vector3[] { a, f, g, d, a, g };
+                        return new Vector3[] { g, f, a, g, a, d };
                     }
                 case (direction)2:
                     {
-                        return new Vector3[] { g, f, e, h, g, e };
+                        return new Vector3[] { e, f, g, e, g, h };
                     }
                 case (direction)3:
                     {
-                        return new Vector3[] { h, e, b, h, b, c };
+                        return new Vector3[] { b, e, h, c, b, h };
                     }
                 default:
                     {

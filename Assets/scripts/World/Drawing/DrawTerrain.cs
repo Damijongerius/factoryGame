@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.Xml;
 using Unity.Mathematics;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class DrawTerrain
 {
@@ -77,9 +79,16 @@ public class DrawTerrain
     private Mesh CalculateMesh(Cell2[,,] _grid, int[,] _chunkInfo)
     {
         Mesh mesh = new Mesh();
+
+        mesh.subMeshCount = 3;
+
+        List<int> Gtriangles = new List<int>();
+        List<int> Wtriangles = new List<int>();
+        List<int> Etriangles = new List<int>();
+
         List<Vector3> vertices = new List<Vector3>();
-        List<int> triangles = new List<int>();
         List<Vector2> uvs = new List<Vector2>();
+
         for (int x = 0; x + _chunkInfo[0,0] < _chunkInfo[0, 1]; x++)
         {
             for (int y = 0; y < 1; y++)
@@ -90,13 +99,25 @@ public class DrawTerrain
 
                     Vector3[] v = quad.GetVerts(cell,x,z);
                     Vector2[] uv = quad.GetUVs(cell);
-
-                    for (int k = 0; k < 6; k++)
+                    if (cell.isWater)
                     {
-                        vertices.Add(v[k]);
-                        triangles.Add(triangles.Count);
-                        uvs.Add(uv[k]);
+                        for (int k = 0; k < 6; k++)
+                        {
+                            vertices.Add(v[k]);
+                            Wtriangles.Add(Wtriangles.Count);
+                            uvs.Add(uv[k]);
+                        }
                     }
+                    else
+                    {
+                        for (int k = 0; k < 6; k++)
+                        {
+                            vertices.Add(v[k]);
+                            Gtriangles.Add(Gtriangles.Count);
+                            uvs.Add(uv[k]);
+                        }
+                    }
+
 
                     bool[] water;
                     if (!_grid[(x + _chunkInfo[0, 0]), 0, (z + _chunkInfo[1, 0])].isWater)
@@ -110,7 +131,7 @@ public class DrawTerrain
                             for (int k = 0; k < 6; k++)
                             {
                                 vertices.Add(ev[k]);
-                                triangles.Add(triangles.Count);
+                                Etriangles.Add(Etriangles.Count);
                                 uvs.Add(euv[k]);
                             }
                         }
@@ -121,7 +142,7 @@ public class DrawTerrain
                             for (int k = 0; k < 6; k++)
                             {
                                 vertices.Add(ev[k]);
-                                triangles.Add(triangles.Count);
+                                Etriangles.Add(Etriangles.Count);
                                 uvs.Add(euv[k]);
                             }
                         }
@@ -132,7 +153,7 @@ public class DrawTerrain
                             for (int k = 0; k < 6; k++)
                             {
                                 vertices.Add(ev[k]);
-                                triangles.Add(triangles.Count);
+                                Etriangles.Add(Etriangles.Count);
                                 uvs.Add(euv[k]);
                             }
                         }
@@ -143,7 +164,7 @@ public class DrawTerrain
                             for (int k = 0; k < 6; k++)
                             {
                                 vertices.Add(ev[k]);
-                                triangles.Add(triangles.Count);
+                                Etriangles.Add(Etriangles.Count);
                                 uvs.Add(euv[k]);
                             }
                         }
@@ -151,10 +172,17 @@ public class DrawTerrain
                 }
             }
         }
+
         mesh.vertices = vertices.ToArray();
-        mesh.triangles = triangles.ToArray();
         mesh.uv = uvs.ToArray();
+
+        mesh.SetTriangles(Gtriangles.ToArray(),0, true, 0);
+        mesh.SetTriangles(Etriangles.ToArray(), 1, true, 0);
+        mesh.SetTriangles(Wtriangles.ToArray(), 2, true, 0);
+
         mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        mesh.RecalculateTangents();
 
         return mesh;
     }
@@ -166,13 +194,12 @@ public class DrawTerrain
         int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
         int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
         GameObject chunk = map.pref;
-        chunk.GetComponent<MeshRenderer>().material = atlas[0];
 
         for(int x = 0; x < chunksX; x++)
         {
             for(int z = 0; z < chunksZ; z++)
             {
-                chunk.GetComponent<MeshFilter>().mesh = meshes[x , z];
+                chunk.GetComponent<MeshFilter>().mesh = meshes[x, z];
                 Vector3 pos = new Vector3((x * ChunkSize), 0, (z * ChunkSize));
                 worldManager.init(chunk, pos);
             }

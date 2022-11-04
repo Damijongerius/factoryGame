@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 public class WorldManager : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class WorldManager : MonoBehaviour
 
     public void init(GameObject obj, Vector3 pos)
     {
-        GameObject newc = Instantiate(obj,transform,true);
-        newc.transform.position = pos;
+        GameObject combinedMesh = Instantiate(obj,transform,true);
+        combinedMesh.transform.position = pos;
     }
 }
