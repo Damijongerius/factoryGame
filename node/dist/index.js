@@ -8,23 +8,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+// // \\ // \\ // \\
 const SaveFile_1 = require("./models/SaveFile");
 const Database_1 = require("./DB/Database");
-const { saveFile } = require("./models/SaveFile");
-//node module express
-const { response, request, json } = require("express");
-const express = require("express");
-const bcrypt = require("bcrypt");
-//node module body parser
-const bodyParser = require("body-parser");
-const app = express();
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+const express_1 = __importDefault(require("express"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const body_parser_1 = __importDefault(require("body-parser"));
+// \\ // \\ // \\ //
+// // \\ // \\ // \\
+const app = (0, express_1.default)();
+app.use(express_1.default.json());
+app.use(body_parser_1.default.urlencoded({ extended: false }));
+app.use(body_parser_1.default.json());
+// \\ // \\ // \\ //
+// onApplication start
+// // \\ // \\ // \\
 app.listen(3000, function () {
     console.log("server running");
 });
+// \\ // \\ // \\ //
+// OnSaveRequest
 // // \\ // \\ // \\
 app.post("/Save/savefile", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -36,19 +43,21 @@ app.post("/Save/savefile", function (req, res) {
         Database_1.DB.insert.Profile(profile, result);
         Database_1.DB.insert.statistics(profile.Statistics, result);
         Database_1.DB.insert.Map(map, result);
-        map.grid.forEach((element, index, array) => {
+        map.grid.forEach((element) => {
             Database_1.DB.insert.Cell(element, result);
             Database_1.DB.insert.Objinfo(element.ObjInfo, element.x, element.y, result);
         });
     });
 });
 // \\ // \\ // \\ //
+// onloadProfileRequest
+// // \\ // \\ // \\
 app.post("/load/profiles", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (req.body.GUID != null) {
+        if (req.body.GUID !== null) {
             const result = yield Database_1.DB.select.SaveFile(req.body.GUID);
-            if (result != null) {
-                let respond = new Array;
+            if (result !== null) {
+                const respond = new Array();
                 for (const rs of result) {
                     const profiles = yield Database_1.DB.select.Profile(rs.ID);
                     respond.push(profiles[0]);
@@ -64,16 +73,22 @@ app.post("/load/profiles", function (req, res) {
         }
     });
 });
+// \\ // \\ // \\ //
+// onloadSaveFilesRequest
 // // \\ // \\ // \\
 app.post("/Load/savefile", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const ID = req.body.SaveFile_ID;
+        const ID = req.body.ID;
         const GUID = req.body.GUID;
-        if (GUID != null) {
+        if (GUID !== null) {
             if (ID instanceof (Array)) {
+                for (const sfid of ID) {
+                    const sf = yield GenerateSaveFile(sfid);
+                }
             }
-            else if (ID instanceof Number) {
-                GenerateSaveFile(ID);
+            else if (ID !== null) {
+                const sf = yield GenerateSaveFile(ID);
+                res.send(sf);
             }
             else {
                 res.send({ status: 13, message: "need valid ID" });
@@ -84,23 +99,67 @@ app.post("/Load/savefile", function (req, res) {
         }
         function GenerateSaveFile(ID) {
             return __awaiter(this, void 0, void 0, function* () {
-                let saveFile;
-                const sf = yield Database_1.DB.select.SaveFile(GUID);
-                const profile = yield Database_1.DB.select.Profile(ID);
-                const map = yield Database_1.DB.select.Map(ID);
-                const statistics = yield Database_1.DB.select.statistics(ID);
-                const cells = yield Database_1.DB.select.Cell(ID);
-                let objectinfos;
-                for (const cell in cells) {
-                    const objInfo = yield Database_1.DB.select.Objinfo(cell.x, cell.y, GUID);
-                    objectinfos.push(objInfo[0]);
+                console.log("generating sf");
+                const sf = yield Database_1.DB.select.SaveFile(ID);
+                const nprofile = yield Database_1.DB.select.Profile(ID);
+                const profile = {
+                    Name: sf[0].SaveName,
+                    DateMade: nprofile[0].DateMade,
+                    DateSeen: nprofile[0].DateSeen,
+                    TimePlayed: nprofile[0].TimePlayed,
+                    Statistics: null,
+                };
+                const nmap = yield Database_1.DB.select.Map(ID);
+                const map = {
+                    xRange: nmap[0].xRange,
+                    yRange: nmap[0].yRange,
+                    grid: [],
+                };
+                const nstatistics = yield Database_1.DB.select.statistics(ID);
+                const statistics = {
+                    networth: nstatistics[0].networth,
+                    money: nstatistics[0].money,
+                    data: nstatistics[0].data,
+                    xp: nstatistics[0].xp,
+                    Level: nstatistics[0].Level,
+                };
+                profile.Statistics = statistics;
+                const ncells = yield Database_1.DB.select.Cell(ID);
+                for (const idx in ncells) {
+                    const cells = {
+                        x: ncells[idx].x,
+                        y: ncells[idx].y,
+                        objType: ncells[idx].ObjInfo,
+                        ObjInfo: null,
+                    };
+                    const nObjInfo = yield Database_1.DB.select.Objinfo(ncells[idx].x, ncells[idx].y, ID);
+                    const ObjInfo = {
+                        exitPoints: nObjInfo[0].exitPoints,
+                        powered: nObjInfo[0].powered,
+                        dataStored: nObjInfo[0].dataStored,
+                        powerStored: nObjInfo[0].powerStored,
+                        level: nObjInfo[0].level,
+                        age: nObjInfo[0].age,
+                        upkeepCost: nObjInfo[0].upkeepCost,
+                        dataMined: nObjInfo[0].dataMined,
+                        dataSold: nObjInfo[0].dataSold,
+                        dataTransferd: nObjInfo[0].dataTransferd,
+                        Prio: nObjInfo[0].Prio,
+                        SelfPrio: nObjInfo[0].SelfPrio,
+                        updateSpeed: nObjInfo[0].updateSpeed,
+                    };
+                    cells.ObjInfo = ObjInfo;
+                    map.grid.push(cells);
                 }
-                //const objInfo = await DB.select.SaveFile(GUID);
+                const saveFile = { map, profile };
+                return saveFile;
             });
         }
     });
 });
 // \\ // \\ // \\ //
+//onUserCreateRequest
+// // \\ // \\ // \\
 app.post("/CreateUser", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const asyncHash = yield EncryptPasswordASync(req.body.Password);
@@ -109,11 +168,17 @@ app.post("/CreateUser", function (req, res) {
         });
     });
 });
+// \\ // \\ // \\ //
+//onUserLoadRequest
+// // \\ // \\ // \\
 app.post("/LoadUser", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         //needs guid username and password
-        let data = { UserName: req.body.UserName, Password: req.body.Password };
-        if (req.body.GUID != null) {
+        const data = {
+            UserName: req.body.UserName,
+            Password: req.body.Password,
+        };
+        if (req.body.GUID !== null) {
             data.GUID = req.body.GUID;
         }
         Database_1.DB.select.User(data, function (info) {
@@ -165,19 +230,26 @@ app.post("/LoadUser", function (req, res) {
         });
     });
 });
+// \\ // \\ // \\ //
+//onUserDeleteRequest
+// // \\ // \\ // \\
 app.post("/DeleteUser", function (req, res) {
     //removes player with savefiles
     //deletes profile with saved guid
 });
+// \\ // \\ // \\ //
+// encryption
+// // \\ // \\ // \\
 function EncryptPasswordASync(password) {
     return __awaiter(this, void 0, void 0, function* () {
-        const hash = yield bcrypt.hash(password, 10);
+        const hash = yield bcrypt_1.default.hash(password, 10);
         return hash;
     });
 }
 function comparePassword(password, hash, callback) {
     return __awaiter(this, void 0, void 0, function* () {
-        callback(yield bcrypt.compare(password, hash));
+        callback(yield bcrypt_1.default.compare(password, hash));
     });
 }
+// \\ // \\ // \\ //
 //# sourceMappingURL=index.js.map
