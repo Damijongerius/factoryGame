@@ -31,7 +31,7 @@ app.listen(3000, function () {
     console.log("server running");
 });
 // \\ // \\ // \\ //
-// OnSaveRequest
+// OnSaveSaveFileRequest
 // // \\ // \\ // \\
 app.post("/Save/savefile", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -55,12 +55,14 @@ app.post("/Save/savefile", function (req, res) {
 app.post("/load/profiles", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         if (req.body.GUID !== null) {
-            const result = yield Database_1.DB.select.SaveFile(req.body.GUID);
+            const result = yield Database_1.DB.select.SaveFiles(req.body.GUID);
+            console.log(result);
             if (result !== null) {
                 const respond = new Array();
                 for (const rs of result) {
                     const profiles = yield Database_1.DB.select.Profile(rs.ID);
                     respond.push(profiles[0]);
+                    console.log(profiles);
                 }
                 res.send({ profiles: respond, saveFiles: result });
             }
@@ -82,9 +84,13 @@ app.post("/Load/savefile", function (req, res) {
         const GUID = req.body.GUID;
         if (GUID !== null) {
             if (ID instanceof (Array)) {
+                console.log("alot of ID's");
+                const sfs = [];
                 for (const sfid of ID) {
                     const sf = yield GenerateSaveFile(sfid);
+                    sfs.push(sf);
                 }
+                res.send(sfs);
             }
             else if (ID !== null) {
                 const sf = yield GenerateSaveFile(ID);
@@ -181,53 +187,52 @@ app.post("/LoadUser", function (req, res) {
         if (req.body.GUID !== null) {
             data.GUID = req.body.GUID;
         }
-        Database_1.DB.select.User(data, function (info) {
-            return __awaiter(this, void 0, void 0, function* () {
-                switch (info.status) {
-                    case 3: {
-                        res.send({
-                            Status: 3,
-                            message: `no existing user with name ${data.UserName}`,
-                        });
-                        break;
-                    }
-                    case 2: {
-                        info.result.forEach(function (i, idx, array) {
-                            return __awaiter(this, void 0, void 0, function* () {
-                                comparePassword(req.body.Password, array[idx].password, function (params) {
-                                    if (params) {
-                                        res.send({
-                                            Status: 4,
-                                            message: `the password matches ${data.UserName}`,
-                                            Info: {
-                                                UserName: array[idx].UserName,
-                                                GUID: array[idx].UserId,
-                                            },
-                                        });
-                                    }
-                                    else {
-                                        if (i === array.length - 1) {
-                                            res.send({
-                                                Status: 5,
-                                                message: "incorrect password try again",
-                                            });
-                                        }
-                                    }
+        const info = yield Database_1.DB.select.User(data);
+        switch (info.status) {
+            case 3: {
+                res.send({
+                    Status: 3,
+                    message: `no existing user with name ${data.UserName}`,
+                });
+                break;
+            }
+            case 2: {
+                console.log(info.result);
+                info.result.forEach(function (i, idx, array) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        comparePassword(req.body.Password, array[idx].password, function (params) {
+                            if (params) {
+                                res.send({
+                                    Status: 4,
+                                    message: `the password matches ${data.UserName}`,
+                                    Info: {
+                                        UserName: array[idx].UserName,
+                                        GUID: array[idx].UserId,
+                                    },
                                 });
-                            });
+                            }
+                            else {
+                                if (i === array.length - 1) {
+                                    res.send({
+                                        Status: 5,
+                                        message: "incorrect password try again",
+                                    });
+                                }
+                            }
                         });
-                        break;
-                    }
-                    default: {
-                        res.send({
-                            Status: 101,
-                            message: "error on our end",
-                        });
-                        break;
-                    }
-                }
-            });
-        });
+                    });
+                });
+                break;
+            }
+            default: {
+                console.log("error");
+                res.send({
+                    Status: 101,
+                    message: "error on our end",
+                });
+                break;
+            }
+        }
     });
 });
 // \\ // \\ // \\ //

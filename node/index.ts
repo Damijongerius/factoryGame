@@ -4,6 +4,7 @@ import { DB } from "./DB/Database";
 import express from "express";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
+import { profile } from "console";
 // \\ // \\ // \\ //
 
 // // \\ // \\ // \\
@@ -22,7 +23,7 @@ app.listen(3000, function () {
 });
 // \\ // \\ // \\ //
 
-// OnSaveRequest
+// OnSaveSaveFileRequest
 // // \\ // \\ // \\
 app.post("/Save/savefile", async function (req, res) {
     const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
@@ -44,12 +45,14 @@ app.post("/Save/savefile", async function (req, res) {
 // // \\ // \\ // \\
 app.post("/load/profiles", async function (req, res) {
     if (req.body.GUID !== null) {
-        const result: any = await DB.select.SaveFile(req.body.GUID);
+        const result: any = await DB.select.SaveFiles(req.body.GUID);
+        console.log(result);
         if (result !== null) {
             const respond: Array<Profile> = new Array<Profile>();
             for (const rs of result) {
-                const profiles: any = await DB.select.Profile(rs.ID);
+                const profiles = await DB.select.Profile(rs.ID);
                 respond.push(profiles[0]);
+                console.log(profiles);
             }
             res.send({ profiles: respond, saveFiles: result });
         } else {
@@ -68,11 +71,15 @@ app.post("/Load/savefile", async function (req, res) {
     const GUID = req.body.GUID;
     if (GUID !== null) {
         if (ID instanceof Array<number>) {
+            console.log("alot of ID's");
+            const sfs = [];
             for (const sfid of ID) {
-               const sf = await GenerateSaveFile(sfid);
+                const sf = await GenerateSaveFile(sfid);
+                sfs.push(sf);
             }
+            res.send(sfs);
         } else if (ID !== null) {
-            const sf = await GenerateSaveFile(ID)
+            const sf = await GenerateSaveFile(ID);
             res.send(sf);
         } else {
             res.send({ status: 13, message: "need valid ID" });
@@ -124,7 +131,7 @@ app.post("/Load/savefile", async function (req, res) {
                 exitPoints: nObjInfo[0].exitPoints,
                 powered: nObjInfo[0].powered,
                 dataStored: nObjInfo[0].dataStored,
-                powerStored: nObjInfo[0].powerStored, 
+                powerStored: nObjInfo[0].powerStored,
                 level: nObjInfo[0].level,
                 age: nObjInfo[0].age,
                 upkeepCost: nObjInfo[0].upkeepCost,
@@ -134,7 +141,7 @@ app.post("/Load/savefile", async function (req, res) {
                 Prio: nObjInfo[0].Prio,
                 SelfPrio: nObjInfo[0].SelfPrio,
                 updateSpeed: nObjInfo[0].updateSpeed,
-            }
+            };
             cells.ObjInfo = ObjInfo;
             map.grid.push(cells);
         }
@@ -171,53 +178,54 @@ app.post("/LoadUser", async function (req, res) {
     if (req.body.GUID !== null) {
         data.GUID = req.body.GUID;
     }
-    DB.select.User(data, async function (info: any) {
-        switch (info.status) {
-            case 3: {
-                res.send({
-                    Status: 3,
-                    message: `no existing user with name ${data.UserName}`,
-                });
-                break;
-            }
+    const info: any = await DB.select.User(data);
+    switch (info.status) {
+        case 3: {
+            res.send({
+                Status: 3,
+                message: `no existing user with name ${data.UserName}`,
+            });
+            break;
+        }
 
-            case 2: {
-                info.result.forEach(async function (i, idx, array) {
-                    comparePassword(
-                        req.body.Password,
-                        array[idx].password,
-                        function (params: boolean) {
-                            if (params) {
+        case 2: {
+            console.log(info.result);
+            info.result.forEach(async function (i, idx, array) {
+                comparePassword(
+                    req.body.Password,
+                    array[idx].password,
+                    function (params: boolean) {
+                        if (params) {
+                            res.send({
+                                Status: 4,
+                                message: `the password matches ${data.UserName}`,
+                                Info: {
+                                    UserName: array[idx].UserName,
+                                    GUID: array[idx].UserId,
+                                },
+                            });
+                        } else {
+                            if (i === array.length - 1) {
                                 res.send({
-                                    Status: 4,
-                                    message: `the password matches ${data.UserName}`,
-                                    Info: {
-                                        UserName: array[idx].UserName,
-                                        GUID: array[idx].UserId,
-                                    },
+                                    Status: 5,
+                                    message: "incorrect password try again",
                                 });
-                            } else {
-                                if (i === array.length - 1) {
-                                    res.send({
-                                        Status: 5,
-                                        message: "incorrect password try again",
-                                    });
-                                }
                             }
                         }
-                    );
-                });
-                break;
-            }
-            default: {
-                res.send({
-                    Status: 101,
-                    message: "error on our end",
-                });
-                break;
-            }
+                    }
+                );
+            });
+            break;
         }
-    });
+        default: {
+            console.log("error");
+            res.send({
+                Status: 101,
+                message: "error on our end",
+            });
+            break;
+        }
+    }
 });
 // \\ // \\ // \\ //
 

@@ -13,7 +13,7 @@ export class Select {
         this.conn = conn;
     }
 
-    SaveFiles(GUID: string): any{
+    SaveFiles(GUID: string): any {
         const sql = `SELECT * FROM savefile WHERE users_UserId = "${GUID}"`;
 
         return new Promise<Array<SaveFile>>((resolve, reject) => {
@@ -23,7 +23,7 @@ export class Select {
         });
     }
 
-    SaveFile(ID: number): Promise<Array<SaveFile>>{
+    SaveFile(ID: number): Promise<Array<SaveFile>> {
         const sql = `SELECT * FROM savefile WHERE ID = "${ID}"`;
 
         return new Promise<Array<SaveFile>>((resolve, reject) => {
@@ -83,25 +83,32 @@ export class Select {
         });
     }
 
-    User(data: any, callback: Function) {
+    User(data: any) {
         let sql;
-        if (data.GUID === null) {
+        console.log("run sql");
+        if (data.GUID == null) {
+            console.log("UserName");
             sql = `SELECT * FROM users WHERE UserName = "${data.UserName}" `;
         } else {
+            console.log("GUID");
             sql = `SELECT * FROM users WHERE UserId = "${data.GUID}"`;
         }
 
-        this.conn.query(sql, function (err, result) {
-            if (err) {
-                callback({ status: 3, message: "Was not able to find user" });
-                console.log(err);
-            } else {
-                callback({
-                    status: 2,
-                    message: "This is what i found",
-                    result: result,
-                });
-            }
+        return new Promise<any>((resolve, reject) => {
+            this.conn.query(sql, (err, result) => {
+                if (err) {
+                    reject({ status: 3, message: "Was not able to find user" });
+                    console.log(err);
+                } else {
+                    resolve({
+                        status: 2,
+                        message: "This is what i found",
+                        result: result,
+                    });
+                }
+
+                console.log(result);
+            });
         });
     }
 }

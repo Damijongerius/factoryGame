@@ -28,7 +28,7 @@ const EH = __importStar(require("./ErrorHandler"));
 const Insert_1 = require("./Insert");
 const Update_1 = require("./Update");
 const Select_1 = require("./Select");
-var mysql = require("mysql");
+const mysql = require("mysql");
 class Database {
     constructor(host, user, password, database) {
         this.conn = mysql.createConnection({
