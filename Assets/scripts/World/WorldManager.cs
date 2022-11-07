@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 public class WorldManager : MonoBehaviour
 {
@@ -16,13 +15,10 @@ public class WorldManager : MonoBehaviour
     private static WorldManager instance;
 
     public Map2 map;
-    void Awake()
-    {
-        instance = this;
-    }
 
     private void Start()
     {
+        instance = this;
         if (!ProfileManager.playing)
         {
             Generate(false);
@@ -33,9 +29,16 @@ public class WorldManager : MonoBehaviour
     {
         if (load)
         {
-            seed[0] = sf.map.xRange;
-            seed[1] = sf.map.yRange;
-            map = new Map2(pref, seed, size, atlas);
+            if(sf.map.xRange != 0)
+            {
+                seed[0] = sf.map.xRange;
+                seed[1] = sf.map.yRange;
+                map = new Map2(pref, seed, size, atlas);
+            }
+            else
+            {
+                map = new Map2(pref, size, atlas);
+            }
         }
         else
         {
