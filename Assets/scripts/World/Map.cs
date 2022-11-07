@@ -8,7 +8,7 @@ public class Map2
 {
     private ObjectSaveLoad objects = new ObjectSaveLoad();
     //3d cell2 x y z
-    private Cell2[,,] Grid;
+    public Cell2[,,] Grid;
 
     private readonly int[] size;
     public GameObject pref; 

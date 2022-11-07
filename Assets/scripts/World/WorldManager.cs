@@ -11,12 +11,13 @@ public class WorldManager : MonoBehaviour
     public GameObject pref;
     public int[] size = new int[2];
     private float[] seed;
+    public GameObject[] placables;
 
     private static WorldManager instance;
 
     public Map2 map;
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
         if (!ProfileManager.playing)
@@ -37,11 +38,13 @@ public class WorldManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("este");
                 map = new Map2(pref, size, atlas);
             }
         }
         else
         {
+            Debug.Log("2de");
             map = new Map2(pref, size, atlas);
         }
     }

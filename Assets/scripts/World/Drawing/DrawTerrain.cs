@@ -199,9 +199,11 @@ public class DrawTerrain
         {
             for(int z = 0; z < chunksZ; z++)
             {
+                
                 chunk.GetComponent<MeshFilter>().mesh = meshes[x, z];
                 Vector3 pos = new Vector3((x * ChunkSize), 0, (z * ChunkSize));
-                worldManager.init(chunk, pos);
+
+                WorldManager.Instantiate(chunk, pos, new Quaternion(0,0,0,0));
             }
         }
     }

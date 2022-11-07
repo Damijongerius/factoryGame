@@ -9099,6 +9099,10 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 41dcd4a46851a434aa1b92deea1a53f3, type: 2}
   pref: {fileID: 5513929445886063240, guid: 16ba69aed52b9604f967ddfda5fd3066, type: 3}
   size: 6400000064000000
+  placables:
+  - {fileID: 7629606587207126237, guid: cc1fbbdbd5d04af4faa07621c3f06dcf, type: 3}
+  - {fileID: 1176205194971928352, guid: df3f8900a39875f48898f48d0ce373fe, type: 3}
+  - {fileID: 7621623858981708744, guid: 112dca4375d29d84783f5dc0943ea130, type: 3}
 --- !u!1 &1867774887
 GameObject:
   m_ObjectHideFlags: 0

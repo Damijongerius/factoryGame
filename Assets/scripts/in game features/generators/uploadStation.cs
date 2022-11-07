@@ -14,7 +14,7 @@ public class uploadStation : MonoBehaviour
 
     public void Run()
     {
-        List<GameObject> wires = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
+        List<GameObject> wires = WorldManager.getInstance().map.Grid[(int)transform.position.x,0, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
         foreach(GameObject wire in wires)
         {
             if(wire != null)

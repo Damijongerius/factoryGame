@@ -7,20 +7,20 @@ public class ObjectSaveLoad
     public SaveFile gameSave = SaveFile.GetInstance();
     public void SaveObjects()
     {
-        Cell[,] grid = gridSys.grid;
+        Cell2[,,] grid = WorldManager.getInstance().map.Grid;
         List<cells> newGrid = new();
         for (int x = 0; x < grid.GetLength(0); x++)
         {
-            for (int y = 0; y < grid.GetLength(1); y++)
+            for (int y = 0; y < grid.GetLength(2); y++)
             {
-                if (grid[x, y].obj != null)
+                if (grid[x,0, y].obj != null)
                 {
                     cells cell = new cells();
 
                     cell.x = x;
                     cell.y = y;
 
-                    cell.objType = GetType(grid[x, y].obj.tag);
+                    cell.objType = GetType(grid[x, 0, y].obj.tag);
 
 
                     cell.ObjInfo = GetInfo(cell.objType, grid, x, y);
@@ -44,13 +44,13 @@ public class ObjectSaveLoad
         };
     }
 
-    public ObjInfo GetInfo(ObjectTypes _objType, Cell[,] _grid, int x, int y)
+    public ObjInfo GetInfo(ObjectTypes _objType, Cell2[,,] _grid, int x, int y)
     {
         switch (_objType)
         {
-            case ObjectTypes.DATAWIRE: return _grid[x, y].obj.GetComponent<dataWire>().wire;
-            case ObjectTypes.DATAMINER: return _grid[x, y].obj.GetComponent<dataMiner>().miner;
-            case ObjectTypes.UPLOADSTATION: return _grid[x, y].obj.GetComponent<uploadStation>().station;
+            case ObjectTypes.DATAWIRE: return _grid[x,0, y].obj.GetComponent<dataWire>().wire;
+            case ObjectTypes.DATAMINER: return _grid[x,0, y].obj.GetComponent<dataMiner>().miner;
+            case ObjectTypes.UPLOADSTATION: return _grid[x,0, y].obj.GetComponent<uploadStation>().station;
             default:
                 break;
         }
@@ -60,11 +60,13 @@ public class ObjectSaveLoad
     public void LoadSavedObjects()
     {
         List<cells> grid = gameSave.map.grid;
+        Cell2[,,] grid2 = WorldManager.getInstance().map.Grid;
         foreach (cells cell in grid)
         {
 
             SetObject(cell);
-            SetInfo(cell, gridSys.grid[cell.x, cell.y].obj);
+            
+            SetInfo(cell, grid2[cell.x,0, cell.y].obj);
         }
 
         void SetInfo(cells cell, GameObject scem)
@@ -98,10 +100,10 @@ public class ObjectSaveLoad
 
     public void SetObject(cells cell)
     {
-        GameObject[] placable = gridSys.GetInstance().placables;
-        if(gridSys.grid[cell.x, cell.y].obj == null)
+        GameObject[] placable = WorldManager.getInstance().placables;
+        if(WorldManager.getInstance().map.Grid[cell.x,0, cell.y].obj == null)
         {
-            gridSys.grid[cell.x, cell.y].obj = gridSys.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));
+            WorldManager.getInstance().map.Grid[cell.x,0, cell.y].obj = WorldManager.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));
         }
         
 
