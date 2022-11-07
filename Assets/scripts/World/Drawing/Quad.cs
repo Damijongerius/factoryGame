@@ -48,10 +48,10 @@ public class Quad
 
         public Vector3[] getverts(int x, int z)
         {
-            Vector3 a = new Vector3(x - .5f, 0f, z + .5f);
-            Vector3 b = new Vector3(x + .5f, 0f, z + .5f);
-            Vector3 c = new Vector3(x - .5f, 0f, z - .5f);
-            Vector3 d = new Vector3(x + .5f, 0f, z - .5f);
+            Vector3 a = new Vector3(x - .5f, 0.15f, z + .5f);
+            Vector3 b = new Vector3(x + .5f, 0.15f, z + .5f);
+            Vector3 c = new Vector3(x - .5f, 0.15f, z - .5f);
+            Vector3 d = new Vector3(x + .5f, 0.15f, z - .5f);
 
             return new Vector3[] { a, b, c, b, d, c };
         }
