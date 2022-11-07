@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
-using UnityEditor.PackageManager;
 
 public class ProfileManager : MonoBehaviour
 {
@@ -111,7 +109,7 @@ public class ProfileManager : MonoBehaviour
     {
         if (playing == true)
         {
-            grid.GetComponent<gridSys>().Generate();
+            grid.GetComponent<WorldManager>().Generate(true);
             JsonSaveLoad loader = new();
         }
     }

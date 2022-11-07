@@ -6,9 +6,12 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 public class WorldManager : MonoBehaviour
 {
+    private SaveFile sf = SaveFile.GetInstance();
+
     public Material[] atlas;
     public GameObject pref;
     public int[] size = new int[2];
+    private float[] seed;
 
     private static WorldManager instance;
 
@@ -16,7 +19,28 @@ public class WorldManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        map = new Map2(pref,size, atlas);
+    }
+
+    private void Start()
+    {
+        if (!ProfileManager.playing)
+        {
+            Generate(false);
+        }
+    }
+
+    public void Generate(bool load)
+    {
+        if (load)
+        {
+            seed[0] = sf.map.xRange;
+            seed[1] = sf.map.yRange;
+            map = new Map2(pref, seed, size, atlas);
+        }
+        else
+        {
+            map = new Map2(pref, size, atlas);
+        }
     }
 
     public static WorldManager getInstance()

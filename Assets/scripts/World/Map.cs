@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 public class Map2
 {
+    private ObjectSaveLoad objects = new ObjectSaveLoad();
     //3d cell2 x y z
     private Cell2[,,] Grid;
 
@@ -68,6 +69,7 @@ public class Map2
                 }
             }
         }
+        objects.LoadSavedObjects();
         terrainGenerator.StartDrawing(Grid);
     }
 //  \\ // \\ // \\ //
