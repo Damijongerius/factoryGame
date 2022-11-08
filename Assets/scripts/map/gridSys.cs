@@ -80,7 +80,7 @@ public class gridSys : MonoBehaviour
             }
         }
 
-        objects.LoadSavedObjects();
+        //objects.LoadSavedObjects(gr);
         DrawTerrainMesh(grid);
         DrawTexture(grid);
     }

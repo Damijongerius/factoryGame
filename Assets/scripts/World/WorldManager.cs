@@ -49,8 +49,17 @@ public class WorldManager : MonoBehaviour
         }
     }
 
+    public void hallo()
+    {
+        Debug.Log("Hallo");
+    }
+
     public static WorldManager getInstance()
     {
+        if (instance is null)
+        {
+           new WorldManager().Awake();   
+        }
         return instance;
     }
 

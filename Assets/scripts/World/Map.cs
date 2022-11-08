@@ -69,7 +69,7 @@ public class Map2
                 }
             }
         }
-        objects.LoadSavedObjects();
+        objects.LoadSavedObjects(Grid);
         terrainGenerator.StartDrawing(Grid);
     }
 //  \\ // \\ // \\ //

@@ -57,16 +57,17 @@ public class ObjectSaveLoad
         return null;
     }
     
-    public void LoadSavedObjects()
+    public void LoadSavedObjects(Cell2[,,] grid2)
     {
+        WorldManager.getInstance().hallo();
         List<cells> grid = gameSave.map.grid;
-        Cell2[,,] grid2 = WorldManager.getInstance().map.Grid;
+
         foreach (cells cell in grid)
         {
 
             SetObject(cell);
-            
-            SetInfo(cell, grid2[cell.x,0, cell.y].obj);
+
+            SetInfo(cell, grid2[cell.x, 0, cell.y].obj);
         }
 
         void SetInfo(cells cell, GameObject scem)
