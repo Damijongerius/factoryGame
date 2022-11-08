@@ -34,8 +34,8 @@ export interface ObjInfo {
 
 export interface Profile {
     Name: string;
-    DateMade: Date;
-    DateSeen: Date;
+    DateMade: string;
+    DateSeen: string;
     TimePlayed: string;
     Statistics: Statistics;
 }
@@ -257,8 +257,8 @@ const typeMap: any = {
     Profile: o(
         [
             { json: "Name", js: "Name", typ: "" },
-            { json: "DateMade", js: "DateMade", typ: Date },
-            { json: "DateSeen", js: "DateSeen", typ: Date },
+            { json: "DateMade", js: "DateMade", typ: "" },
+            { json: "DateSeen", js: "DateSeen", typ: "" },
             { json: "TimePlayed", js: "TimePlayed", typ: "" },
             { json: "Statistics", js: "Statistics", typ: r("Statistics") },
         ],

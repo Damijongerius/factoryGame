@@ -174,8 +174,8 @@ const typeMap = {
     ], false),
     Profile: o([
         { json: "Name", js: "Name", typ: "" },
-        { json: "DateMade", js: "DateMade", typ: Date },
-        { json: "DateSeen", js: "DateSeen", typ: Date },
+        { json: "DateMade", js: "DateMade", typ: "" },
+        { json: "DateSeen", js: "DateSeen", typ: "" },
         { json: "TimePlayed", js: "TimePlayed", typ: "" },
         { json: "Statistics", js: "Statistics", typ: r("Statistics") },
     ], false),

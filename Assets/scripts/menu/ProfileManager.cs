@@ -63,7 +63,7 @@ public class ProfileManager : MonoBehaviour
 
         if(loader.ReadListedProfiles().lastPlayed != null)
         {
-            loader.Load(loader.ReadListedProfiles().lastPlayed);
+            loader.Load(loader.ReadListedProfiles().lastPlayed, true);
 
             loadingscreen.gameObject.SetActive(true);
         }
@@ -82,7 +82,7 @@ public class ProfileManager : MonoBehaviour
         string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
         JsonSaveLoad loader = new();
 
-        loader.Load(ProfileName);
+        loader.Load(ProfileName, true);
 
         loadingscreen.gameObject.SetActive(true);
 

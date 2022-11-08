@@ -5,6 +5,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import { profile } from "console";
+import { setFips } from "crypto";
 // \\ // \\ // \\ //
 
 // // \\ // \\ // \\
@@ -69,24 +70,13 @@ app.post("/load/profiles", async function (req, res) {
 app.post("/Load/savefile", async function (req, res) {
     const ID = req.body.ID;
     const GUID = req.body.GUID;
-    if (GUID !== null) {
-        if (ID instanceof Array<number>) {
-            console.log("alot of ID's");
-            const sfs = [];
-            for (const sfid of ID) {
-                const sf = await GenerateSaveFile(sfid);
-                sfs.push(sf);
-            }
-            res.send(sfs);
-        } else if (ID !== null) {
+    if (ID !== null) {
             const sf = await GenerateSaveFile(ID);
+        
             res.send(sf);
         } else {
             res.send({ status: 13, message: "need valid ID" });
         }
-    } else {
-        res.send({ status: 11, message: "need valid GUID" });
-    }
 
     async function GenerateSaveFile(ID: number) {
         console.log("generating sf");
@@ -146,8 +136,8 @@ app.post("/Load/savefile", async function (req, res) {
             map.grid.push(cells);
         }
 
-        const saveFile: SaveFile = { map, profile };
-        return saveFile;
+        // const saveFile: SaveFile = { map, profile };
+        return { map, profile };
     }
 });
 // \\ // \\ // \\ //

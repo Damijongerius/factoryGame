@@ -60,6 +60,7 @@ public class Login
             case 3:
                 {
                     //if usersavefile contains this profile delete
+                    plane.SetActive(false);
                     Debug.Log("wrong");
                     break;
                 }
@@ -67,6 +68,7 @@ public class Login
                 {
                     //incorrect password
                     password.text = "";
+                    plane.SetActive(false);
                     Debug.Log("wrong");
                     break;
                 }
@@ -74,85 +76,77 @@ public class Login
                 {
                     //sorry problem on our end pls play offline or try again later
                     Debug.Log("wrong");
+                    plane.SetActive(false);
                     break;
                 }
         }
         return true;
-
-
-        void Configure()
-        {
-            manager.StartCoroutine((IEnumerator)ws.GetProfiles(ConfigureResult));
-        }
-        bool ConfigureResult(string json)
-        {
-            JsonSaveLoad loader = new JsonSaveLoad();
-            Debug.Log(json);
-            packet p = new packet();
-            p = JsonConvert.DeserializeObject<packet>(json);
-
-            int id = 0;
-            List<int> ids = new List<int>();
-            for(int i = 0; i < p.profiles.Length; i++)
-            {
-                if (true)
-                {
-                    id = p.profiles[i].savefile_ID;
-                    ids.Add(p.profiles[i].savefile_ID);
-                }
-            }
-            if (ids.Count > 1)
-            {
-                manager.StartCoroutine((IEnumerator)ws.getSaveFiles(ids.ToArray(), SaveFileResult));
-            }
-            else if (id != 0)
-            {
-                manager.StartCoroutine((IEnumerator)ws.getSaveFile(id, SaveFileResult));
-            }
-            else
-            {
-                Debug.Log("nothing to load");
-            }
-
-            bool SaveFileResult(string json)
-            {
-                packet2 packet2 = new packet2();
-                packet2.sfs = JsonConvert.DeserializeObject<SaveFile[]>(json);
-                foreach(SaveFile sf in packet2.sfs)
-                {
-                    loader.Save(sf.profile.Name, sf);
-                }
-                return true;
-            }
-            return false;
-        }
     }
 
-    public class packet2
+    void Configure()
     {
-        public SaveFile[] sfs;
+        manager.StartCoroutine(ws.GetProfiles(ConfigureResult));
+    }
+    bool ConfigureResult(string json)
+    {
+        JsonSaveLoad loader = new JsonSaveLoad();
+        Debug.Log(json);
+        packet p = new packet();
+        p = JsonConvert.DeserializeObject<packet>(json);
+
+        List<int> ids = new List<int>();
+        for (int i = 0; i < p.profiles.Length; i++)
+        {
+            SaveFile savedfile = JsonConvert.DeserializeObject<SaveFile>(loader.Load(p.savefiles[i].SaveName, false));
+
+            if(savedfile.profile.DateSeen < p.profiles[i].DateSeen)
+            {
+                ids.Add(p.profiles[i].savefile_ID);
+            }
+        }
+        if (ids.Count != 0)
+        {
+            foreach (int id in ids)
+            {
+                manager.StartCoroutine(ws.getSaveFile(id, SaveFileResult));
+
+            }
+            manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+        }
+        else
+        {
+            Debug.Log("nothing to load");
+            manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+        }
+        return false;
     }
 
-    public class packet
+    bool SaveFileResult(string json)
     {
-        public SaveFile[] savefiles;
-        public Profile[] profiles;
-        public class SaveFile
-        {
-            public int ID;
-            public string SaveName;
-            public string users_UsersId;
-        }
+        JsonSaveLoad loader = new JsonSaveLoad();
+        SaveFile sf = JsonConvert.DeserializeObject<SaveFile>(json);
+        new SaveFile(sf);
+        loader.Save(sf.profile.Name, sf);
+        return true;
+    }
+}
 
-        public class Profile
-        {
-            public int savefile_ID;
-            public string DateMade;
-            public string DateSeen;
-            public string TimePlayed;
-            public DateTime DM;
-            public DateTime DS;
-            public TimeSpan TP;
-        }
+public class packet
+{
+    public SaveFile[] savefiles;
+    public Profile[] profiles;
+    public class SaveFile
+    {
+        public int ID;
+        public string SaveName;
+        public string users_UsersId;
+    }
+
+    public class Profile
+    {
+        public int savefile_ID;
+        public DateTime DateMade;
+        public DateTime DateSeen;
+        public DateTime TimePlayed;
     }
 }

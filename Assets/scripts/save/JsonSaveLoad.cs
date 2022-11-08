@@ -59,6 +59,7 @@ public class JsonSaveLoad
             personalAes.Key = KeyCheck();
             personalAes.GenerateIV();
 
+            //var settings = new JsonSerializerSettings { DateFormatString = "MMM dd yyyy HH:mm:ss z" };
             string fileContent = JsonConvert.SerializeObject(_saveData);
             ProfileManager.getObject().StartSendCoroutine(fileContent);
             Debug.Log(fileContent);
@@ -79,7 +80,7 @@ public class JsonSaveLoad
     }
 
     //loads data stored in savefile
-    public string Load(string _saveName)
+    public string Load(string _saveName, bool toStaticSaveFile)
     {
         listed.lastPlayed = _saveName;
         string path = Application.persistentDataPath + "/" + user.guid + "/profile/" + _saveName + "/Save.saveFile";
@@ -110,8 +111,13 @@ public class JsonSaveLoad
                 reader.Close();
                 file.Close();
 
-                SaveFile temp = JsonConvert.DeserializeObject<SaveFile>(decrypterdContent);
-                new SaveFile(temp);
+                //var settings = new JsonSerializerSettings { DateFormatString = "MMM dd yyyy HH:mm:ss z" };
+
+                if (toStaticSaveFile)
+                {
+                    SaveFile temp = JsonConvert.DeserializeObject<SaveFile>(decrypterdContent);
+                    new SaveFile(temp);
+                }
                 return decrypterdContent;
 
             }
@@ -336,10 +342,5 @@ public class JsonSaveLoad
                 return aesAlg.Key;
             }
         }
-
-
-
-
-
     }
 }

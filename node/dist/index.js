@@ -157,8 +157,8 @@ app.post("/Load/savefile", function (req, res) {
                     cells.ObjInfo = ObjInfo;
                     map.grid.push(cells);
                 }
-                const saveFile = { map, profile };
-                return saveFile;
+                // const saveFile: SaveFile = { map, profile };
+                return { map, profile };
             });
         }
     });

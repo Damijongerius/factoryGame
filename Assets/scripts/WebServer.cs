@@ -14,6 +14,7 @@ public class WebServer
     {
         WWWForm form = new WWWForm();
         form.AddField("sendJson", data);
+        Debug.Log(data);
         form.AddField("GUID", User.GetInstance().guid.ToString());
         using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Save/savefile", form))
         {
@@ -136,6 +137,7 @@ public class WebServer
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
+            Debug.Log("Jojo");
 
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {
@@ -145,9 +147,8 @@ public class WebServer
             else
             {
 
-                ReturnedData RD = new ReturnedData();
-
-                RD = JsonConvert.DeserializeObject<ReturnedData>(www.downloadHandler.text);
+                ReturnedData RD = JsonConvert.DeserializeObject<ReturnedData>(www.downloadHandler.text);
+                Debug.Log(www.downloadHandler.text);
                 retrn(RD);
                 www.Dispose();
             }
