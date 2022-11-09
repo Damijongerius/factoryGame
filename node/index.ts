@@ -1,11 +1,12 @@
 // // \\ // \\ // \\
-import { SaveFile, Convert, Profile, Map } from "./models/SaveFile";
+import { SaveFile, Convert, Profile, Map } from './models/SaveFile';
 import { DB } from "./DB/Database";
 import express from "express";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import { profile } from "console";
 import { setFips } from "crypto";
+import { Update } from './DB/Update';
 // \\ // \\ // \\ //
 
 // // \\ // \\ // \\
@@ -28,17 +29,54 @@ app.listen(3000, function () {
 // // \\ // \\ // \\
 app.post("/Save/savefile", async function (req, res) {
     const saveFile: SaveFile = Convert.toSaveFile(req.body.sendJson);
-    console.log(saveFile);
     const { map, profile } = saveFile;
-    const result = await DB.insert.SaveFile(saveFile, req.body.GUID);
-    console.log(result);
-    DB.insert.Profile(profile, result);
-    DB.insert.statistics(profile.Statistics, result);
-    DB.insert.Map(map, result);
-    map.grid.forEach((element) => {
-        DB.insert.Cell(element, result);
-        DB.insert.Objinfo(element.ObjInfo, element.x, element.y, result);
-    });
+
+    const savedFile: any = await DB.select.sf(req.body.GUID, saveFile.profile.Name)
+    console.log(savedFile);
+    if(savedFile.length == 0){
+        const result = await DB.insert.SaveFile(saveFile, req.body.GUID);
+        console.log(result);
+        DB.insert.Profile(profile, result);
+        DB.insert.statistics(profile.Statistics, result);
+        DB.insert.Map(map, result);
+        map.grid.forEach((element) => {
+            DB.insert.Cell(element, result);
+            DB.insert.Objinfo(element.ObjInfo, element.x, element.y, result);
+        });
+    }else{
+        const { ID } = savedFile[0];
+        const savedProfile: any = await DB.select.Profile(ID)
+        if(savedProfile.length <= 0){
+            DB.insert.Profile(profile, ID);
+        }else{
+            DB.update.Profile(profile, ID);
+        }
+
+        const savedStatistics:any = await DB.select.statistics(ID)
+        if(savedStatistics.length <= 0){
+            DB.insert.statistics(profile.Statistics, ID);
+        }else{
+            DB.update.statistics(profile.Statistics, ID)
+        }
+
+        const savedCells:any  = await DB.select.Cell(ID);
+        const copy = saveFile.map.grid;
+        for(const cell of savedCells){
+            for(const cc of saveFile.map.grid){
+                if(cc.x == cell.x && cell.y == cc.y){
+                    DB.update.Cell(cc,ID);
+                    DB.update.Objinfo(cc.ObjInfo, cc.x, cc.y, ID);
+
+                    const index = copy.indexOf(cc);
+                    copy.splice(index);
+                }
+            }
+        }
+        for(const cell of copy){
+            DB.insert.Cell(cell, ID);
+            DB.insert.Objinfo(cell.ObjInfo, cell.x, cell.y, ID);
+        }
+    }
 });
 // \\ // \\ // \\ //
 
@@ -71,16 +109,16 @@ app.post("/Load/savefile", async function (req, res) {
      const ID = req.body.ID;
      const GUID = req.body.GUID;
     if (ID != null) {
-            const sf = await GenerateSaveFile(ID);
+            const sf = await GenerateSaveFile(ID,GUID);
             console.log(sf);
             res.json(sf);
         } else {
             res.send({ status: 13, message: "need valid ID" });
         }
 
-    async function GenerateSaveFile(ID: number) {
+    async function GenerateSaveFile(ID: number, GUID: string) {
         console.log("generating sf");
-        const sf: any = await DB.select.SaveFile(ID);
+        const sf: any = await DB.select.SaveFile(ID,GUID);
         const nprofile = await DB.select.Profile(ID);
         const profile = {
             Name: sf[0].SaveName,
@@ -95,21 +133,23 @@ app.post("/Load/savefile", async function (req, res) {
             yRange: nmap[0].yRange,
             grid: [],
         };
-        const nstatistics = await DB.select.statistics(ID);
+        const nstatistics: any = await DB.select.statistics(ID);
         const statistics = {
-            networth: nstatistics[0].networth,
-            money: nstatistics[0].money,
-            data: nstatistics[0].data,
-            xp: nstatistics[0].xp,
+            networth: nstatistics[0].Networth,
+            money: nstatistics[0].Money,
+            data: nstatistics[0].Data,
+            xp: nstatistics[0].Xp,
             Level: nstatistics[0].Level,
         };
         profile.Statistics = statistics;
-        const ncells = await DB.select.Cell(ID);
+        const ncells:any = await DB.select.Cell(ID);
+        console.log(ncells);
         for (const idx in ncells) {
+            console.log(ncells[idx].ObjectTypes);
             const cells = {
                 x: ncells[idx].x,
                 y: ncells[idx].y,
-                objType: ncells[idx].ObjInfo,
+                objType: ncells[idx].ObjectTypes,
                 ObjInfo: null,
             };
             const nObjInfo = await DB.select.Objinfo(

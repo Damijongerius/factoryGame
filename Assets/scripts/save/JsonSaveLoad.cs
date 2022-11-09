@@ -34,7 +34,7 @@ public class JsonSaveLoad
         gameSave.profile.DateMade = System.DateTime.Now;
         gameSave.map = new Map();
         gameSave.profile.Statistics.Money += 200;
-        ListProfile(_name);
+        ListProfile(_name, true);
     }
 
     //save file to filestream
@@ -176,11 +176,12 @@ public class JsonSaveLoad
     }
 
     //zet het nieuw aangemaakte profiel in de lijst van profielen
-    public void ListProfile(string _name)
+    public void ListProfile(string _name, bool playing)
     {
         string temp = listed.lastPlayed;
         listed = new Listed();
         listed.lastPlayed = temp;
+        
 
 
         List<string> profiles = null;
@@ -198,7 +199,14 @@ public class JsonSaveLoad
             Debug.Log("no profiles saved in file");
         }    
         listed.profiles.Add(_name);
-        listed.lastPlayed = _name;
+        if (playing)
+        {
+            listed.lastPlayed = _name;
+        }
+        else
+        {
+            listed.lastPlayed = temp;
+        }
 
 
         using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/" + user.guid + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
@@ -235,16 +243,6 @@ public class JsonSaveLoad
                 }
             }
         }
-    }
-
-    public void SaveUser()
-    {
-
-    }
-
-    public void LoadUser()
-    {
-
     }
 
     public static byte[] EncryptBytes(string _content, byte[] _key, byte[] _IV)

@@ -34,7 +34,7 @@ public class WebServer
         }
     }
 
-    public IEnumerator getSaveFile(int id, Func<string, bool> retrn)
+    public IEnumerator GetSaveFile(int id, Func<string, bool> retrn)
     {
         WWWForm form = new WWWForm();
         form.AddField("ID", id);
@@ -44,24 +44,16 @@ public class WebServer
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
 
-            //if (www.result == UnityWebRequest.Result.ConnectionError)
-            //{
-            //    Debug.Log(www.error);
-            //    www.Dispose();
-            //}
-            //else
-            //{
-            //    Debug.Log(www.downloadHandler.text);
-            //    retrn(www.downloadHandler.text);
-            //    www.Dispose();
-            //}
-
-            if (www.isDone)
+            if (www.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.Log(www.downloadHandler.text);
+                Debug.Log(www.error);
+                www.Dispose();
             }
-
-            Debug.Log(www.downloadHandler.text);
+            else
+            {
+                retrn(www.downloadHandler.text);
+                www.Dispose();
+            }
         }
 
     }

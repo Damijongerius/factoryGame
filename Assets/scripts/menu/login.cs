@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class Login
     private readonly TMP_InputField userName;
     private TMP_InputField password;
 
+    private int loading;
+    private int loaded;
     private GameObject plane;
 
     private readonly signingManager manager;
@@ -85,9 +88,9 @@ public class Login
 
     void Configure()
     {
-        manager.StartCoroutine(ws.GetProfiles(ConfigureResult));
+        manager.StartCoroutine(ws.GetProfiles(ConfigureResultAsync));
     }
-    bool ConfigureResult(string json)
+    bool ConfigureResultAsync(string json)
     {
         JsonSaveLoad loader = new JsonSaveLoad();
         Debug.Log(json);
@@ -104,28 +107,24 @@ public class Login
                 if (savedfile.profile.DateSeen < p.profiles[i].DateSeen)
                 {
                     ids.Add(p.profiles[i].savefile_ID);
-                    Debug.Log("add");
                 }
             }
             catch
             {
                 ids.Add(p.profiles[i].savefile_ID);
-                Debug.Log("add");
             }
 
         }
         if (ids.Count != 0)
         {
-            foreach (int id in ids)
+            for (int i = 0; i < ids.Count; i++)
             {
-                Debug.Log("get:" + id);
-                manager.StartCoroutine(ws.getSaveFile(id, SaveFileResult));
+                loading++;
+                manager.StartCoroutine(ws.GetSaveFile(ids[i], SaveFileResult));
             }
-            manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
         }
         else
         {
-            Debug.Log("nothing to load");
             manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
         }
         return false;
@@ -133,12 +132,17 @@ public class Login
 
     bool SaveFileResult(string json)
     {
-        Debug.Log("import savefile");
+        loaded++;
         JsonSaveLoad loader = new JsonSaveLoad();
         SaveFile sf = JsonConvert.DeserializeObject<SaveFile>(json);
         new SaveFile(sf);
-        Debug.Log("save file local");
         loader.Save(sf.profile.Name, sf, false);
+        loader.ListProfile(sf.profile.Name, false);
+
+        if (loaded == loading)
+        {
+            manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+        }
         return true;
     }
 }

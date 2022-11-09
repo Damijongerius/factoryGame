@@ -36,17 +36,53 @@ app.listen(3000, function () {
 app.post("/Save/savefile", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const saveFile = SaveFile_1.Convert.toSaveFile(req.body.sendJson);
-        console.log(saveFile);
         const { map, profile } = saveFile;
-        const result = yield Database_1.DB.insert.SaveFile(saveFile, req.body.GUID);
-        console.log(result);
-        Database_1.DB.insert.Profile(profile, result);
-        Database_1.DB.insert.statistics(profile.Statistics, result);
-        Database_1.DB.insert.Map(map, result);
-        map.grid.forEach((element) => {
-            Database_1.DB.insert.Cell(element, result);
-            Database_1.DB.insert.Objinfo(element.ObjInfo, element.x, element.y, result);
-        });
+        const savedFile = yield Database_1.DB.select.sf(req.body.GUID, saveFile.profile.Name);
+        console.log(savedFile);
+        if (savedFile.length == 0) {
+            const result = yield Database_1.DB.insert.SaveFile(saveFile, req.body.GUID);
+            console.log(result);
+            Database_1.DB.insert.Profile(profile, result);
+            Database_1.DB.insert.statistics(profile.Statistics, result);
+            Database_1.DB.insert.Map(map, result);
+            map.grid.forEach((element) => {
+                Database_1.DB.insert.Cell(element, result);
+                Database_1.DB.insert.Objinfo(element.ObjInfo, element.x, element.y, result);
+            });
+        }
+        else {
+            const { ID } = savedFile[0];
+            const savedProfile = yield Database_1.DB.select.Profile(ID);
+            if (savedProfile.length <= 0) {
+                Database_1.DB.insert.Profile(profile, ID);
+            }
+            else {
+                Database_1.DB.update.Profile(profile, ID);
+            }
+            const savedStatistics = yield Database_1.DB.select.statistics(ID);
+            if (savedStatistics.length <= 0) {
+                Database_1.DB.insert.statistics(profile.Statistics, ID);
+            }
+            else {
+                Database_1.DB.update.statistics(profile.Statistics, ID);
+            }
+            const savedCells = yield Database_1.DB.select.Cell(ID);
+            const copy = saveFile.map.grid;
+            for (const cell of savedCells) {
+                for (const cc of saveFile.map.grid) {
+                    if (cc.x == cell.x && cell.y == cc.y) {
+                        Database_1.DB.update.Cell(cc, ID);
+                        Database_1.DB.update.Objinfo(cc.ObjInfo, cc.x, cc.y, ID);
+                        const index = copy.indexOf(cc);
+                        copy.splice(index);
+                    }
+                }
+            }
+            for (const cell of copy) {
+                Database_1.DB.insert.Cell(cell, ID);
+                Database_1.DB.insert.Objinfo(cell.ObjInfo, cell.x, cell.y, ID);
+            }
+        }
     });
 });
 // \\ // \\ // \\ //
@@ -83,17 +119,17 @@ app.post("/Load/savefile", function (req, res) {
         const ID = req.body.ID;
         const GUID = req.body.GUID;
         if (ID != null) {
-            const sf = yield GenerateSaveFile(ID);
+            const sf = yield GenerateSaveFile(ID, GUID);
             console.log(sf);
             res.json(sf);
         }
         else {
             res.send({ status: 13, message: "need valid ID" });
         }
-        function GenerateSaveFile(ID) {
+        function GenerateSaveFile(ID, GUID) {
             return __awaiter(this, void 0, void 0, function* () {
                 console.log("generating sf");
-                const sf = yield Database_1.DB.select.SaveFile(ID);
+                const sf = yield Database_1.DB.select.SaveFile(ID, GUID);
                 const nprofile = yield Database_1.DB.select.Profile(ID);
                 const profile = {
                     Name: sf[0].SaveName,
@@ -110,19 +146,21 @@ app.post("/Load/savefile", function (req, res) {
                 };
                 const nstatistics = yield Database_1.DB.select.statistics(ID);
                 const statistics = {
-                    networth: nstatistics[0].networth,
-                    money: nstatistics[0].money,
-                    data: nstatistics[0].data,
-                    xp: nstatistics[0].xp,
+                    networth: nstatistics[0].Networth,
+                    money: nstatistics[0].Money,
+                    data: nstatistics[0].Data,
+                    xp: nstatistics[0].Xp,
                     Level: nstatistics[0].Level,
                 };
                 profile.Statistics = statistics;
                 const ncells = yield Database_1.DB.select.Cell(ID);
+                console.log(ncells);
                 for (const idx in ncells) {
+                    console.log(ncells[idx].ObjectTypes);
                     const cells = {
                         x: ncells[idx].x,
                         y: ncells[idx].y,
-                        objType: ncells[idx].ObjInfo,
+                        objType: ncells[idx].ObjectTypes,
                         ObjInfo: null,
                     };
                     const nObjInfo = yield Database_1.DB.select.Objinfo(ncells[idx].x, ncells[idx].y, ID);

@@ -13,6 +13,16 @@ export class Select {
         this.conn = conn;
     }
 
+    sf(GUID: string, SaveName:string): any {
+        const sql = `SELECT * FROM savefile WHERE users_UserId = "${GUID}" AND SaveName = "${SaveName}"`;
+
+        return new Promise<Array<SaveFile>>((resolve, reject) => {
+            this.conn.query(sql, (err, result) => {
+                return err ? reject(err) : resolve(result);
+            });
+        });
+    }
+
     SaveFiles(GUID: string): any {
         const sql = `SELECT * FROM savefile WHERE users_UserId = "${GUID}"`;
 
@@ -23,8 +33,8 @@ export class Select {
         });
     }
 
-    SaveFile(ID: number): Promise<Array<SaveFile>> {
-        const sql = `SELECT * FROM savefile WHERE ID = "${ID}"`;
+    SaveFile(ID: number, GUID: string): Promise<Array<SaveFile>> {
+        const sql = `SELECT * FROM savefile WHERE ID = "${ID}" AND users_UserId = "${GUID}"`;
 
         return new Promise<Array<SaveFile>>((resolve, reject) => {
             this.conn.query(sql, (err, result) => {
