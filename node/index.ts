@@ -68,12 +68,12 @@ app.post("/load/profiles", async function (req, res) {
 // onloadSaveFilesRequest
 // // \\ // \\ // \\
 app.post("/Load/savefile", async function (req, res) {
-    const ID = req.body.ID;
-    const GUID = req.body.GUID;
-    if (ID !== null) {
+     const ID = req.body.ID;
+     const GUID = req.body.GUID;
+    if (ID != null) {
             const sf = await GenerateSaveFile(ID);
-        
-            res.send(sf);
+            console.log(sf);
+            res.json(sf);
         } else {
             res.send({ status: 13, message: "need valid ID" });
         }
@@ -136,8 +136,8 @@ app.post("/Load/savefile", async function (req, res) {
             map.grid.push(cells);
         }
 
-        // const saveFile: SaveFile = { map, profile };
-        return { map, profile };
+        const saveFile: SaveFile = { map, profile };
+        return saveFile;
     }
 });
 // \\ // \\ // \\ //

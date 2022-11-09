@@ -97,7 +97,7 @@ public class ProfileManager : MonoBehaviour
         JsonSaveLoad saver = new();
         objects.SaveObjects();
 
-        saver.Save(ProfileName, gameSave);
+        saver.Save(ProfileName, gameSave, true);
     }
 
     public void BackToMainMenu()

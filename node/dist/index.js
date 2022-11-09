@@ -82,26 +82,13 @@ app.post("/Load/savefile", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const ID = req.body.ID;
         const GUID = req.body.GUID;
-        if (GUID !== null) {
-            if (ID instanceof (Array)) {
-                console.log("alot of ID's");
-                const sfs = [];
-                for (const sfid of ID) {
-                    const sf = yield GenerateSaveFile(sfid);
-                    sfs.push(sf);
-                }
-                res.send(sfs);
-            }
-            else if (ID !== null) {
-                const sf = yield GenerateSaveFile(ID);
-                res.send(sf);
-            }
-            else {
-                res.send({ status: 13, message: "need valid ID" });
-            }
+        if (ID != null) {
+            const sf = yield GenerateSaveFile(ID);
+            console.log(sf);
+            res.json(sf);
         }
         else {
-            res.send({ status: 11, message: "need valid GUID" });
+            res.send({ status: 13, message: "need valid ID" });
         }
         function GenerateSaveFile(ID) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -157,8 +144,8 @@ app.post("/Load/savefile", function (req, res) {
                     cells.ObjInfo = ObjInfo;
                     map.grid.push(cells);
                 }
-                // const saveFile: SaveFile = { map, profile };
-                return { map, profile };
+                const saveFile = { map, profile };
+                return saveFile;
             });
         }
     });

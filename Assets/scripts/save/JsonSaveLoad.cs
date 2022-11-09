@@ -38,7 +38,7 @@ public class JsonSaveLoad
     }
 
     //save file to filestream
-    public bool Save(string _saveName, SaveFile _saveData)
+    public bool Save(string _saveName, SaveFile _saveData, bool saveToDB)
     {
         string prePath = Application.persistentDataPath + "/" + user.guid + "/profile/" + _saveName;
 
@@ -61,7 +61,11 @@ public class JsonSaveLoad
 
             //var settings = new JsonSerializerSettings { DateFormatString = "MMM dd yyyy HH:mm:ss z" };
             string fileContent = JsonConvert.SerializeObject(_saveData);
-            ProfileManager.getObject().StartSendCoroutine(fileContent);
+            if (saveToDB)
+            {
+                ProfileManager.getObject().StartSendCoroutine(fileContent);
+            }
+            
             Debug.Log(fileContent);
 
             byte[] encrypted = EncryptBytes(fileContent, personalAes.Key, personalAes.IV);

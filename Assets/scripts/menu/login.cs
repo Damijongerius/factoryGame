@@ -97,19 +97,29 @@ public class Login
         List<int> ids = new List<int>();
         for (int i = 0; i < p.profiles.Length; i++)
         {
-            SaveFile savedfile = JsonConvert.DeserializeObject<SaveFile>(loader.Load(p.savefiles[i].SaveName, false));
-
-            if(savedfile.profile.DateSeen < p.profiles[i].DateSeen)
+            SaveFile savedfile;
+            try
+            {
+                savedfile = JsonConvert.DeserializeObject<SaveFile>(loader.Load(p.savefiles[i].SaveName, false));
+                if (savedfile.profile.DateSeen < p.profiles[i].DateSeen)
+                {
+                    ids.Add(p.profiles[i].savefile_ID);
+                    Debug.Log("add");
+                }
+            }
+            catch
             {
                 ids.Add(p.profiles[i].savefile_ID);
+                Debug.Log("add");
             }
+
         }
         if (ids.Count != 0)
         {
             foreach (int id in ids)
             {
+                Debug.Log("get:" + id);
                 manager.StartCoroutine(ws.getSaveFile(id, SaveFileResult));
-
             }
             manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
         }
@@ -123,10 +133,12 @@ public class Login
 
     bool SaveFileResult(string json)
     {
+        Debug.Log("import savefile");
         JsonSaveLoad loader = new JsonSaveLoad();
         SaveFile sf = JsonConvert.DeserializeObject<SaveFile>(json);
         new SaveFile(sf);
-        loader.Save(sf.profile.Name, sf);
+        Debug.Log("save file local");
+        loader.Save(sf.profile.Name, sf, false);
         return true;
     }
 }

@@ -38,48 +38,38 @@ public class WebServer
     {
         WWWForm form = new WWWForm();
         form.AddField("ID", id);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Load/savefile", form))
-        {
-            www.downloadHandler = new DownloadHandlerBuffer();
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.ConnectionError)
-            {
-                Debug.Log(www.error.ToString());
-            }
-            else
-            {
-                retrn(www.downloadHandler.text);
-            }
-        }
-    }
-
-    public IEnumerator getSaveFiles(int[] id, Func<string, bool> retrn)
-    {
-        WWWForm form = new WWWForm();
-        for (int i = 0; i < id.Length; i++)
-        {
-            form.AddField("ID", id[i]);
-        }
         form.AddField("GUID", User.GetInstance().guid.ToString());
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Load/savefile", form))
+        using (UnityWebRequest www = UnityWebRequest.Post($"http://localhost:3000/Load/savefile", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.ConnectionError)
+            //if (www.result == UnityWebRequest.Result.ConnectionError)
+            //{
+            //    Debug.Log(www.error);
+            //    www.Dispose();
+            //}
+            //else
+            //{
+            //    Debug.Log(www.downloadHandler.text);
+            //    retrn(www.downloadHandler.text);
+            //    www.Dispose();
+            //}
+
+            if (www.isDone)
             {
-                Debug.Log(www.error.ToString());
+                Debug.Log(www.downloadHandler.text);
             }
-            else
-            {
-                retrn(www.downloadHandler.text);
-            }
+
+            Debug.Log(www.downloadHandler.text);
         }
+
     }
+    
 
     public IEnumerator GetProfiles(Func<string, bool> retrn)
     {
+
         WWWForm form = new WWWForm();
         form.AddField("GUID", User.GetInstance().guid.ToString());
         using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Load/profiles", form))
@@ -90,12 +80,14 @@ public class WebServer
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {
                 Debug.Log(www.error.ToString());
+                www.Dispose();
             }
             else
             {
                 retrn(www.downloadHandler.text);
-
+                www.Dispose();
             }
+            
         }
     }
 
@@ -112,7 +104,7 @@ public class WebServer
 
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {
-
+                www.Dispose();
             }
             else
             {
@@ -121,8 +113,8 @@ public class WebServer
 
                 RD = JsonConvert.DeserializeObject<ReturnedData>(www.downloadHandler.text);
                 retrn(RD);
+                www.Dispose();
             }
-            www.Dispose();
         }
 
 
