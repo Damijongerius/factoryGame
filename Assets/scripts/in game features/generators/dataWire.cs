@@ -38,15 +38,6 @@ public class dataWire : MonoBehaviour
     public void Run()
     {
         wire.updateSpeed--;
-
-        bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataMiner");
-        foreach (bool direction in directions)
-        {
-            if (direction) 
-            {
-                //Debug.Log("wire with power");
-            }
-        }
     }
 
     public void Test()
