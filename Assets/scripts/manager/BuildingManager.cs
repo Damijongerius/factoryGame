@@ -50,7 +50,7 @@ public class BuildingManager : MonoBehaviour
             int X = Mathf.FloorToInt(posX);
             int Z = Mathf.FloorToInt(posZ);
 
-            pendingObject.transform.position = new Vector3(posX, posY, posZ);
+            pendingObject.transform.position = new Vector3(posX, 1, posZ);
             Cell2 cell = WorldManager.getInstance().map.Grid[X,0, Z];
             //Debug.Log(X + "||" + Z + "||" + cell.obj);
             if (!cell.isWater && cell.obj == null)
