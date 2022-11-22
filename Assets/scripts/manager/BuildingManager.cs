@@ -45,13 +45,12 @@ public class BuildingManager : MonoBehaviour
         if (pendingObject != null)
         {
             float posX = RoundToNearestGrid(pos.x);
-            float posY = RoundToNearestGrid(pos.y);
             float posZ = RoundToNearestGrid(pos.z);
 
             int X = Mathf.FloorToInt(posX);
             int Z = Mathf.FloorToInt(posZ);
 
-            pendingObject.transform.position = new Vector3(posX, posY, posZ);
+            pendingObject.transform.position = new Vector3(posX, 0, posZ);
             Cell cell = gridSys.grid[X, Z];
             //Debug.Log(X + "||" + Z + "||" + cell.obj);
             if (!cell.isWater && cell.obj == null)

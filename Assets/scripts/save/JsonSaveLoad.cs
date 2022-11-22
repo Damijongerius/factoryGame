@@ -37,6 +37,12 @@ public class JsonSaveLoad
         ListProfile(_name, true);
     }
 
+    public void DeleteUserData(Guid _guid)
+    {
+        string Path = Application.persistentDataPath + "/" + _guid;
+        Directory.Delete(Path, true);
+    }
+
     //save file to filestream
     public bool Save(string _saveName, SaveFile _saveData, bool saveToDB)
     {
@@ -115,8 +121,6 @@ public class JsonSaveLoad
                 reader.Close();
                 file.Close();
 
-                //var settings = new JsonSerializerSettings { DateFormatString = "MMM dd yyyy HH:mm:ss z" };
-
                 if (toStaticSaveFile)
                 {
                     SaveFile temp = JsonConvert.DeserializeObject<SaveFile>(decrypterdContent);
@@ -140,6 +144,8 @@ public class JsonSaveLoad
         string path = Application.persistentDataPath + "/" + user.guid + "/profile/" + _name;
 
         Directory.Delete(path, true);
+
+        ProfileManager.getObject().StartDeleteCoroutine(_name);
 
         DeleteListedProfile(_name);
 

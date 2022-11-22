@@ -89,8 +89,10 @@ export class Insert{
   
       this.conn.query(sql, function (err, result) {
         if (err) {
+          console.log("err");
           callback({ status: 0, message: "was not able to create your account" });
         } else {
+          console.log("not err");
           callback({ status: 1, message: "your account has been created" });
         }
       });

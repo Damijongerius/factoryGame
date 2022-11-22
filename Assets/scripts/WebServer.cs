@@ -96,6 +96,9 @@ public class WebServer
 
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {
+                ReturnedData RD = new ReturnedData();
+                RD.status = 0;
+                    retrn(RD);
                 www.Dispose();
             }
             else
@@ -121,11 +124,12 @@ public class WebServer
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
-            Debug.Log("Jojo");
 
             if (www.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.Log(www.error);
+                ReturnedData RD = new ReturnedData();
+                RD.status = 5;
+                retrn(RD);
                 www.Dispose();
             }
             else
@@ -163,6 +167,51 @@ public class WebServer
 
                 RD = JsonConvert.DeserializeObject<ReturnedData>(www.downloadHandler.text);
                 retrn(RD);
+                www.Dispose();
+            }
+        }
+    }
+
+    public IEnumerator DeleteUser()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("GUID", User.GetInstance().guid.ToString());
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/DeleteUser", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer();
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log(www.error);
+                www.Dispose();
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                www.Dispose();
+            }
+        }
+    }
+
+    public IEnumerator DeleteSaveFile(string saveName)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("GUID", User.GetInstance().guid.ToString());
+        form.AddField("saveName", saveName);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/DeleteSaveFile", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer();
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log(www.error);
+                www.Dispose();
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
                 www.Dispose();
             }
         }

@@ -28,6 +28,7 @@ const EH = __importStar(require("./ErrorHandler"));
 const Insert_1 = require("./Insert");
 const Update_1 = require("./Update");
 const Select_1 = require("./Select");
+const Delete_1 = require("./Delete");
 const mysql = require("mysql");
 class Database {
     constructor(host, user, password, database) {
@@ -46,6 +47,7 @@ class Database {
         this.insert = new Insert_1.Insert(this.conn);
         this.update = new Update_1.Update(this.conn);
         this.select = new Select_1.Select(this.conn);
+        this.delete = new Delete_1.Delete(this.conn);
     }
 }
 exports.Database = Database;

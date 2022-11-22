@@ -1,19 +1,8 @@
-import { debug } from "console";
-import { umask } from "process";
-import { stringify } from "querystring";
-import internal from "stream";
-import {
-    Map,
-    ObjInfo,
-    Profile,
-    SaveFile,
-    Statistics,
-} from "../models/SaveFile";
 import * as EH from "./ErrorHandler";
-import { cells } from "../models/SaveFile";
 import { Insert } from "./Insert";
 import { Update } from "./Update";
 import { Select } from "./Select";
+import { Delete } from "./Delete";
 const mysql = require("mysql");
 
 export class Database {
@@ -23,6 +12,7 @@ export class Database {
     insert: Insert;
     update: Update;
     select: Select;
+    delete: Delete;
 
     constructor(
         host: string,
@@ -46,6 +36,7 @@ export class Database {
         this.insert = new Insert(this.conn);
         this.update = new Update(this.conn);
         this.select = new Select(this.conn);
+        this.delete = new Delete(this.conn);
     }
 }
 

@@ -52,20 +52,8 @@ app.post("/Save/savefile", function (req, res) {
         }
         else {
             const { ID } = savedFile[0];
-            const savedProfile = yield Database_1.DB.select.Profile(ID);
-            if (savedProfile.length <= 0) {
-                Database_1.DB.insert.Profile(profile, ID);
-            }
-            else {
-                Database_1.DB.update.Profile(profile, ID);
-            }
-            const savedStatistics = yield Database_1.DB.select.statistics(ID);
-            if (savedStatistics.length <= 0) {
-                Database_1.DB.insert.statistics(profile.Statistics, ID);
-            }
-            else {
-                Database_1.DB.update.statistics(profile.Statistics, ID);
-            }
+            Database_1.DB.update.Profile(profile, ID);
+            Database_1.DB.update.statistics(profile.Statistics, ID);
             const savedCells = yield Database_1.DB.select.Cell(ID);
             const copy = saveFile.map.grid;
             for (const cell of savedCells) {
@@ -74,11 +62,13 @@ app.post("/Save/savefile", function (req, res) {
                         Database_1.DB.update.Cell(cc, ID);
                         Database_1.DB.update.Objinfo(cc.ObjInfo, cc.x, cc.y, ID);
                         const index = copy.indexOf(cc);
+                        console.log(cc);
                         copy.splice(index);
                     }
                 }
             }
             for (const cell of copy) {
+                console.log(cell);
                 Database_1.DB.insert.Cell(cell, ID);
                 Database_1.DB.insert.Objinfo(cell.ObjInfo, cell.x, cell.y, ID);
             }
@@ -222,11 +212,18 @@ app.post("/LoadUser", function (req, res) {
                 break;
             }
             case 2: {
-                console.log(info.result);
+                if (info.result.length == 0 || info.result == null) {
+                    console.log("nothing");
+                    res.send({
+                        Status: 5,
+                        message: "incorrect password try again",
+                    });
+                }
                 info.result.forEach(function (i, idx, array) {
                     return __awaiter(this, void 0, void 0, function* () {
                         comparePassword(req.body.Password, array[idx].password, function (params) {
                             if (params) {
+                                console.log("match");
                                 res.send({
                                     Status: 4,
                                     message: `the password matches ${data.UserName}`,
@@ -238,6 +235,7 @@ app.post("/LoadUser", function (req, res) {
                             }
                             else {
                                 if (i === array.length - 1) {
+                                    console.log("not match");
                                     res.send({
                                         Status: 5,
                                         message: "incorrect password try again",
@@ -264,8 +262,22 @@ app.post("/LoadUser", function (req, res) {
 //onUserDeleteRequest
 // // \\ // \\ // \\
 app.post("/DeleteUser", function (req, res) {
-    //removes player with savefiles
-    //deletes profile with saved guid
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log("delete");
+        if (req.body.GUID != null) {
+            Database_1.DB.delete.User(req.body.GUID);
+        }
+    });
+});
+// \\ // \\ // \\ //
+//onSaveFileDeleteRequest
+// // \\ // \\ // \\
+app.post("/DeleteSaveFile", function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (req.body.GUID != null && req.body.saveName != null) {
+            Database_1.DB.delete.SaveFile(req.body.GUID, req.body.saveName);
+        }
+    });
 });
 // \\ // \\ // \\ //
 // encryption

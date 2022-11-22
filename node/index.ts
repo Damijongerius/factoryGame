@@ -4,9 +4,6 @@ import { DB } from "./DB/Database";
 import express from "express";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
-import { profile } from "console";
-import { setFips } from "crypto";
-import { Update } from './DB/Update';
 // \\ // \\ // \\ //
 
 // // \\ // \\ // \\
@@ -45,19 +42,9 @@ app.post("/Save/savefile", async function (req, res) {
         });
     }else{
         const { ID } = savedFile[0];
-        const savedProfile: any = await DB.select.Profile(ID)
-        if(savedProfile.length <= 0){
-            DB.insert.Profile(profile, ID);
-        }else{
-            DB.update.Profile(profile, ID);
-        }
 
-        const savedStatistics:any = await DB.select.statistics(ID)
-        if(savedStatistics.length <= 0){
-            DB.insert.statistics(profile.Statistics, ID);
-        }else{
-            DB.update.statistics(profile.Statistics, ID)
-        }
+        DB.update.Profile(profile, ID);
+        DB.update.statistics(profile.Statistics, ID)
 
         const savedCells:any  = await DB.select.Cell(ID);
         const copy = saveFile.map.grid;
@@ -68,11 +55,13 @@ app.post("/Save/savefile", async function (req, res) {
                     DB.update.Objinfo(cc.ObjInfo, cc.x, cc.y, ID);
 
                     const index = copy.indexOf(cc);
+                    console.log(cc);
                     copy.splice(index);
                 }
             }
         }
         for(const cell of copy){
+            console.log(cell);
             DB.insert.Cell(cell, ID);
             DB.insert.Objinfo(cell.ObjInfo, cell.x, cell.y, ID);
         }
@@ -219,13 +208,20 @@ app.post("/LoadUser", async function (req, res) {
         }
 
         case 2: {
-            console.log(info.result);
+            if(info.result.length == 0 || info.result == null){
+                console.log("nothing");
+                res.send({
+                    Status: 5,
+                    message: "incorrect password try again",
+                });
+            }
             info.result.forEach(async function (i, idx, array) {
                 comparePassword(
                     req.body.Password,
                     array[idx].password,
                     function (params: boolean) {
                         if (params) {
+                            console.log("match");
                             res.send({
                                 Status: 4,
                                 message: `the password matches ${data.UserName}`,
@@ -236,6 +232,7 @@ app.post("/LoadUser", async function (req, res) {
                             });
                         } else {
                             if (i === array.length - 1) {
+                                console.log("not match");
                                 res.send({
                                     Status: 5,
                                     message: "incorrect password try again",
@@ -261,9 +258,20 @@ app.post("/LoadUser", async function (req, res) {
 
 //onUserDeleteRequest
 // // \\ // \\ // \\
-app.post("/DeleteUser", function (req, res) {
-    //removes player with savefiles
-    //deletes profile with saved guid
+app.post("/DeleteUser", async function (req, res) {
+    console.log("delete");
+    if(req.body.GUID != null){
+        DB.delete.User(req.body.GUID);
+    }
+});
+// \\ // \\ // \\ //
+
+//onSaveFileDeleteRequest
+// // \\ // \\ // \\
+app.post("/DeleteSaveFile", async function (req, res) {
+    if(req.body.GUID != null && req.body.saveName != null){
+        DB.delete.SaveFile(req.body.GUID, req.body.saveName);
+    }
 });
 // \\ // \\ // \\ //
 

@@ -49,7 +49,7 @@ export class Update{
         dataTransferd,
       } = p;
   
-      var sql = `UPDATE objectinfo SET dataStored = ${dataStored}, powerStored = ${powerStored}, level = ${level}, age = ${age}, upkeepCost = ${upkeepCost}, dataMined = ${dataMined}, dataSold = ${dataSold}, dataTransferd ${dataTransferd} WHERE cells_x = ${x} AND cells_y = ${y} AND savefile_ID = ${saveFileId}`;
+      var sql = `UPDATE objectinfo SET dataStored = ${dataStored}, powerStored = ${powerStored}, level = ${level}, age = ${age}, upkeepCost = ${upkeepCost}, dataMined = ${dataMined}, dataSold = ${dataSold}, dataTransferd = ${dataTransferd} WHERE cells_x = ${x} AND cells_y = ${y} AND savefile_ID = ${saveFileId}`;
   
       this.conn.query(sql, function (err, result) {
         if (err) throw err;

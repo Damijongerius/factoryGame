@@ -108,7 +108,7 @@ export class Select {
             this.conn.query(sql, (err, result) => {
                 if (err) {
                     reject({ status: 3, message: "Was not able to find user" });
-                    console.log(err);
+                    console.log(err = "errrer");
                 } else {
                     resolve({
                         status: 2,
@@ -117,7 +117,7 @@ export class Select {
                     });
                 }
 
-                console.log(result);
+                console.log(result + "abc");
             });
         });
     }
