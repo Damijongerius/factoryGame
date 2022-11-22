@@ -39,7 +39,7 @@ public class dataWire : MonoBehaviour
     {
         wire.updateSpeed--;
 
-        bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataMiner");
+        bool[] directions = WorldManager.getInstance().map.Grid[(int)transform.position.x,0, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataMiner");
         foreach (bool direction in directions)
         {
             if (direction) 
@@ -63,8 +63,8 @@ public class dataWire : MonoBehaviour
         {
             wire.updateSpeed = 2;
 
-            bool[] directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
-            List<GameObject> wires = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
+            bool[] directions = WorldManager.getInstance().map.Grid[(int)transform.position.x,0, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
+            List<GameObject> wires = WorldManager.getInstance().map.Grid[(int)transform.position.x,0, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
             for (int i = 0; i < wires.Count; i++)
             {
                 if (wires[i] != null)
@@ -89,8 +89,8 @@ public class dataWire : MonoBehaviour
             }
             if(wire.SelfPrio == 0 && wire.dataStored > 0)
             {
-                bool[] directionsU = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "uploadStation");
-                List<GameObject> Stations = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "uploadStation");
+                bool[] directionsU = WorldManager.getInstance().map.Grid[(int)transform.position.x,0, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "uploadStation");
+                List<GameObject> Stations = WorldManager.getInstance().map.Grid[(int)transform.position.x,0, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "uploadStation");
                 List<GameObject> stations = new List<GameObject>();
                 uploadStations = stations;
                 for(int i = 0; i < directionsU.Length; i++)
@@ -109,7 +109,7 @@ public class dataWire : MonoBehaviour
     {
         sorted.Clear();
 
-        List<GameObject> objects = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
+        List<GameObject> objects = WorldManager.getInstance().map.Grid[(int)transform.position.x,0, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
         for(int i = 0; i < wire.Prio.Length; i++)
         {
             if (wire.Prio[i] > 0)

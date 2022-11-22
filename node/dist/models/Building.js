@@ -1,5 +1,3 @@
-class Building {
-}
-class BuildingInfo {
-}
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 //# sourceMappingURL=Building.js.map

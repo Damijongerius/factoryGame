@@ -32,8 +32,8 @@ public class dataMiner : MonoBehaviour
     public void Run()
     {
         // looks for data wire in direction
-        directions = gridSys.grid[(int)transform.position.x, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
-        objects = gridSys.grid[(int)transform.position.x, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
+        directions = WorldManager.getInstance().map.Grid[(int)transform.position.x,0, (int)transform.position.z].CheckNeighbour((int)transform.position.x, (int)transform.position.z, "dataWire");
+        objects = WorldManager.getInstance().map.Grid[(int)transform.position.x,0, (int)transform.position.z].GetObject((int)transform.position.x, (int)transform.position.z, "dataWire");
         wires.Clear();
         foreach(GameObject obj in objects)
         {

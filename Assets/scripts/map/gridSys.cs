@@ -80,7 +80,7 @@ public class gridSys : MonoBehaviour
             }
         }
 
-        objects.LoadSavedObjects();
+        //objects.LoadSavedObjects(gr);
         DrawTerrainMesh(grid);
         DrawTexture(grid);
     }
@@ -156,19 +156,19 @@ public class gridSys : MonoBehaviour
         
         if (!cell.isWater)
         {
-            Vector2 uv00 = new Vector2(0, 0);
-            Vector2 uv10 = new Vector2(0.49f, 0);
-            Vector2 uv01 = new Vector2(0.49f, 0.49f);
-            Vector2 uv11 = new Vector2(0, 0.49f);
+            Vector2 uv00 = new Vector2(0.04f, 0.04f);
+            Vector2 uv10 = new Vector2(0.46f, 0.04f);
+            Vector2 uv01 = new Vector2(0.46f, 0.46f);
+            Vector2 uv11 = new Vector2(0.04f, 0.46f);
             Vector2[] uv = new Vector2[] { uv00, uv10, uv01, uv10, uv11, uv01 };
             return uv;
         }
         else
         {
-            Vector2 uv00 = new Vector2(0.51f, 0.51f);
-            Vector2 uv10 = new Vector2(0.51f, 1);
-            Vector2 uv01 = new Vector2(1f, 0.51f);
-            Vector2 uv11 = new Vector2(1, 1);
+            Vector2 uv00 = new Vector2(0.54f, 0.54f);
+            Vector2 uv10 = new Vector2(0.54f, 0.96f);
+            Vector2 uv01 = new Vector2(0.96f, 0.54f);
+            Vector2 uv11 = new Vector2(0.96f, 0.96f);
             Vector2[] uv = new Vector2[] { uv00, uv10, uv01, uv10, uv11, uv01 };
             return uv;
         }

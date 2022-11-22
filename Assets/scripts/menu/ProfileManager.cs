@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
-using UnityEditor.PackageManager;
 
 public class ProfileManager : MonoBehaviour
 {
@@ -100,11 +98,18 @@ public class ProfileManager : MonoBehaviour
         saver.Save(ProfileName, gameSave);
     }
 
+    public void BackToMainMenu()
+    {
+        Save();
+        playing = false;
+        SceneManager.LoadScene("MainMenu");
+    }
+
     private void Awake()
     {
         if (playing == true)
         {
-            grid.GetComponent<gridSys>().Generate();
+            grid.GetComponent<WorldManager>().Generate(true);
             JsonSaveLoad loader = new();
         }
     }

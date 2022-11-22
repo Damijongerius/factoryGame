@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DB = void 0;
+exports.DB = exports.Database = void 0;
 const EH = __importStar(require("./ErrorHandler"));
 var mysql = require("mysql");
 class Database {
@@ -35,28 +35,88 @@ class Database {
             database: database,
         });
         this.errorHandler = new EH.ErrorHandler();
-        this.conn.connect();
+        this.conn.connect(function (err) {
+            if (err)
+                throw err;
+            console.log("Connected To DataBase!");
+        });
     }
-    Checks() { }
-    select(table) {
-        this.conn.query(`SELECT * FROM ${table}`);
+    InsertSaveFile(sf, GUID, callBack) {
+        const { Name } = sf.Profile;
+        let lastId = -1;
+        var sql = `INSERT INTO saveFile (SaveName, users_UserId) VALUES ("${Name}", "${GUID}")`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
+            lastId = result.insertId;
+        });
+        return lastId;
+        // callBack(0);
     }
-    insert(table, param, obj) {
-        let sql = `INSTERT INTO ${table} (${this.ParamToString(param)})`;
-        this.conn.query(sql, obj, this.errorHandler.OnInsert);
+    InsertInfo(p, saveFileID) {
+        const { DateMade, DateSeen, TimePlayed } = p;
+        var sql = `INSERT INTO Info (DateMade,DateSeen,TimePlayed,savefile_ID) VALUES ("${DateMade}","${DateSeen}","${TimePlayed}", ${saveFileID})`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
+            return result.insertId;
+        });
+        return 0;
     }
-    ParamToString(param) {
-        let string;
-        for (let i = 0; i < param.length; i++) {
-            if (param.length != i) {
-                string += `${param[i]}, `;
+    Insertstatistics(p, saveFileId) {
+        const { networth, money, data, xp, Level } = p;
+        var sql = `INSERT INTO statistics (Networth,Money,Data,Xp,Level, _savefile_ID) VALUES (${networth},${money},${data},${xp},${Level},${saveFileId})`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
+        });
+    }
+    InsertMap(p, saveFileId) {
+        const { xRange, yRange } = p;
+        var sql = `INSERT INTO map (xRange,yRange,savefile_ID) VALUES (${xRange},${yRange},${saveFileId})`;
+        this.conn.query(sql, function (err, result) {
+            if (err)
+                throw err;
+        });
+    }
+    InsertobjectObjinfo(p, saveFileId) {
+        const { dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, } = p;
+        var sql = `INSERT INTO objectinfo (dataStored, powerStored, level, age, upkeepCost, dataMined, dataSold, dataTransferd, map_savefile_ID) VALUES ()`;
+    }
+    InsertUser(guid, name, password, callback) {
+        var sql = `INSERT INTO Users (UserId,UserName,password) VALUES ("${guid}","${name}","${password}")`;
+        this.conn.query(sql, function (err, result) {
+            if (err) {
+                callback({ status: 0, message: "was not able to create your account" });
             }
             else {
-                string += `${param[i]} `;
+                callback({ status: 1, message: "your account has been created" });
             }
+        });
+    }
+    SelectUser(data, callback) {
+        let sql;
+        if (data.GUID == null) {
+            sql = `SELECT * FROM Users WHERE UserName = "${data.UserName}" `;
         }
-        return string;
+        else {
+            sql = `SELECT * FROM Users WHERE UserId = "${data.GUID}"`;
+        }
+        this.conn.query(sql, function (err, result) {
+            if (err) {
+                callback({ status: 3, message: "Was not able to find user" });
+                console.log(err);
+            }
+            else {
+                callback({
+                    status: 2,
+                    message: "This is what i found",
+                    result: result,
+                });
+            }
+        });
     }
 }
-exports.DB = new Database("localhost", "root", "", "Factorygame");
+exports.Database = Database;
+exports.DB = new Database("localhost", "root", "", "factorygame");
 //# sourceMappingURL=Database.js.map

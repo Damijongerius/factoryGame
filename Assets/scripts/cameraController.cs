@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,7 @@ public class cameraController : MonoBehaviour
     public LayerMask Mask;
 
     public Vector3 point;
+    public Vector3 xMax;
     public bool Using;
     public float mouseSensitivity = 500f;
 
@@ -56,7 +58,10 @@ public class cameraController : MonoBehaviour
         Vector3 dir = transform.forward * zInput + transform.right * xInput;
         dir = new Vector3(dir.x,0,dir.z);
 
+
         transform.position += moveSpeed * Time.deltaTime * dir;
+
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x , 11f, 72f), transform.position.y, Mathf.Clamp(transform.position.z, -11f, 72f));
 
     }
     public void Zoom()

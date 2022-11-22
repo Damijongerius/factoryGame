@@ -23,7 +23,6 @@ public class LoadListed : MonoBehaviour
     private void Awake()
     {
         sb = gameObject.GetComponentInParent<Scrollbar>();
-        Event e = new Event();
 
         trans = gameObject.GetComponent<RectTransform>();
 
