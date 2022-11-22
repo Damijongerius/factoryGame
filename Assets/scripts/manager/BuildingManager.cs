@@ -45,7 +45,6 @@ public class BuildingManager : MonoBehaviour
         if (pendingObject != null)
         {
             float posX = RoundToNearestGrid(pos.x);
-            float posY = RoundToNearestGrid(pos.y);
             float posZ = RoundToNearestGrid(pos.z);
 
             int X = Mathf.FloorToInt(posX);

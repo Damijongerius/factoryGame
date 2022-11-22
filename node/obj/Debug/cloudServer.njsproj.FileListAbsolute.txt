@@ -1,0 +1,3 @@
+C:\Users\jetty\OneDrive\Documenten\GitHub\factoryGame\node\obj\Debug\cloudServer.njsproj.AssemblyReference.cache
+C:\Users\jetty\OneDrive\Documenten\GitHub\factoryGame\node\obj\Debug\cloudServer.njsproj.CoreCompileInputs.cache
+C:\Users\jetty\OneDrive\Documenten\GitHub\factoryGame\node\bin\Microsoft.NodejsTools.WebRole.dll

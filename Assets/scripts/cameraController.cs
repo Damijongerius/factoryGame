@@ -83,18 +83,15 @@ public class cameraController : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 20f, Mask, QueryTriggerInteraction.Ignore))
         {
-            Debug.DrawLine(ray.origin, hit.point, Color.red);
             transform.position += new Vector3(0, 0.1f, 0);
             //transform.position += new Vector3(0, Mathf.Lerp(transform.position.y, transform.position.y + 1, 0.5f), 0);
         }
         else if (!Physics.Raycast(ray, out _, 22f, Mask, QueryTriggerInteraction.Ignore) && Physics.Raycast(ray, out hit, 150f, Mask, QueryTriggerInteraction.Ignore))
         {
-            Debug.DrawLine(ray.origin, hit.point, Color.red);
             transform.position -= new Vector3(0, 0.1f, 0);
         }
         else
         {
-            Debug.DrawLine(ray.origin, ray.origin + ray.direction * 22f, Color.green);
         }
 
     }

@@ -155,9 +155,9 @@ const typeMap = {
         { json: "x", js: "x", typ: 0 },
         { json: "y", js: "y", typ: 0 },
         { json: "objType", js: "objType", typ: 0 },
-        { json: "info", js: "info", typ: r("Info") },
+        { json: "ObjInfo", js: "ObjInfo", typ: r("ObjInfo") },
     ], false),
-    Info: o([
+    ObjInfo: o([
         { json: "exitPoints", js: "exitPoints", typ: u(undefined, true) },
         { json: "powered", js: "powered", typ: u(undefined, true) },
         { json: "dataStored", js: "dataStored", typ: 0 },
@@ -174,8 +174,8 @@ const typeMap = {
     ], false),
     Profile: o([
         { json: "Name", js: "Name", typ: "" },
-        { json: "DateMade", js: "DateMade", typ: Date },
-        { json: "DateSeen", js: "DateSeen", typ: Date },
+        { json: "DateMade", js: "DateMade", typ: "" },
+        { json: "DateSeen", js: "DateSeen", typ: "" },
         { json: "TimePlayed", js: "TimePlayed", typ: "" },
         { json: "Statistics", js: "Statistics", typ: r("Statistics") },
     ], false),

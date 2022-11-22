@@ -15,6 +15,7 @@ public class ProfileManager : MonoBehaviour
     public WebServer ws = new WebServer(); 
     private SaveFile gameSave = SaveFile.GetInstance();
     public ObjectSaveLoad objects = new ObjectSaveLoad();
+    public JsonSaveLoad jsonSL = new();
 
     private static DateTime startPlaying;
 
@@ -30,9 +31,8 @@ public class ProfileManager : MonoBehaviour
         string ProfileName = inputField.GetComponent<TextMeshProUGUI>().text;
         if(ProfileName.Length > 1)
         {
-            JsonSaveLoad loader = new JsonSaveLoad();
-            loader.Exsisting(ProfileName);
-            loader.CreateSaveData(ProfileName);
+            jsonSL.Exsisting(ProfileName);
+            jsonSL.CreateSaveData(ProfileName);
 
             loadingscreen.gameObject.SetActive(true);
         }
@@ -45,23 +45,34 @@ public class ProfileManager : MonoBehaviour
     public void Delete(GameObject profileObject)
     {
         //load clicked profile in load screen
-        string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
-        JsonSaveLoad loader = new();
-
-        loader.DeleteProfile(ProfileName);
+        string profileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
+        StartCoroutine(ws.DeleteSaveFile(profileName));
 
 
-        //request database to delete profile
+        jsonSL.DeleteProfile(profileName);
+    }
+
+    public void DeleteUser()
+    {
+        User user = User.GetInstance();
+        if (user.UserName != null)
+        {
+            StartCoroutine(ws.DeleteUser());
+
+            jsonSL.DeleteUserData(user.guid);
+            user = null;
+
+        }
     }
 
     public void Continue() 
     {
-        JsonSaveLoad loader = new();
         //for all the saves find the latest(can only be done if dates are saved in savefile)
 
-        if(loader.ReadListedProfiles().lastPlayed != null)
+        if(jsonSL.ReadListedProfiles().lastPlayed != null)
         {
-            loader.Load(loader.ReadListedProfiles().lastPlayed);
+           jsonSL.Load(jsonSL.ReadListedProfiles().lastPlayed, true);
+            
 
             loadingscreen.gameObject.SetActive(true);
         }
@@ -78,9 +89,8 @@ public class ProfileManager : MonoBehaviour
     {
         //load clicked profile in load screen
         string ProfileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
-        JsonSaveLoad loader = new();
 
-        loader.Load(ProfileName);
+            jsonSL.Load(ProfileName, true);
 
         loadingscreen.gameObject.SetActive(true);
 
@@ -92,10 +102,17 @@ public class ProfileManager : MonoBehaviour
         string ProfileName = gameSave.profile.Name;
         gameSave.profile.TimePlayed += System.DateTime.Now - startPlaying;
         gameSave.profile.DateSeen = System.DateTime.Now;
-        JsonSaveLoad saver = new();
         objects.SaveObjects();
 
-        saver.Save(ProfileName, gameSave);
+        if (User.GetInstance().guid == new Guid("aaaa1111-2022-2022-2022-aaaaaaaaaaa1"))
+        {
+            jsonSL.Save(ProfileName, gameSave, false);
+        }
+        else
+        {
+            jsonSL.Save(ProfileName, gameSave, true);
+        }
+        
     }
 
     public void BackToMainMenu()
@@ -122,6 +139,11 @@ public class ProfileManager : MonoBehaviour
     public void StartSendCoroutine(string data)
     {
         StartCoroutine(ws.sendSaveFile(data));
+        Debug.Log("starting court");
+    }
+    public void StartDeleteCoroutine(string data)
+    {
+        StartCoroutine(ws.DeleteSaveFile(data));
         Debug.Log("starting court");
     }
 

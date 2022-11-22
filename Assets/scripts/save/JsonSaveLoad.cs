@@ -34,11 +34,17 @@ public class JsonSaveLoad
         gameSave.profile.DateMade = System.DateTime.Now;
         gameSave.map = new Map();
         gameSave.profile.Statistics.Money += 200;
-        ListProfile(_name);
+        ListProfile(_name, true);
+    }
+
+    public void DeleteUserData(Guid _guid)
+    {
+        string Path = Application.persistentDataPath + "/" + _guid;
+        Directory.Delete(Path, true);
     }
 
     //save file to filestream
-    public bool Save(string _saveName, SaveFile _saveData)
+    public bool Save(string _saveName, SaveFile _saveData, bool saveToDB)
     {
         string prePath = Application.persistentDataPath + "/" + user.guid + "/profile/" + _saveName;
 
@@ -59,8 +65,14 @@ public class JsonSaveLoad
             personalAes.Key = KeyCheck();
             personalAes.GenerateIV();
 
+            //var settings = new JsonSerializerSettings { DateFormatString = "MMM dd yyyy HH:mm:ss z" };
             string fileContent = JsonConvert.SerializeObject(_saveData);
-            ProfileManager.getObject().StartSendCoroutine(fileContent);
+            if (saveToDB)
+            {
+                ProfileManager.getObject().StartSendCoroutine(fileContent);
+            }
+            
+            Debug.Log(fileContent);
 
             byte[] encrypted = EncryptBytes(fileContent, personalAes.Key, personalAes.IV);
             writer.Write(personalAes.IV.Length);
@@ -78,7 +90,7 @@ public class JsonSaveLoad
     }
 
     //loads data stored in savefile
-    public string Load(string _saveName)
+    public string Load(string _saveName, bool toStaticSaveFile)
     {
         listed.lastPlayed = _saveName;
         string path = Application.persistentDataPath + "/" + user.guid + "/profile/" + _saveName + "/Save.saveFile";
@@ -109,8 +121,11 @@ public class JsonSaveLoad
                 reader.Close();
                 file.Close();
 
-                SaveFile temp = JsonConvert.DeserializeObject<SaveFile>(decrypterdContent);
-                new SaveFile(temp);
+                if (toStaticSaveFile)
+                {
+                    SaveFile temp = JsonConvert.DeserializeObject<SaveFile>(decrypterdContent);
+                    new SaveFile(temp);
+                }
                 return decrypterdContent;
 
             }
@@ -129,6 +144,8 @@ public class JsonSaveLoad
         string path = Application.persistentDataPath + "/" + user.guid + "/profile/" + _name;
 
         Directory.Delete(path, true);
+
+        ProfileManager.getObject().StartDeleteCoroutine(_name);
 
         DeleteListedProfile(_name);
 
@@ -165,11 +182,12 @@ public class JsonSaveLoad
     }
 
     //zet het nieuw aangemaakte profiel in de lijst van profielen
-    public void ListProfile(string _name)
+    public void ListProfile(string _name, bool playing)
     {
         string temp = listed.lastPlayed;
         listed = new Listed();
         listed.lastPlayed = temp;
+        
 
 
         List<string> profiles = null;
@@ -187,7 +205,14 @@ public class JsonSaveLoad
             Debug.Log("no profiles saved in file");
         }    
         listed.profiles.Add(_name);
-        listed.lastPlayed = _name;
+        if (playing)
+        {
+            listed.lastPlayed = _name;
+        }
+        else
+        {
+            listed.lastPlayed = temp;
+        }
 
 
         using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/" + user.guid + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
@@ -224,16 +249,6 @@ public class JsonSaveLoad
                 }
             }
         }
-    }
-
-    public void SaveUser()
-    {
-
-    }
-
-    public void LoadUser()
-    {
-
     }
 
     public static byte[] EncryptBytes(string _content, byte[] _key, byte[] _IV)
@@ -335,10 +350,5 @@ public class JsonSaveLoad
                 return aesAlg.Key;
             }
         }
-
-
-
-
-
     }
 }
