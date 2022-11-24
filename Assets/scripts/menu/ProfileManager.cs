@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.Web.Profile;
 
 public class ProfileManager : MonoBehaviour
 {
@@ -49,7 +50,15 @@ public class ProfileManager : MonoBehaviour
         StartCoroutine(ws.DeleteSaveFile(profileName));
 
 
-        jsonSL.DeleteProfile(profileName);
+        if (User.GetInstance().guid == new Guid("aaaa1111-2022-2022-2022-aaaaaaaaaaa1"))
+        {
+            jsonSL.DeleteProfile(profileName, false);
+        }
+        else
+        {
+            jsonSL.DeleteProfile(profileName, true);
+        }
+
     }
 
     public void DeleteUser()

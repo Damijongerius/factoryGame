@@ -59,19 +59,21 @@ public class BuildingManager : MonoBehaviour
                 {
                     if (endix == 0){
                         sf.profile.Statistics.Money -= 100;
+                        pendingObject.tag = "dataMiner";
                     }
                     if (endix == 1)
                     {
                         sf.profile.Statistics.Money -= 10;
+                        pendingObject.tag = "dataWire";
                     }
                     if (endix == 2)
                     {
                         sf.profile.Statistics.Money -= 50;
+                        pendingObject.tag = "uploadStation";
                     }
                     cell.obj = pendingObject;
                     if (isWire)
                     {
-                        pendingObject.tag = "dataWire";
                         isWire = false;
                     }
                     pendingObject = null;

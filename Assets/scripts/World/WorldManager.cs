@@ -22,7 +22,7 @@ public class WorldManager : MonoBehaviour
         instance = this;
         if (!ProfileManager.playing)
         {
-            Generate(false);
+            Generate(true);
         }
     }
 

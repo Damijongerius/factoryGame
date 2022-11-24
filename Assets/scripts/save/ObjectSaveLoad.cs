@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class ObjectSaveLoad
     public SaveFile gameSave = SaveFile.GetInstance();
     public void SaveObjects()
     {
+        
         Cell2[,,] grid = WorldManager.getInstance().map.Grid;
         List<cells> newGrid = new();
         for (int x = 0; x < grid.GetLength(0); x++)
@@ -22,8 +24,24 @@ public class ObjectSaveLoad
 
                     cell.objType = GetType(grid[x, 0, y].obj.tag);
 
-
+                    Debug.Log(cell.objType);
+                    try
+                    {
+                        Debug.Log(grid[x, 0, y].obj.GetComponent<dataWire>().wire);
+                    }
+                    catch { }
+                    try
+                    {
+                        Debug.Log(grid[x, 0, y].obj.GetComponent<dataMiner>().miner);
+                    }
+                    catch { }
+                    try
+                    {
+                        Debug.Log(grid[x, 0, y].obj.GetComponent<uploadStation>().station);
+                    }
+                    catch { }
                     cell.ObjInfo = GetInfo(cell.objType, grid, x, y);
+      
 
                     newGrid.Add(cell);
                 }
@@ -48,9 +66,9 @@ public class ObjectSaveLoad
     {
         switch (_objType)
         {
-            case ObjectTypes.DATAWIRE: return _grid[x,0, y].obj.GetComponent<dataWire>().wire;
-            case ObjectTypes.DATAMINER: return _grid[x,0, y].obj.GetComponent<dataMiner>().miner;
-            case ObjectTypes.UPLOADSTATION: return _grid[x,0, y].obj.GetComponent<uploadStation>().station;
+            case ObjectTypes.DATAWIRE: return _grid[x, 0, y].obj.GetComponent<dataWire>().wire;
+            case ObjectTypes.DATAMINER: return _grid[x, 0, y].obj.GetComponent<dataMiner>().miner;
+            case ObjectTypes.UPLOADSTATION: return _grid[x, 0, y].obj.GetComponent<uploadStation>().station;
             default:
                 break;
         }
@@ -102,6 +120,7 @@ public class ObjectSaveLoad
     public void SetObject(cells cell)
     {
         GameObject[] placable = WorldManager.getInstance().placables;
+        Debug.Log(WorldManager.getInstance().map.Grid[cell.x, 0, cell.y]);
         if(WorldManager.getInstance().map.Grid[cell.x,0, cell.y].obj == null)
         {
             WorldManager.getInstance().map.Grid[cell.x,0, cell.y].obj = WorldManager.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));

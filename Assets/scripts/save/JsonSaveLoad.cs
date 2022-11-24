@@ -139,13 +139,14 @@ public class JsonSaveLoad
         }
     }
 
-    public void DeleteProfile(string _name)
+    public void DeleteProfile(string _name, bool saveToDB)
     {
         string path = Application.persistentDataPath + "/" + user.guid + "/profile/" + _name;
 
         Directory.Delete(path, true);
 
-        ProfileManager.getObject().StartDeleteCoroutine(_name);
+        if (saveToDB)
+            ProfileManager.getObject().StartDeleteCoroutine(_name);
 
         DeleteListedProfile(_name);
 

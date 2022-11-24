@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 922936459728568108}
+  - component: {fileID: 2952298238661422356}
   m_Layer: 0
   m_Name: DataWire
   m_TagString: Untagged
@@ -32,6 +33,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2952298238661422356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6110867997283859096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e93e569b24de9e4c9101d0163d0d89b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 0
+  prioritys: 
+  dataStored: 0
+  sorted: 
+  uploadStations: []
 --- !u!1001 &7160747709013526250
 PrefabInstance:
   m_ObjectHideFlags: 0

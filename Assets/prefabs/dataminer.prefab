@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1106210244973150193}
+  - component: {fileID: -7776917696377550989}
   m_Layer: 0
   m_Name: DataMiner
   m_TagString: Untagged
@@ -32,6 +33,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-7776917696377550989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7161696677760172110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ffa9010250fbfd4c8b119456d5e0d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  directions: 
+  objects: []
+  wires: []
+  sides: 0
+  chosenWire: {fileID: 0}
 --- !u!1001 &8917418704450802957
 PrefabInstance:
   m_ObjectHideFlags: 0
