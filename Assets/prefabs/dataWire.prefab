@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 922936459728568108}
   - component: {fileID: 2952298238661422356}
   m_Layer: 0
-  m_Name: DataWire
+  m_Name: dataWire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 601625859933517763}
+  - {fileID: 9206768389222269256}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50,65 +50,65 @@ MonoBehaviour:
   dataStored: 0
   sorted: 
   uploadStations: []
---- !u!1001 &7160747709013526250
+--- !u!1001 &8841122417107148694
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 922936459728568108}
     m_Modifications:
-    - target: {fileID: -8590971000924184279, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
-      propertyPath: m_Name
-      value: Cable
-      objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
+    - target: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8759164744758330071, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
+      propertyPath: m_Name
+      value: Cable (1)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 9199261849990390558, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
---- !u!4 &601625859933517763 stripped
+  m_SourcePrefab: {fileID: 9199261849990390558, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
+--- !u!4 &9206768389222269256 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -1497040528893071063, guid: e121a1c3b5ca5f84e8f67da73acfbe77, type: 3}
-  m_PrefabInstance: {fileID: 7160747709013526250}
+  m_CorrespondingSourceObject: {fileID: -8830157073694482722, guid: 3b6de113c46374c44b43beca5364d38b, type: 3}
+  m_PrefabInstance: {fileID: 8841122417107148694}
   m_PrefabAsset: {fileID: 0}
