@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Windows.Forms.DataVisualization.Charting;
 using UnityEngine;
 
 public class ObjectSaveLoad
@@ -75,16 +76,16 @@ public class ObjectSaveLoad
         return null;
     }
     
-    public void LoadSavedObjects(Cell2[,,] grid2)
+    public Cell2[,,] LoadSavedObjects(Cell2[,,] grid2)
     {
-        WorldManager.getInstance().hallo();
         List<cells> grid = gameSave.map.grid;
 
         foreach (cells cell in grid)
         {
 
-            SetObject(cell);
+            grid2 = SetObject(cell, grid2);
 
+            
             SetInfo(cell, grid2[cell.x, 0, cell.y].obj);
         }
 
@@ -115,16 +116,17 @@ public class ObjectSaveLoad
                     break;
             }
         }
+        return grid2;
     }
 
-    public void SetObject(cells cell)
+    public Cell2[,,] SetObject(cells cell, Cell2[,,] grid)
     {
         GameObject[] placable = WorldManager.getInstance().placables;
-        Debug.Log(WorldManager.getInstance().map.Grid[cell.x, 0, cell.y]);
-        if(WorldManager.getInstance().map.Grid[cell.x,0, cell.y].obj == null)
+        if (grid[cell.x, 0, cell.y].obj == null)
         {
-            WorldManager.getInstance().map.Grid[cell.x,0, cell.y].obj = WorldManager.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));
+            grid[cell.x, 0, cell.y].obj = WorldManager.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));
         }
+        
         
 
         GameObject getType()
@@ -137,5 +139,7 @@ public class ObjectSaveLoad
                 _ => null,
             };
         }
+
+        return grid;
     }
 }

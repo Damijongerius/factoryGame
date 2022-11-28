@@ -69,8 +69,8 @@ public class Map2
                 }
             }
         }
-        objects.LoadSavedObjects(Grid);
         terrainGenerator.StartDrawing(Grid);
+        Grid = objects.LoadSavedObjects(Grid);
     }
 //  \\ // \\ // \\ //
 

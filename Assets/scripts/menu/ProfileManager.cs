@@ -24,6 +24,7 @@ public class ProfileManager : MonoBehaviour
     private void Start()
     {
         profileManager = this;
+        JsonSaveLoad loader = new();
     }
     
 
@@ -129,16 +130,17 @@ public class ProfileManager : MonoBehaviour
         Save();
         playing = false;
         SceneManager.LoadScene("MainMenu");
+
     }
 
-    private void Awake()
-    {
-        if (playing == true)
-        {
-            grid.GetComponent<WorldManager>().Generate(true);
-            JsonSaveLoad loader = new();
-        }
-    }
+   // private void Awake()
+   // {
+    //    if (playing == true)
+    //    {
+     //       grid.GetComponent<WorldManager>().Generate(true);
+    //        
+     //   }
+   // }
 
     public static ProfileManager getObject()
     {

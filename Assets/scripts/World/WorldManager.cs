@@ -24,6 +24,10 @@ public class WorldManager : MonoBehaviour
         {
             Generate(true);
         }
+        else
+        {
+            Generate(true);
+        }
     }
 
     public void Generate(bool load)
@@ -38,28 +42,17 @@ public class WorldManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("este");
                 map = new Map2(pref, size, atlas);
             }
         }
         else
         {
-            Debug.Log("2de");
             map = new Map2(pref, size, atlas);
         }
     }
 
-    public void hallo()
-    {
-        Debug.Log("Hallo");
-    }
-
     public static WorldManager getInstance()
     {
-        if (instance is null)
-        {
-           new WorldManager().Awake();   
-        }
         return instance;
     }
 
