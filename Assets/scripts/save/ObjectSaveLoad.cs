@@ -84,9 +84,19 @@ public class ObjectSaveLoad
         {
 
             grid2 = SetObject(cell, grid2);
+        }
 
-            
-            SetInfo(cell, grid2[cell.x, 0, cell.y].obj);
+        return grid2;
+    }
+
+    public Cell2[,,] SetObject(cells cell, Cell2[,,] grid)
+    {
+        GameObject[] placable = WorldManager.getInstance().placables;
+        if (grid[cell.x, 0, cell.y].obj == null)
+        {
+            GameObject placed = WorldManager.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));
+            grid[cell.x, 0, cell.y].obj = placed;
+            //SetInfo(cell, placed);
         }
 
         void SetInfo(cells cell, GameObject scem)
@@ -95,6 +105,7 @@ public class ObjectSaveLoad
             {
                 case ObjectTypes.DATAWIRE:
                     {
+                        
                         scem.GetComponent<dataWire>().wire = new Wires();
                         scem.GetComponent<dataWire>().wire.Settings(cell.ObjInfo);
                         scem.tag = "dataWire";
@@ -116,18 +127,6 @@ public class ObjectSaveLoad
                     break;
             }
         }
-        return grid2;
-    }
-
-    public Cell2[,,] SetObject(cells cell, Cell2[,,] grid)
-    {
-        GameObject[] placable = WorldManager.getInstance().placables;
-        if (grid[cell.x, 0, cell.y].obj == null)
-        {
-            grid[cell.x, 0, cell.y].obj = WorldManager.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));
-        }
-        
-        
 
         GameObject getType()
         {
