@@ -24,23 +24,6 @@ public class ObjectSaveLoad
                     cell.y = y;
 
                     cell.objType = GetType(grid[x, 0, y].obj.tag);
-
-                    Debug.Log(cell.objType);
-                    try
-                    {
-                        Debug.Log(grid[x, 0, y].obj.GetComponent<dataWire>().wire);
-                    }
-                    catch { }
-                    try
-                    {
-                        Debug.Log(grid[x, 0, y].obj.GetComponent<dataMiner>().miner);
-                    }
-                    catch { }
-                    try
-                    {
-                        Debug.Log(grid[x, 0, y].obj.GetComponent<uploadStation>().station);
-                    }
-                    catch { }
                     cell.ObjInfo = GetInfo(cell.objType, grid, x, y);
       
 
@@ -96,7 +79,7 @@ public class ObjectSaveLoad
         {
             GameObject placed = WorldManager.Instantiate(getType(), new Vector3(cell.x, 0.5f, cell.y), Quaternion.Euler(0, 0, 0));
             grid[cell.x, 0, cell.y].obj = placed;
-            //SetInfo(cell, placed);
+            SetInfo(cell, placed);
         }
 
         void SetInfo(cells cell, GameObject scem)
@@ -115,12 +98,14 @@ public class ObjectSaveLoad
                     {
                         scem.GetComponent<dataMiner>().miner = new Miner();
                         scem.GetComponent<dataMiner>().miner.Settings(cell.ObjInfo);
+                        scem.tag = "dataMiner";
                     }
                     break;
                 case ObjectTypes.UPLOADSTATION:
                     {
                         scem.GetComponent<uploadStation>().station = new UploadStation();
                         scem.GetComponent<uploadStation>().station.Settings(cell.ObjInfo);
+                            scem.tag = "uploadStation";
                     }
                     break;
                 default:
@@ -132,8 +117,8 @@ public class ObjectSaveLoad
         {
             return cell.objType switch
             {
-                ObjectTypes.DATAWIRE => placable[0],
-                ObjectTypes.DATAMINER => placable[1],
+                ObjectTypes.DATAWIRE => placable[1],
+                ObjectTypes.DATAMINER => placable[0],
                 ObjectTypes.UPLOADSTATION => placable[2],
                 _ => null,
             };

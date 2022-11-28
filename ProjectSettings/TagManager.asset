@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - gridsystem
-  - dataMiner
   - uploadStation
+  - dataMiner
+  - gridsystem
   - dataWire
   layers:
   - Default
