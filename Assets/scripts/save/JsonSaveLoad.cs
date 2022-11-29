@@ -155,20 +155,8 @@ public class JsonSaveLoad
 
     public void DeleteListedProfile(string _name)
     {
-        List<string> profiles = ReadListedProfiles().profiles;
-        profiles.Remove(_name);
-
-        try
-        {
-            foreach (string profile in profiles)
-            {
-                listed.profiles.Add(profile);
-            }
-        }
-        catch
-        {
-            Debug.Log("no profiles saved in file");
-        }
+        listed.profiles = ReadListedProfiles().profiles;
+        listed.profiles.Remove(_name);
 
         using (FileStream fs2 = new FileStream(Application.persistentDataPath + "/" + user.guid + "/profile/Profiles.Manager", FileMode.Create, FileAccess.Write))
         {
@@ -232,7 +220,13 @@ public class JsonSaveLoad
     //vraagt om alle profielen in de file
     public Listed ReadListedProfiles()
     {
-        using (FileStream fs = new FileStream(Application.persistentDataPath + "/" + user.guid + "/profile/Profiles.Manager", FileMode.OpenOrCreate, FileAccess.Read))
+        string path = Application.persistentDataPath + "/" + user.guid + "/profile/Profiles.Manager";
+        if (Directory.Exists(path)!)
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read))
         {
             using (StreamReader reader = new StreamReader(fs))
             {
@@ -243,13 +237,14 @@ public class JsonSaveLoad
                 {
                     return listed;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Debug.Log(e);
                     return null;
                 }
             }
         }
+
     }
 
     public static byte[] EncryptBytes(string _content, byte[] _key, byte[] _IV)

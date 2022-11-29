@@ -14,6 +14,8 @@ public class dataMiner : MonoBehaviour
     public int sides = 0;
     public GameObject chosenWire;
 
+    private SaveFile sf = SaveFile.GetInstance();
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -81,7 +83,8 @@ public class dataMiner : MonoBehaviour
             if(miner.powerStored > 2f  && miner.dataStored < 10f)
             {
                 miner.powerStored -= 1.5f;
-                miner.dataStored += 1;
+                miner.dataStored++;
+                sf.profile.Statistics.Data++;
             }
 
             if (miner.dataStored > 1f)

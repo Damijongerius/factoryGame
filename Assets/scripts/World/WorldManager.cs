@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WorldManager : MonoBehaviour
 {
-    private SaveFile sf = SaveFile.GetInstance();
+    private readonly SaveFile sf = SaveFile.GetInstance();
 
     public Material[] atlas;
     public GameObject pref;
@@ -36,6 +36,8 @@ public class WorldManager : MonoBehaviour
         {
             if(sf.map.xRange != 0)
             {
+                seed = new float[2];
+                Debug.Log(sf.map.xRange + "," + sf.map.yRange);
                 seed[0] = sf.map.xRange;
                 seed[1] = sf.map.yRange;
                 map = new Map2(pref, seed, size, atlas);

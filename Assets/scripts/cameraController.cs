@@ -61,7 +61,7 @@ public class cameraController : MonoBehaviour
 
         transform.position += moveSpeed * Time.deltaTime * dir;
 
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x , 11f, 72f), transform.position.y, Mathf.Clamp(transform.position.z, -11f, 72f));
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x , 11f, 91), transform.position.y, Mathf.Clamp(transform.position.z, -11f, 71f));
 
     }
     public void Zoom()

@@ -19,6 +19,8 @@ public class Map2
 
     private readonly NoiseMap nm;
     private readonly DrawTerrain terrainGenerator;
+
+    private SaveFile sf = SaveFile.GetInstance();
     //constructors
     //  // \\ // \\ // \\
     public Map2(GameObject pref,float[] _seed, int[] _size, Material[] _atlas)
@@ -80,18 +82,16 @@ public class Map2
     private void GenerateSeed(float[] _seed)
     {
         if(_seed == null)
-        {
-            (Seed[0], Seed[1]) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
-        }
+            GenerateSeed();
         else
-        {
             (Seed[0], Seed[1]) = (_seed[0], _seed[1]);
-        }
     }
 
     private void GenerateSeed()
     {
         (Seed[0], Seed[1]) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
+        sf.map.xRange = Seed[0];
+        sf.map.yRange = Seed[1];
     }
 //  \\ // \\ // \\ //
 

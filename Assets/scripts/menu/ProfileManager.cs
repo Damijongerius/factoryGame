@@ -39,26 +39,27 @@ public class ProfileManager : MonoBehaviour
             loadingscreen.gameObject.SetActive(true);
         }
         else
-        {
-            Debug.Log("to short");
-        }
+        Debug.Log("to short");
     }
 
     public void Delete(GameObject profileObject)
     {
         //load clicked profile in load screen
         string profileName = profileObject.transform.Find("ProfileName").GetComponent<TextMeshProUGUI>().text;
-        StartCoroutine(ws.DeleteSaveFile(profileName));
+        
 
 
         if (User.GetInstance().guid == new Guid("aaaa1111-2022-2022-2022-aaaaaaaaaaa1"))
         {
+            Debug.Log("false");
             jsonSL.DeleteProfile(profileName, false);
         }
         else
         {
+            StartCoroutine(ws.DeleteSaveFile(profileName));
             jsonSL.DeleteProfile(profileName, true);
         }
+        
 
     }
 
