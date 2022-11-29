@@ -203,49 +203,58 @@ app.post("/LoadUser", function (req, res) {
             data.GUID = req.body.GUID;
         }
         const info = yield Database_1.DB.select.User(data);
+        let send;
         switch (info.status) {
             case 3: {
-                res.send({
+                send = {
                     Status: 3,
                     message: `no existing user with name ${data.UserName}`,
-                });
+                };
                 break;
             }
             case 2: {
-                if (info.result.length == 0 || info.result == null) {
-                    console.log("nothing");
-                    res.send({
-                        Status: 5,
-                        message: "incorrect password try again",
-                    });
-                }
-                info.result.forEach(function (i, idx, array) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        comparePassword(req.body.Password, array[idx].password, function (params) {
-                            if (params) {
-                                console.log("match");
-                                res.send({
-                                    Status: 4,
-                                    message: `the password matches ${data.UserName}`,
-                                    Info: {
-                                        UserName: array[idx].UserName,
-                                        GUID: array[idx].UserId,
-                                    },
-                                });
-                            }
-                            else {
-                                if (i === array.length - 1) {
-                                    console.log("not match");
-                                    res.send({
-                                        Status: 5,
-                                        message: "incorrect password try again",
-                                    });
+                try {
+                    if (info.result.length == 0 || info.result == null) {
+                        console.log("nothing");
+                        send = {
+                            Status: 5,
+                            message: "incorrect password try again",
+                        };
+                        throw send;
+                    }
+                    info.result.forEach(function (i, idx, array) {
+                        return __awaiter(this, void 0, void 0, function* () {
+                            comparePassword(req.body.Password, array[idx].password, function (params) {
+                                if (params) {
+                                    console.log("match");
+                                    send = {
+                                        Status: 4,
+                                        message: `the password matches ${data.UserName}`,
+                                        Info: {
+                                            UserName: array[idx].UserName,
+                                            GUID: array[idx].UserId,
+                                        }
+                                    };
+                                    throw send;
                                 }
-                            }
+                                else {
+                                    if (i === array.length - 1) {
+                                        console.log("not match");
+                                        send = {
+                                            Status: 5,
+                                            message: "incorrect password try again",
+                                        };
+                                        throw send;
+                                    }
+                                }
+                            });
                         });
                     });
-                });
-                break;
+                    break;
+                }
+                catch (e) {
+                    throw e;
+                }
             }
             default: {
                 console.log("error");
