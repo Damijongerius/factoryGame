@@ -11,7 +11,7 @@ public class UiBuildBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("run", 0f, 5f);  
+        InvokeRepeating("run", 0.5f, 0f);  
     }
 
     // Update is called once per frame

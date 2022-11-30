@@ -33,9 +33,15 @@ public class cameraController : MonoBehaviour
 
     public float xRotation;
     public float yRotation;
+
+    private float mousemulti = 0.5f;
+    private float movemulti = 0.5f;
     // Start is called before the first frame update
-    void Start()
+
+    public void Changed(float _mouse, float _move)
     {
+        mousemulti = _mouse;
+        movemulti = _move;
     }
 
     // Update is called once per frame
@@ -59,7 +65,7 @@ public class cameraController : MonoBehaviour
         dir = new Vector3(dir.x,0,dir.z);
 
 
-        transform.position += moveSpeed * Time.deltaTime * dir;
+        transform.position += (movemulti * moveSpeed) * Time.deltaTime * dir;
 
         transform.position = new Vector3(Mathf.Clamp(transform.position.x , 11f, 91), transform.position.y, Mathf.Clamp(transform.position.z, -11f, 71f));
 
@@ -106,8 +112,8 @@ public class cameraController : MonoBehaviour
                point = hit.point;
                Using = true;
              }
-            float MouseX = Input.GetAxis("Mouse X") * Time.deltaTime * mouseSensitivity;
-            float MouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * mouseSensitivity;
+            float MouseX = Input.GetAxis("Mouse X") * Time.deltaTime * (mousemulti * mouseSensitivity);
+            float MouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * (mousemulti * mouseSensitivity);
 
             xRotation -= MouseY;
             xRotation = Mathf.Clamp(xRotation, -40f, 0f);

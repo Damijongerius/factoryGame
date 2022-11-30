@@ -21,7 +21,7 @@ public class dataWire : MonoBehaviour
     void Start()
     {
         InvokeRepeating(nameof(Run), 1f, 1f);
-        InvokeRepeating(nameof(Test), 2f, 2f);
+        InvokeRepeating(nameof(Test), 1f, 1f);
     }
 
     // Update is called once per frame

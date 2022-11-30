@@ -9,7 +9,7 @@ public class uploadStation : MonoBehaviour
     void Start()
     {
         InvokeRepeating(nameof(Run), 10f, 1.5f);
-       
+        InvokeRepeating(nameof(Sell), 1f, 1f);
     }
 
     public void Run()
@@ -23,11 +23,15 @@ public class uploadStation : MonoBehaviour
                 wire.GetComponent<dataWire>().GiveValues();
             }
         }
+    }
+
+    public void Sell()
+    {
         if (station.dataStored > 1)
         {
             station.dataStored--;
             sf.profile.Statistics.Data--;
-            sf.profile.Statistics.Money+=5;
+            sf.profile.Statistics.Money += 5;
         }
     }
 

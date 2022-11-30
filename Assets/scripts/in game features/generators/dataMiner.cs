@@ -27,7 +27,7 @@ public class dataMiner : MonoBehaviour
                 powered = true
             };
         }
-        InvokeRepeating(nameof(Run), 2f, 1.5f);
+        InvokeRepeating(nameof(Run), 1f, 1f);
     }
 
     //run the following actions
