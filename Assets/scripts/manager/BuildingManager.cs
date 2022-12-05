@@ -36,61 +36,22 @@ public class BuildingManager : MonoBehaviour
 
     private void Update()
     {
-        Pending();
-    }
-
-    public void Pending()
-    {
-        //snap to grid
+        float posX = RoundToNearestGrid(pos.x);
+        float posZ = RoundToNearestGrid(pos.z);
         if (pendingObject != null)
         {
-            float posX = RoundToNearestGrid(pos.x);
-            float posZ = RoundToNearestGrid(pos.z);
-
-            int X = Mathf.FloorToInt(posX);
-            int Z = Mathf.FloorToInt(posZ);
-
             pendingObject.transform.position = new Vector3(posX, 1, posZ);
-            Cell2 cell = WorldManager.getInstance().map.Grid[X,0, Z];
-            //Debug.Log(X + "||" + Z + "||" + cell.obj);
-            if (!cell.isWater && cell.obj == null)
-            {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    if (endix == 0){
-                        sf.profile.Statistics.Money -= 100;
-                        pendingObject.tag = "dataMiner";
-                    }
-                    if (endix == 1)
-                    {
-                        sf.profile.Statistics.Money -= 10;
-                        pendingObject.tag = "dataWire";
-                    }
-                    if (endix == 2)
-                    {
-                        sf.profile.Statistics.Money -= 50;
-                        pendingObject.tag = "uploadStation";
-                    }
-                    cell.obj = pendingObject;
-                    if (isWire)
-                    {
-                        isWire = false;
-                    }
-                    pendingObject = null;
-                }
-                else if (Input.GetMouseButtonDown(1)) {
-                    Destroy(pendingObject);
-                    pendingObject = null;
-                }
-            }
+
+            if (Input.GetMouseButtonDown(0))
+                Pending(posX, posZ);
 
         }
 
-    }
+        if (Input.GetMouseButtonDown(1))
+        {
+            stopPending();
+        }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
         //cast to world
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -100,12 +61,57 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
+    public void Pending(float _posX, float _posZ)
+    {
+        //snap to grid
+            int X = (int)_posX;
+            int Z = (int)_posZ;
+
+            World world = World.GetInstance();
+            
+            if(!world.Grid[X, 0, Z])
+            {
+                Chunk chunk = world.GetChunkWithPos(X, Z);
+
+
+                Cell cell = chunk.GetCell(X, Z);
+            if (cell.obj == null)
+            {
+
+                if (endix == 0)
+                {
+                    sf.profile.Statistics.Money -= 100;
+                }
+                if (endix == 1)
+                {
+                    sf.profile.Statistics.Money -= 10;
+                }
+                if (endix == 2)
+                {
+                    sf.profile.Statistics.Money -= 50;
+                }
+                cell.obj = pendingObject;
+                pendingObject = null;
+
+            }
+        }
+    }
+
+    private void stopPending()
+    {
+        Destroy(pendingObject);
+        pendingObject = null;
+        
+    }
+
+
     public void SelectObject(int index)
     {
         //choosing from array to object
 
         if (pendingObject == null)
         {
+            sf.profile.Statistics.Money += 100;
             if (index == 1 && sf.profile.Statistics.Money >= 10)
             {
                 isWire = true;

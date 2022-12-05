@@ -7,25 +7,17 @@ public class Quad
     private WaterUVs water = new WaterUVs();
     private GrassUVs grass = new GrassUVs();
 
-    public Vector2[] GetUVs(Cell2 _cell)
+    public Vector2[] GetUVs(bool _cell)
     {
-        if(_cell != null)
-        return _cell.isWater ? water.uv : grass.uv;
-        else
-        {
-            return water.uv;
-        }
+
+        return _cell ? water.uv : grass.uv;
+
 
     }
 
-    public Vector3[] GetVerts(Cell2 _cell, int x,  int z)
+    public Vector3[] GetVerts(bool _cell, int x,  int z)
     {
-        if (_cell != null)
-            return _cell.isWater ? water.getverts(x,z) : grass.getverts(x,z);
-        else
-        {
-            return water.getverts(x, z);
-        }
+       return _cell ? water.getverts(x,z) : grass.getverts(x,z);
     }
 
     public Vector3[] GetEdges(direction dir, int x,int z)

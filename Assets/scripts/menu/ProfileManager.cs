@@ -15,7 +15,7 @@ public class ProfileManager : MonoBehaviour
     public GameObject grid;
     public WebServer ws = new WebServer(); 
     private SaveFile gameSave = SaveFile.GetInstance();
-    public ObjectSaveLoad objects = new ObjectSaveLoad();
+    //public ObjectSaveLoad objects = new ObjectSaveLoad();
     public JsonSaveLoad jsonSL = new();
 
     private static DateTime startPlaying;
@@ -113,7 +113,7 @@ public class ProfileManager : MonoBehaviour
         string ProfileName = gameSave.profile.Name;
         gameSave.profile.TimePlayed += System.DateTime.Now - startPlaying;
         gameSave.profile.DateSeen = System.DateTime.Now;
-        objects.SaveObjects();
+        //objects.SaveObjects();
 
         if (User.GetInstance().guid == new Guid("aaaa1111-2022-2022-2022-aaaaaaaaaaa1"))
         {

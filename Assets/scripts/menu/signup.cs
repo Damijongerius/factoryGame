@@ -8,31 +8,24 @@ using TMPro;
 
 public class SignUp
 {
-    private readonly Button signUp;
     private readonly TMP_InputField userName;
     private readonly TMP_InputField password;
-    private GameObject FailBackground;
-    private GameObject Plane;
+
 
     private readonly signingManager manager;
 
     private readonly WebServer ws = new WebServer();
     private Guid userGUID;
 
-    public SignUp(Button signingup, TMP_InputField userName, TMP_InputField password, signingManager sm)
+    public SignUp(TMP_InputField userName, TMP_InputField password, signingManager sm)
     {
-        this.signUp = signingup;
         this.password = password;
         this.userName = userName;
         this.manager = sm;
 
-        FailBackground = sm.transform.Find("FailBackground").gameObject;
-        Plane = sm.transform.Find("Plane").gameObject;
-        signUp.onClick.AddListener(SigningUp);
-
     }
 
-    private void SigningUp()
+    public void SigningUp()
     {
         if (password.text.Length > 8)
         {
@@ -43,7 +36,6 @@ public class SignUp
                     userGUID = Guid.NewGuid();
 
                     manager.StartCoroutine(ws.CreateUser(userGUID, userName.text, password.text, onResult));
-                    Plane.SetActive(true);
                 }
                 else
                 {
@@ -66,19 +58,18 @@ public class SignUp
         switch (data.status)
         {
             case 0:
-            Debug.Log("error");
-                FailBackground.gameObject.SetActive(true);
+
+
                 break;
 
         case 1:
-        Debug.Log("succes");
+
                 Login();
                 break;
 
             default:
             {
-                Debug.Log("Nee");
-                Plane.SetActive(false);
+
                 break;
             }
         } 

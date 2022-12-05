@@ -18,7 +18,5 @@ public class Offline
         User user = User.GetInstance();
         user.UserName = "local";
         user.guid = new Guid("aaaa1111-2022-2022-2022-aaaaaaaaaaa1");
-
-        manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
     }
 }

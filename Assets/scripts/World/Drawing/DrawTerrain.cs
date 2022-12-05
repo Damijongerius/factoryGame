@@ -1,6 +1,6 @@
 
 using System.Collections.Generic;
-
+using System.Management;
 using UnityEngine;
 
 
@@ -22,7 +22,7 @@ public class DrawTerrain
     public DrawTerrain(Map2 _map, Material[] atlas, int[] _size)
     {
         this.map = _map;
-        this.ChunkSize = 10;
+        this.ChunkSize = 25;
         this.atlas = atlas;
         this.size = _size;
 
@@ -38,14 +38,16 @@ public class DrawTerrain
     }
     //  \\ // \\ // \\ //
 
-    public bool StartDrawing(Cell2[,,] _grid)
+    public bool StartDrawing(bool[,,] _grid)
     {
         CalculateChunks(_grid);
         return true;
     }
     //  // \\ // \\ // \\
-    private void CalculateChunks(Cell2[,,] _grid)
+    private void CalculateChunks(bool[,,] _grid)
     {
+        World world = World.GetInstance();
+        Chunk.chunksize = ChunkSize;
         int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
         int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
         Mesh[,] meshes = new Mesh[chunksX,chunksZ];
@@ -53,18 +55,15 @@ public class DrawTerrain
         {
             for(int zc = 0; zc < chunksZ; zc++)
             {
-                if ( size[0] - (chunksX * xc) >= ChunkSize)
-                {
-                    if ( size[0] - (chunksZ * zc) >= ChunkSize)
-                    {
-                        int[,] chunkInfo = new int[2, 2];
-                        chunkInfo[0, 0] = xc * ChunkSize;
-                        chunkInfo[0, 1] = xc * ChunkSize + ChunkSize;
-                        chunkInfo[1, 0] = zc * ChunkSize;
-                        chunkInfo[1, 1] = zc * ChunkSize + ChunkSize;
-                        meshes[xc,zc] = CalculateMesh(_grid, chunkInfo);
-                    }
-                }
+                Chunk c = new Chunk(xc, zc);
+                world.Chunks.Add(c);
+                int[,] chunkInfo = new int[2, 2];
+                chunkInfo[0, 0] = xc * ChunkSize;
+                chunkInfo[0, 1] = xc * ChunkSize + ChunkSize;
+                chunkInfo[1, 0] = zc * ChunkSize;
+                chunkInfo[1, 1] = zc * ChunkSize + ChunkSize;
+                meshes[xc,zc] = CalculateMesh(_grid, chunkInfo);
+
             }
         }
         GenerateMap(meshes);
@@ -72,7 +71,7 @@ public class DrawTerrain
     // \\// \\ //  \\ //
 
     //  // \\ // \\ // \\
-    private Mesh CalculateMesh(Cell2[,,] _grid, int[,] _chunkInfo)
+    private Mesh CalculateMesh(bool[,,] _grid, int[,] _chunkInfo)
     {
         Mesh mesh = new Mesh();
 
@@ -91,11 +90,11 @@ public class DrawTerrain
             {
                 for( int z = 0; z + _chunkInfo[1, 0] < _chunkInfo[1, 1]; z++)
                 {
-                    Cell2 cell = _grid[(x + _chunkInfo[0, 0]), 0, (z + _chunkInfo[1, 0])];
+                    bool cell = _grid[(x + _chunkInfo[0, 0]), 0, (z + _chunkInfo[1, 0])];
 
                     Vector3[] v = quad.GetVerts(cell,x,z);
                     Vector2[] uv = quad.GetUVs(cell);
-                    if (cell.isWater)
+                    if (cell)
                     {
                         for (int k = 0; k < 6; k++)
                         {
@@ -116,9 +115,9 @@ public class DrawTerrain
 
 
                     bool[] water;
-                    if (!_grid[(x + _chunkInfo[0, 0]), 0, (z + _chunkInfo[1, 0])].isWater)
+                    if (!_grid[(x + _chunkInfo[0, 0]), 0, (z + _chunkInfo[1, 0])])
                     {
-                        water = cell.GetWaters(_grid, (x + _chunkInfo[0, 0]), (z + _chunkInfo[1, 0]));
+                        water = GetWaters(_grid, (x + _chunkInfo[0, 0]), (z + _chunkInfo[1, 0]));
 
                         if (water[0] == true)
                         {
@@ -202,5 +201,43 @@ public class DrawTerrain
                 WorldManager.Instantiate(chunk, pos, new Quaternion(0,0,0,0));
             }
         }
+    }
+
+    public bool[] GetWaters(bool[,,] _grid, int x, int z)
+    {
+        bool[] water = { false, false, false, false };
+        try
+        {
+            if (_grid[x, 0, z + 1])
+            {
+                water[0] = true;
+            }
+        }
+        catch { }
+        try
+        {
+            if (_grid[x + 1, 0, z])
+            {
+                water[1] = true;
+            }
+        }
+        catch { }
+        try
+        {
+            if (_grid[x, 0, z - 1])
+            {
+                water[2] = true;
+            }
+        }
+        catch { }
+        try
+        {
+            if (_grid[x - 1, 0, z])
+            {
+                water[3] = true;
+            }
+        }
+        catch { }
+        return water;
     }
 }

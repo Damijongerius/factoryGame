@@ -26,21 +26,17 @@ public class Login
 
     private readonly WebServer ws = new WebServer();
 
-    public Login(Button login, TMP_InputField userName, TMP_InputField password, signingManager sm)
+    public Login(TMP_InputField userName, TMP_InputField password, signingManager sm)
     {
-        this.login = login;
         this.password = password;
         this.userName = userName;
-        plane = sm.transform.Find("Plane").gameObject;
         this.manager = sm;
-
-        login.onClick.AddListener(LoggingIn);
 
     }
 
-    private void LoggingIn()
+    public void LoggingIn()
     {
-        plane.SetActive(true);
+        //turn on loading things
         manager.StartCoroutine(ws.loadUser(userName.text, password.text, onResult));
     }
 
