@@ -21,7 +21,8 @@ public sealed class World
         return world;
     }
 
-    public HashSet<Chunk> Chunks = new HashSet<Chunk>();
+    public HashSet<Chunk> Chunks = new();
+    public HashSet<IBunk> IBunks = new();
     public int[] size = new int[2];
     public float[] seed = new float[2];
     public bool[,,] Grid;
@@ -37,3 +38,6 @@ public sealed class World
         return null;
     }
 }
+
+
+

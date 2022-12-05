@@ -5,6 +5,8 @@ using UnityEngine;
 public interface IBunk
 {
     public int Id { get; }
-    public IEnumerable<Cell> Neighbours { get; set; }
+    public IEnumerable<IBunk> Neighbours { get; set; }
+    public IEnumerable<Cell> Cells { get; set; }
+
     public void CalculateDistances();
 }

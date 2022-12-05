@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,10 @@ public class Chunk
     private int x;
     private int y;
     public IEnumerable<IBunk> Bunks = new List<IBunk>();
-    public HashSet<Cell> Cells = new HashSet<Cell>();
+    public IEnumerable<Chunk> Neighbours = new List<Chunk>();
+    public HashSet<Cell> Cells = new();
 
+    //constructor
     // // \\ // \\ // \\
     public Chunk(int x, int y)
     {
