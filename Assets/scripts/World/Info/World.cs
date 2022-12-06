@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.EnterpriseServices;
+using System.Windows.Forms.DataVisualization.Charting;
 using UnityEngine;
 
 public sealed class World
@@ -14,30 +16,55 @@ public sealed class World
     private World() { }
     public static World GetInstance()
     {
-        if(world == null)
+        if (world == null)
         {
             world = new World();
         }
         return world;
     }
 
-    public HashSet<Chunk> Chunks = new();
-    public HashSet<IBunk> IBunks = new();
     public int[] size = new int[2];
     public float[] seed = new float[2];
     public bool[,,] Grid;
+    public List<Tile> tiles = new List<Tile>();
+    public List<Tile> Generators = new List<Tile>();
 
-    public Chunk GetChunkWithPos(int _x, int _y)
+    public bool OnSet(int X, int Y, GameObject gameObject)
     {
-        int x = Mathf.FloorToInt(_x / Chunk.chunksize);
-        int y = Mathf.FloorToInt(_y / Chunk.chunksize);
+        foreach (Tile tile in tiles)
+        {
+            if (tile.PosistionCheck(X,Y))
+            {
+                return false;
+            }
+        }
+        GrassTile grassTile = new GrassTile(X, Y, gameObject);
+        tiles.Add(grassTile);
 
-        foreach (Chunk chunk in Chunks)
-            if (chunk.InRange(x, y)) return chunk;
+        foreach (Tile tile in tiles)
+        {
+            if (tile.PosistionCheck(X + 1, Y))
+            {
+                grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
+            }
+            if (tile.PosistionCheck(X - 1, Y))
+            {
+                grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
+            }
+            if (tile.PosistionCheck(X,Y + 1))
+            {
+                grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
+            }
+            if (tile.PosistionCheck(X,Y - 1))
+            {
+                grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
+            }
+        }
+        return true;
+    }
 
-        return null;
+    public void OnDelete(int X, int y)
+    {
+
     }
 }
-
-
-
