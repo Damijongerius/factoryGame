@@ -91,7 +91,6 @@ public class BuildingManager : MonoBehaviour
                     sf.profile.Statistics.Money -= 50;
                 }
                 cell.obj = pendingObject;
-                delegate
                 pendingObject = null;
 
             }
