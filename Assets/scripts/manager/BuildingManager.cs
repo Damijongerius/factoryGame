@@ -34,7 +34,7 @@ public class BuildingManager : MonoBehaviour
     {
     }
 
-    private void Update()
+    public void Update()
     {
         float posX = RoundToNearestGrid(pos.x);
         float posZ = RoundToNearestGrid(pos.z);
@@ -58,6 +58,14 @@ public class BuildingManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 1000, layerMask))
         {
             pos = hit.point;
+        }
+    }
+
+    public void DeleteBuilding()
+    {
+        if (Input.GetMouseButtonDown(2))
+        {
+           // Destroy();
         }
     }
 
