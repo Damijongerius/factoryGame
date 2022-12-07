@@ -103,7 +103,7 @@ using UnityEngine;
 //                    break;
 //                case ObjectTypes.UPLOADSTATION:
 //                    {
-//                        scem.GetComponent<uploadStation>().station = new UploadStation();
+//                        scem.GetComponent<uploadStation>().station = new Station();
 //                        scem.GetComponent<uploadStation>().station.Settings(cell.ObjInfo);
 //                            scem.tag = "uploadStation";
 //                    }

@@ -79,11 +79,9 @@ public class BuildingManager : MonoBehaviour
             
             if(!world.Grid[X, 0, Z])
             {
-                Chunk chunk = world.GetChunkWithPos(X, Z);
 
 
-                Cell cell = chunk.GetCell(X, Z);
-            if (cell.obj == null)
+            if (world.Grid == null)
             {
 
                 if (endix == 0)
@@ -98,7 +96,7 @@ public class BuildingManager : MonoBehaviour
                 {
                     sf.profile.Statistics.Money -= 50;
                 }
-                cell.obj = pendingObject;
+                //cell.obj = pendingObject;
                 pendingObject = null;
 
             }

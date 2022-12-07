@@ -20,5 +20,4 @@ public class cells
     public int y;
 
     public ObjectTypes objType;
-    public ObjInfo ObjInfo = new ObjInfo();
 }

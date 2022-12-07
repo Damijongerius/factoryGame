@@ -47,7 +47,7 @@ public class DrawTerrain
     private void CalculateChunks(bool[,,] _grid)
     {
         World world = World.GetInstance();
-        Chunk.chunksize = ChunkSize;
+
         int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
         int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
         Mesh[,] meshes = new Mesh[chunksX,chunksZ];
@@ -55,8 +55,6 @@ public class DrawTerrain
         {
             for(int zc = 0; zc < chunksZ; zc++)
             {
-                Chunk c = new Chunk(xc, zc);
-                world.Chunks.Add(c);
                 int[,] chunkInfo = new int[2, 2];
                 chunkInfo[0, 0] = xc * ChunkSize;
                 chunkInfo[0, 1] = xc * ChunkSize + ChunkSize;
