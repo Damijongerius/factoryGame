@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.EnterpriseServices;
 using System.Windows.Forms.DataVisualization.Charting;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public sealed class World
 {
@@ -33,7 +35,7 @@ public sealed class World
     {
         foreach (Tile tile in tiles)
         {
-            if (tile.PosistionCheck(X,Y))
+            if (tile.PosistionCheck(X, Y))
             {
                 return false;
             }
@@ -51,11 +53,11 @@ public sealed class World
             {
                 grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
             }
-            if (tile.PosistionCheck(X,Y + 1))
+            if (tile.PosistionCheck(X, Y + 1))
             {
                 grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
             }
-            if (tile.PosistionCheck(X,Y - 1))
+            if (tile.PosistionCheck(X, Y - 1))
             {
                 grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
             }
@@ -63,8 +65,19 @@ public sealed class World
         return true;
     }
 
-    public void OnDelete(int X, int y)
+    public void Destroy()
     {
 
+    }
+
+    public void OnDelete(int X, int Y)
+    {
+        foreach (Tile tile in tiles)
+        {
+            if (tile.PosistionCheck(X, Y))
+            tiles.Remove(tile);
+
+
+        }
     }
 }

@@ -50,7 +50,12 @@ public class BuildingManager : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             stopPending();
+
         }
+            if (Input.GetMouseButtonDown(2))
+            {
+            World.OnDelete((int)posX, (int)posZ);
+            }
 
         //cast to world
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -61,13 +66,7 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public void DeleteBuilding()
-    {
-        if (Input.GetMouseButtonDown(2))
-        {
-           // Destroy();
-        }
-    }
+   
 
     public void Pending(float _posX, float _posZ)
     {
