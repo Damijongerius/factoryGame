@@ -40,34 +40,24 @@ public sealed class World
                 return false;
             }
         }
-        GrassTile grassTile = new GrassTile(X, Y, gameObject);
+        GrassTile grassTile = new(X, Y, gameObject);
         tiles.Add(grassTile);
 
         foreach (Tile tile in tiles)
         {
             if (tile.PosistionCheck(X + 1, Y))
-            {
                 grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
-            }
+            
             if (tile.PosistionCheck(X - 1, Y))
-            {
                 grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
-            }
+            
             if (tile.PosistionCheck(X, Y + 1))
-            {
                 grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
-            }
+            
             if (tile.PosistionCheck(X, Y - 1))
-            {
                 grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
-            }
         }
         return true;
-    }
-
-    public void Destroy()
-    {
-
     }
 
     public void OnDelete(int X, int Y)
@@ -76,8 +66,6 @@ public sealed class World
         {
             if (tile.PosistionCheck(X, Y))
             tiles.Remove(tile);
-
-
         }
     }
 }

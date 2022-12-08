@@ -27,12 +27,8 @@ public class BuildingManager : MonoBehaviour
     private int endix;
 
     private SaveFile sf = SaveFile.GetInstance();
+    private World world = World.GetInstance();
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
     public void Update()
     {
@@ -52,10 +48,11 @@ public class BuildingManager : MonoBehaviour
             stopPending();
 
         }
-            if (Input.GetMouseButtonDown(2))
-            {
-            World.OnDelete((int)posX, (int)posZ);
-            }
+        if (Input.GetMouseButtonDown(2))
+        {
+            world.OnDelete((int)posX, (int)posZ);
+            stopPending();
+        }
 
         //cast to world
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -66,21 +63,21 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-   
+
 
     public void Pending(float _posX, float _posZ)
     {
+        Debug.Log("place");
         //snap to grid
-            int X = (int)_posX;
-            int Z = (int)_posZ;
+        int X = (int)_posX;
+        int Z = (int)_posZ;
 
-            World world = World.GetInstance();
-            
-            if(!world.Grid[X, 0, Z])
-            {
+        if (!world.Grid[X, 0, Z])
+        {
 
-
-            if (world.Grid == null)
+            Debug.Log(world.tiles.Count);
+            bool result = world.OnSet(X,Z, pendingObject);
+            if (result)
             {
 
                 if (endix == 0)
@@ -106,7 +103,7 @@ public class BuildingManager : MonoBehaviour
     {
         Destroy(pendingObject);
         pendingObject = null;
-        
+
     }
 
 
@@ -146,7 +143,7 @@ public class BuildingManager : MonoBehaviour
         //rounding numbers
         float xDiff = pos % gridSize;
         pos -= xDiff;
-        if(xDiff > (gridSize / 2))
+        if (xDiff > (gridSize / 2))
         {
             pos += gridSize;
         }
