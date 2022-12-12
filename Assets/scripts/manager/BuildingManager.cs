@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,8 @@ public class BuildingManager : MonoBehaviour
 
     private SaveFile sf = SaveFile.GetInstance();
     private World world = World.GetInstance();
+
+    private static BuildingManager bm;
 
 
     public void Update()
@@ -63,7 +66,10 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-
+    private void Start()
+    {
+        bm = this;
+    }
 
     public void Pending(float _posX, float _posZ)
     {
@@ -76,7 +82,7 @@ public class BuildingManager : MonoBehaviour
         {
 
             Debug.Log(world.tiles.Count);
-            bool result = world.OnSet(X,Z, pendingObject);
+            bool result = world.OnSet(X,Z, pendingObject, endix);
             if (result)
             {
 
@@ -148,5 +154,10 @@ public class BuildingManager : MonoBehaviour
             pos += gridSize;
         }
         return pos;
+    }
+
+    public static BuildingManager GetInstance()
+    {
+        return bm;
     }
 }

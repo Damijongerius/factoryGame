@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WorldObjects;
 
 public abstract class Tile
 {
@@ -8,7 +9,9 @@ public abstract class Tile
     protected int y;
     protected GameObject obj;
     protected List<Tile> Neighbours = new();
-    public Tile(int X, int Y, GameObject gameObject)
+
+    public Structures structure;
+    public Tile(int X, int Y, GameObject gameObject, int index)
     {
         this.x = X;
         this.y = Y;
@@ -24,7 +27,7 @@ public abstract class Tile
         return false;
     }
 
-    public Vector3 pos()
+    public Vector3 Pos()
     {
         return new Vector2(this.x, this.y);
     }

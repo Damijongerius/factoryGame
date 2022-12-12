@@ -31,16 +31,14 @@ public sealed class World
     public List<Tile> tiles = new List<Tile>();
     public List<Tile> Generators = new List<Tile>();
 
-    public bool OnSet(int X, int Y, GameObject gameObject)
+    public bool OnSet(int X, int Y, GameObject gameObject, int index)
     {
         foreach (Tile tile in tiles)
         {
             if (tile.PosistionCheck(X, Y))
-            {
                 return false;
-            }
         }
-        GrassTile grassTile = new(X, Y, gameObject);
+        GrassTile grassTile = new(X, Y, gameObject, index);
         tiles.Add(grassTile);
 
         foreach (Tile tile in tiles)
@@ -65,7 +63,7 @@ public sealed class World
         foreach (Tile tile in tiles)
         {
             if (tile.PosistionCheck(X, Y))
-            tiles.Remove(tile);
+                tiles.Remove(tile);
         }
     }
 }

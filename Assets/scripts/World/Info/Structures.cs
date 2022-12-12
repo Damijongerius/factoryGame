@@ -16,13 +16,14 @@ namespace WorldObjects
 
         public int efficiency;
 
+        public bool LandStruct;
+
         //make function overload of world.onDelete with Tile you want to Delete
         public void Tests(GameObject _value)
         {
             if (_value == null)
             {
                 //delete Tile
-        
                 return;
             }
             _structure = _value;

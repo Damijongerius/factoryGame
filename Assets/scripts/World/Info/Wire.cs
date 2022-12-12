@@ -4,12 +4,8 @@ using UnityEngine;
 
 namespace WorldObjects
 {
-    lees dit :)
-    /*
-     * hierin moet alleen de wire transfer speed :)
-    */
     public class Wire : Structures
     {
-
+        public float TransferSpeed = 1;
     }
 }

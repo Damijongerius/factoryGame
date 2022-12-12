@@ -7,12 +7,8 @@ using WorldObjects;
 
 namespace WorldObjects
 {
-    lees dit :0
-    /*
-     * hierin hoort alleen de cycle testaan en wat hij moet doen met het geld
-     * en dan die visual animatie pling ding dat zou ik doen in tile tho
-    */
     public class Station : Structures
     {
+        public List<Cycle> cycle;
     }
 }

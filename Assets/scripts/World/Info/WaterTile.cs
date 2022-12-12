@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WaterTile : Tile
 {
-    public WaterTile(int X, int Y, GameObject gameObject) : base(X, Y, gameObject)
+    public WaterTile(int X, int Y, GameObject gameObject, int index) : base(X, Y, gameObject, index)
     {
     }
 }
