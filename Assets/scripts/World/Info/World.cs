@@ -55,6 +55,15 @@ public sealed class World
             if (tile.PosistionCheck(X, Y - 1))
                 grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
         }
+        
+        List<Tile> L = new();
+        L.Add(grassTile);
+        if(index == 0)
+        {
+            grassTile.UpdateGenPath(L);
+            return true;
+        }
+        grassTile.FindPath(L);
         return true;
     }
 

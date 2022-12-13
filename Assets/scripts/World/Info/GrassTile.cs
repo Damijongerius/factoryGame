@@ -70,9 +70,14 @@ public class GrassTile : Tile
             }
             foreach (GrassTile tile in Neighbours.Cast<GrassTile>())
             {
-                Miner m = (Miner)tile.structure;
-                BuildingManager.GetInstance().Invoke(nameof(m.OnCalculate), 1f);
-                tile.UpdateGenPath(new List<Tile>());
+                
+                if((Miner)tile.structure != null)
+                {
+                    Miner m = (Miner)tile.structure;
+                    BuildingManager.GetInstance().Invoke(nameof(m.OnCalculate), 1f);
+                    tile.UpdateGenPath(new List<Tile>());
+                }
+               
                 return;
             }
         }
