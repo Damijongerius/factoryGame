@@ -1,3 +1,4 @@
+using configuration;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,15 +16,14 @@ public sealed class User
     private User() { }
     public static User GetInstance()
     {
-        if(user == null)
-        {
-            user = new User();
-        }
+        user ??= new User();
         return user;
     }
 
 
     public string UserName;
-    public Guid guid; 
+    public Guid guid;
+
+    public Configuration config;
 }
 

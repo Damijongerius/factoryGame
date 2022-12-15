@@ -1,6 +1,6 @@
 using System;
-using System.Windows.Forms;
 using UnityEngine;
+using System.Threading;
 
 namespace WorldObjects
 {
@@ -10,19 +10,17 @@ namespace WorldObjects
         public float delay;
         public float amount;
 
-        private Timer timer1;
+        private SaveFile sf = SaveFile.GetInstance();
 
         public void InitTimer()
         {
-            timer1 = new Timer();
-            timer1.Tick += new EventHandler(timer1_Tick);
-            timer1.Interval = (int)(duration * 1000); // in miliseconds
-            timer1.Start();
+            Debug.Log("startT");
+            var timer = new Timer(AfterDelay, null, 0, Mathf.RoundToInt(1f / Time.deltaTime));
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void AfterDelay(object sender)
         {
-            Debug.Log("seconds");
+            sf.profile.Statistics.Money += 1;
         }
     }
 }
