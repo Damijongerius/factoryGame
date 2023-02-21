@@ -35,10 +35,10 @@ namespace WorldObjects
 
                 Debug.Log("station start cycle");
                 
-                if(tiles[^1] is Station)
-                    Station s = (Station)tiles[^1].structure;
+                //if(tiles[^1] is Station)
+                //    Station s = (Station)tiles[^1].structure;
                 
-                s.AddCycle(cycle);
+               // s.AddCycle(cycle);
             }
         }
 

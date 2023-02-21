@@ -19,7 +19,6 @@ namespace UnityTemplateProjects
 
             public void SetFromTransform(Transform t)
             {
-                Invoke();
                 pitch = t.eulerAngles.x;
                 yaw = t.eulerAngles.y;
                 roll = t.eulerAngles.z;
