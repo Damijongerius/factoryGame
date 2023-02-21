@@ -28,6 +28,6 @@ public sealed class SaveFile
     [JsonProperty("profile")]
     public Profile profile = new Profile();
     [JsonProperty("map")]
-    public Map map = new Map();
+    public World.Map map;
     
 }

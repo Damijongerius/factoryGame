@@ -19,7 +19,6 @@ namespace WorldObjects
         public bool LandStruct;
 
         public void OnCalculate() { }
-        public void AddCycle(Cycle c) { }
 
         public void ResetCycles() { }
 

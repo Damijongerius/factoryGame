@@ -28,7 +28,7 @@ public class BuildingManager : MonoBehaviour
     private int endix;
 
     private SaveFile sf = SaveFile.GetInstance();
-    private World world = World.GetInstance();
+    private World.World world = World.World.GetInstance();
 
     private static BuildingManager bm;
 
@@ -41,6 +41,7 @@ public class BuildingManager : MonoBehaviour
         {
             pendingObject.transform.position = new Vector3(posX, 1, posZ);
 
+            SaveFile.GetInstance().profile.Statistics.Money += 100;
             if (Input.GetMouseButtonDown(0))
                 Pending(posX, posZ);
 
