@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using static WorldObjects.Structures;
 
 namespace WorldObjects
 {
@@ -17,6 +18,8 @@ namespace WorldObjects
         public int efficiency;
 
         public bool LandStruct;
+
+        public StructureType structureType;
 
         public void OnCalculate() { }
         public void AddCycle(Cycle c) { }
