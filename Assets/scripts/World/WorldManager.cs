@@ -34,12 +34,14 @@ public class WorldManager : MonoBehaviour
     {
         if (load)
         {
-            if(sf.map.xRange != 0)
+            Vector2 seed = new Vector2(0, 0);
+            if (sf.map != null && sf.map.GetSeed() != null)
             {
-                seed = new float[2];
-                Debug.Log(sf.map.xRange + "," + sf.map.yRange);
-                seed[0] = sf.map.xRange;
-                seed[1] = sf.map.yRange;
+                seed = sf.map.GetSeed();
+            }
+            if (seed.x != 0)
+            {
+                Debug.Log(seed.x + "," + seed.y);
                 map = new Map2(pref, seed, size, atlas);
             }
             else

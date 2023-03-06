@@ -17,7 +17,7 @@ public class Map2
     private SaveFile sf = SaveFile.GetInstance();
     //constructors
     //  // \\ // \\ // \\
-    public Map2(GameObject pref, float[] _seed, int[] _size, Material[] _atlas)
+    public Map2(GameObject pref, Vector2 _seed, int[] _size, Material[] _atlas)
     {
         world.size = _size;
         this.pref = pref;
@@ -36,7 +36,7 @@ public class Map2
 
         terrainGenerator = new DrawTerrain(this, _atlas, _size);
 
-        nm = new NoiseMap(_size, world.seed, this);
+        nm = new NoiseMap(_size, new Vector2(world.seed[0], world.seed[1]), this);
         nm.GenerateNoise();
     }
     //  \\ // \\ // \\ //
@@ -73,19 +73,18 @@ public class Map2
 
     //generating the world seed
     //  // \\ // \\ // \\
-    private void GenerateSeed(float[] _seed)
+    private Vector2 GenerateSeed(Vector2 _seed)
     {
-        if (_seed == null)
-            GenerateSeed();
+        if (_seed.x != 01)
+            return GenerateSeed();
         else
             (world.seed[0], world.seed[1]) = (_seed[0], _seed[1]);
+        return new Vector2(world.seed[0], world.seed[1]);
     }
 
-    private void GenerateSeed()
+    private Vector2 GenerateSeed()
     {
-        (world.seed[0], world.seed[1]) = (Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
-        sf.map.xRange = world.seed[0];
-        sf.map.yRange = world.seed[1];
+         return new Vector2(Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
     }
     //  \\ // \\ // \\ //
 }

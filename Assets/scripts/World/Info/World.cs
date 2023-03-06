@@ -62,10 +62,8 @@ namespace World
             L.Add(grassTile);
             if (index == 0)
             {
-                grassTile.UpdateGenPath(L);
                 return true;
             }
-            grassTile.FindPath(L);
             return true;
         }
 

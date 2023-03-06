@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class EconomicalSystem
+namespace WorldObjects
 {
-    public class Prices
+    public class PowerStorage : Structures
     {
-        //public List<>
+
     }
 }
+

@@ -18,7 +18,14 @@ namespace World {
         private float SeedX { get; }
         private float SeedY { get; }
 
+        private float size;
+
         private WorldLayer[] WorldLayers { get; set; }
+
+        public void SetSize(float _size) => size = _size;
+        
+
+        public float GetSize() => size;
 
         public Vector2 GetSeed()
         {

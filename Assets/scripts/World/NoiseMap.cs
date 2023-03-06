@@ -6,11 +6,11 @@ public class NoiseMap
 {
     private readonly int[] size;
 
-    private readonly float[] seed;
+    private readonly Vector2 seed;
 
     private readonly Map2 map;
 
-    public NoiseMap(int[] _size, float[] _seed, Map2 _map)
+    public NoiseMap(int[] _size, Vector2 _seed, Map2 _map)
     {
         this.size = _size;
         this.seed = _seed;

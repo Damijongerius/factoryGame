@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
 using System;
+using World;
 
 // save en load class voor het saven van een profiel/lijst van profielen en laden
 public class JsonSaveLoad
@@ -20,9 +21,7 @@ public class JsonSaveLoad
         if (!Directory.Exists(Application.persistentDataPath + "/" + user.guid + "/profile/" + _name))
         {
             Directory.CreateDirectory(Application.persistentDataPath + "/" + user.guid + "/profile/" + _name);
-
         }
-
     }
 
     //hij maakt een nieuw profiel en zet die ook meteen als profiel in game
@@ -32,7 +31,6 @@ public class JsonSaveLoad
         gameSave.profile = new Profile();
         gameSave.profile.Name = _name;
         gameSave.profile.DateMade = System.DateTime.Now;
-        gameSave.map = new Map();
         gameSave.profile.Statistics.Money += 200;
         ListProfile(_name, true);
     }

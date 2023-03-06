@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Management;
 using UnityEngine;
-
+using World;
 
 public class DrawTerrain
 {
@@ -46,7 +46,7 @@ public class DrawTerrain
     //  // \\ // \\ // \\
     private void CalculateChunks(bool[,,] _grid)
     {
-        World world = World.GetInstance();
+        World.World world = World.World.GetInstance();
 
         int chunksX = Mathf.CeilToInt(size[0] / ChunkSize);
         int chunksZ = Mathf.CeilToInt(size[1] / ChunkSize);
