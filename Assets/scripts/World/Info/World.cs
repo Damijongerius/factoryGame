@@ -37,8 +37,7 @@ namespace World
         {
             foreach (Tile tile in tiles)
             {
-                if (tile.PosistionCheck(X, Y))
-                    return false;
+                if (tile.PosistionCheck(X, Y)) return false;
             }
             GrassTile grassTile = new(X, Y, gameObject, index);
             tiles.Add(grassTile);

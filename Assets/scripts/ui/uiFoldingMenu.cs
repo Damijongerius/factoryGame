@@ -20,7 +20,7 @@ public class uiFoldingMenu : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Q))
         {
-            OpenClose();
+        //    OpenClose();
         }
     }
 

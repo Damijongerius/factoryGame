@@ -5,9 +5,10 @@ using WorldObjects;
 
 public abstract class Tile
 {
+    protected WorldObjects.Order type;
+    protected GameObject obj;
     protected int x;
     protected int y;
-    protected GameObject obj;
     protected List<Tile> Neighbours = new();
 
     public Structures structure;

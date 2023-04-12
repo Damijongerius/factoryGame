@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 999a4e1a564d41f43aa1e7c9137d4556, type: 3}
+  m_Name: placableItems
+  m_EditorClassIdentifier: 
+  CoalPlant: {fileID: 6796568496902608752, guid: 2b4b04a8d2cb23243bedeba8a03b4764, type: 3}
+  OilPlant: {fileID: 8009064591147098582, guid: 6ce3682d899d2f94b963421beb2ae739, type: 3}
+  PotatoPlant: {fileID: 4309153592853916574, guid: 49852dd81f5ff214fbec6188f7e5b23b, type: 3}
+  SolarPanel: {fileID: 7733422678806509439, guid: ada92b49f95993644b0447e9c12a17be, type: 3}
+  WindMill: {fileID: 6129784678614146311, guid: 62f33bdf9a0d23b47a5155da70c26375, type: 3}
+  StoryFactory1: {fileID: 5020899290675695997, guid: 22c2291bbc574ec488250d064dbf0aef, type: 3}
+  StoryFactory2: {fileID: 4671781277205519909, guid: d65af56b40c2f4041a9ef8e11962dfe6, type: 3}
+  StoryFactory3: {fileID: 6002837704568332442, guid: 456ea0e212866a34cbd4a2324086932f, type: 3}
+  DataCable: {fileID: 1741338651043042296, guid: 77a548e0f643cb846aded7864824b009, type: 3}
+  PowerCable: {fileID: 4630683067330192675, guid: fa8b2e657552ac34e9b6a3ed23567918, type: 3}
+  PowerProcessor: {fileID: 6768620385927648206, guid: 86797d5a0abdfc74baa4427cf7edbca5, type: 3}
+  PowerStorageModule: {fileID: 2300058845443955673, guid: 08fbc3efb79837e468ead07ebeeceb26, type: 3}
+  LeadAcidBattery: {fileID: 3176902861158942080, guid: 3a8b3d1047dc2394a816e48b8735b565, type: 3}
+  LithiumIonBattery: {fileID: 3258489983046590753, guid: 42e7760bd52d3194eb4e7d02488508a7, type: 3}
+  SodiumSulphurBattery: {fileID: 445329213563247749, guid: 3123f93403df4124783b907082aecf56, type: 3}
+  WaterStorage: {fileID: 2754460802269011006, guid: 7ddff7db64738f2438dfae07ec0c1604, type: 3}
+  WaterFilterCenter: {fileID: 4709179787899814626, guid: 91bcb58f38b08e44dabcff33efc4d39b, type: 3}
+  WaterPipeExtractor: {fileID: 4068267470495897759, guid: fe63c9f09863207408fd84a360e3e13b, type: 3}
+  WaterTower: {fileID: 6674036905943523495, guid: cd81b90209efb3246ae36169ca765dc5, type: 3}
+  PowerAmplifier: {fileID: 4475787662422727362, guid: 56f653a5a52d45c4a88c4641ded4d20d, type: 3}
+  PowerDemper: {fileID: 8785645458585621942, guid: 1a5feebaabc916d45b4dfe923a4f926b, type: 3}
+  PowerLine: {fileID: 5913980058765475389, guid: ddc106082831cb14bb3cc06e906cb912, type: 3}
+  PowerMerger: {fileID: 5357200556815788578, guid: fff1f75793a77a448a1dc06c9c6cb365, type: 3}
+  PowerSplitter: {fileID: 8341501705846689927, guid: 81c6357c5f9815149b71aa70040ca1a5, type: 3}
+  DataCenter: {fileID: 5767357402041517867, guid: f076b26bc1545084ca3598f79dbae577, type: 3}
+  DataStockCenter: {fileID: 9086692352185411829, guid: 7b87252ca2caf4b4f9dda0ac151b0496, type: 3}
+  SatelliteDish: {fileID: 7546272144655350073, guid: c969293172b0ffc4b9cdda121ae55dc3, type: 3}

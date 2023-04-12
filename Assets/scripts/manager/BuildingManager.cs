@@ -15,7 +15,7 @@ public class BuildingManager : MonoBehaviour
     private GameObject pendingObject;
 
     //mouse snap pos
-    private Vector3 pos;
+    public Vector3 pos;
 
     //raycast layer/hit
     private RaycastHit hit;
@@ -31,6 +31,8 @@ public class BuildingManager : MonoBehaviour
     private World.World world = World.World.GetInstance();
 
     private static BuildingManager bm;
+
+    private GameObject itemInHand;
 
 
     public void Update()
@@ -70,6 +72,23 @@ public class BuildingManager : MonoBehaviour
     private void Start()
     {
         bm = this;
+    }
+
+    public void HoldItem(GameObject item)
+    {
+        if(itemInHand != null && item == null)
+        {
+            return;
+        }
+
+        itemInHand = item;
+
+
+    }
+
+    public void PlaceItem()
+    {
+
     }
 
     public void Pending(float _posX, float _posZ)
@@ -144,8 +163,7 @@ public class BuildingManager : MonoBehaviour
         endix = index;
     }
 
-
-    float RoundToNearestGrid(float pos)
+    int RoundToNearestGrid(float pos)
     {
         //rounding numbers
         float xDiff = pos % gridSize;
@@ -154,7 +172,19 @@ public class BuildingManager : MonoBehaviour
         {
             pos += gridSize;
         }
-        return pos;
+        return (int)pos;
+    }
+
+    Vector2 GetCords()
+    {
+        int x = RoundToNearestGrid(itemInHand.transform.position.x);
+
+        return new Vector2();
+    }
+
+    Boolean IsPossible()
+    {
+        return false;
     }
 
     public static BuildingManager GetInstance()
