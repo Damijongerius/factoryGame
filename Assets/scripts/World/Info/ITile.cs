@@ -1,14 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WorldObjects;
 
-public abstract class Tile
+public interface ITile
+{
+    public bool IsNeighbour(Vector3 pos);
+
+    public Boolean AddNeighbour(ITile tile);
+
+    public void RemoveNeighbour(ITile tile);
+
+    public void RunBehavior();
+    public WorldObjects.Order GetType();
+    public List<Vector2> GetPosition();
+
+    public Boolean ContainsPosition(Vector3 pos);
+}
+
+/*
+ public interface Tile
 {
     protected WorldObjects.Order type;
     protected GameObject obj;
-    protected int x;
-    protected int y;
+    protected Vector3 pos;
     protected List<Tile> Neighbours = new();
 
     public Structures structure;
@@ -39,3 +55,4 @@ public abstract class Tile
         return this;
     }
 }
+*/

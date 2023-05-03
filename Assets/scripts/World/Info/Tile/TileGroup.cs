@@ -3,58 +3,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileGroup
+public class TileGroup : ITile
 {
-    private readonly Types type;
-    private List<Tile> Neighbours;
-    private Dictionary<Vector2,Tile> items;
+    private readonly WorldObjects.Order type;
+    private List<ITile> neighbours;
+    private List<Vector2> items;
+    private int layer;
     private int value;
 
-    public TileGroup(Types type, List<Tile> neighbours, Dictionary<Vector2, Tile> items, int value)
+    public TileGroup(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int value)
     {
         this.type = type;
-        Neighbours = neighbours;
+        this.neighbours = neighbours;
         this.items = items;
         this.value = value;
     }
 
-    public Types GetType()
+    public Boolean AddNeighbour(ITile tile)
     {
-        return type;
+        if (tile.GetType() == type)
+        {
+            foreach(Vector2 pos in tile.GetPosition())
+            {
+                items.Add(pos);
+            }
+            World.OnDelete();
+            return false;
+        }
+
+        neighbours.Add(tile);
+        return true;
     }
 
-    public void GetNeighbours() 
+    public bool ContainsPosition(Vector3 pos)
     {
-
+        foreach(Vector2 position in items)
+        {
+            if(position == (Vector2) pos)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void GetItems()
+    public List<Vector2> GetPosition()
     {
-
+        throw new NotImplementedException();
     }
 
-    public void GetItemTile(Vector2 pos)
-    {
+    public new WorldObjects.Order GetType() => type;
 
+    public bool IsNeighbour(Vector3 pos)
+    {
+        foreach (Vector2 item in  items)
+        {
+
+        }
+
+        return false;
     }
 
-    public void UpdateConnections()
+    public void RemoveNeighbour(ITile tile)
     {
-
+        throw new NotImplementedException();
     }
 
-    public void AddValue(int value) => this.value += value < items.Count ? value : 0; 
-
-    public void Update()
+    public void RunBehavior()
     {
-
-    }
-
-    public enum Types
-    {
-        POWERLINE,
-        DATACABLE,
-        WATERPIPE,
-        POWERCABLE
+        throw new NotImplementedException();
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using WorldObjects;
 
-public class GrassTile : Tile
+public class GrassTile : ITile
 {
     public GrassTile(int X, int Y, GameObject gameObject, int index) : base(X, Y, gameObject, index)
     {
