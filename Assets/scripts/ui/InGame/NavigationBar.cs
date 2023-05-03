@@ -62,9 +62,8 @@ public class NavigationBar : MonoBehaviour
         if(items != null && id < items.Length)
         {
             Debug.Log($"{items[id].Key}: {items[id].Value}");
-            PlacementManager.GetInstance().AddPlacable(items[id].Value);
+            PlacementManager.GetInstance().AddPlacable(items[id].Value, items[id].Key);
         }
-       
     }
 
 

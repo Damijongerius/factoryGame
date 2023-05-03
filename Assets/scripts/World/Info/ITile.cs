@@ -12,7 +12,11 @@ public interface ITile
 
     public void RemoveNeighbour(ITile tile);
 
-    public void RunBehavior();
+    public List<ITile> GetNeighbours();
+
+    public void configureBehavior(ITileBehavior behavior);
+
+    public void runBehavior(System.Object obj);
     public WorldObjects.Order GetType();
     public List<Vector2> GetPosition();
 

@@ -6,6 +6,7 @@ using UnityEngine;
 public class TileGroup : ITile
 {
     private readonly WorldObjects.Order type;
+    private ITileBehavior tileBehavior;
     private List<ITile> neighbours;
     private List<Vector2> items;
     private int layer;
@@ -27,12 +28,18 @@ public class TileGroup : ITile
             {
                 items.Add(pos);
             }
-            World.OnDelete();
+            World.World.GetInstance().OnDelete(tile);
             return false;
         }
 
         neighbours.Add(tile);
         return true;
+    }
+
+    public void configureBehavior(ITileBehavior behavior)
+    {
+        tileBehavior = behavior;
+        tileBehavior.Attach();
     }
 
     public bool ContainsPosition(Vector3 pos)
@@ -49,7 +56,7 @@ public class TileGroup : ITile
 
     public List<Vector2> GetPosition()
     {
-        throw new NotImplementedException();
+        return items;
     }
 
     public new WorldObjects.Order GetType() => type;
@@ -58,19 +65,19 @@ public class TileGroup : ITile
     {
         foreach (Vector2 item in  items)
         {
-
+            if(item == new Vector2(pos.x,pos.z))
+            {
+                return true;
+            }
         }
-
         return false;
     }
 
     public void RemoveNeighbour(ITile tile)
     {
-        throw new NotImplementedException();
-    }
-
-    public void RunBehavior()
-    {
-        throw new NotImplementedException();
+        foreach(Vector2 pos in tile.GetPosition())
+        {
+            items.Remove(pos);
+        }
     }
 }

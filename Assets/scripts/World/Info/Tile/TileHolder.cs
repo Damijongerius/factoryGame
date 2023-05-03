@@ -2,19 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using WorldObjects;
 
-public class BasicTile : ITile
+public class TileHolder : ITile
 {
-
     private readonly WorldObjects.Order type;
     private ITileBehavior tileBehavior;
-    private List<ITile> neighbours;
-    private List<Vector2> items;
+    private List<ITile> neighbours = new List<ITile>();
+    private List<Vector2> items = new List<Vector2>();
     private int layer;
     private int value;
 
-    public BasicTile(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int value)
+    private List<ITile> childTiles = new List<ITile>();
+
+    public TileHolder(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int value)
     {
         this.type = type;
         this.neighbours = neighbours;
@@ -22,10 +22,26 @@ public class BasicTile : ITile
         this.value = value;
     }
 
+    public List<ITile> GetChildren() 
+    {
+        return childTiles;
+    }
+
+    public void AddChild(ITile tile) 
+    {
+        childTiles.Add(tile);
+    }
+
     public Boolean AddNeighbour(ITile tile)
     {
         neighbours.Add(tile);
         return true;
+    }
+
+    public void configureBehavior(ITileBehavior behavior)
+    {
+        tileBehavior = behavior;
+        tileBehavior.Attach();
     }
 
     public bool ContainsPosition(Vector3 pos)
@@ -65,11 +81,5 @@ public class BasicTile : ITile
         {
             items.Remove(pos);
         }
-    }
-
-    public void configureBehavior(ITileBehavior behavior)
-    {
-        tileBehavior = behavior;
-        tileBehavior.Attach();
     }
 }

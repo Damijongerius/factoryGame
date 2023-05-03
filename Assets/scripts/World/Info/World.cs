@@ -32,13 +32,12 @@ namespace World
             return world;
         }
 
-        public bool OnSet(int X, int Y, GameObject gameObject, int index)
+        public bool OnSet(Vector3 pos, GameObject gameObject, int index)
         {
             foreach (ITile tile in tiles)
             {
-                if (tile.PosistionCheck(X, Y)) return false;
+                if (tile.ContainsPosition(pos)) return false;
             }
-            GrassTile grassTile = new(X, Y, gameObject, index);
             tiles.Add(grassTile);
 
             foreach (ITile tile in tiles)

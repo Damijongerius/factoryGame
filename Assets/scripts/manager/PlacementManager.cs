@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-
+using WorldObjects;
 
 public class PlacementManager : MonoBehaviour
 {
@@ -92,7 +92,7 @@ public class PlacementManager : MonoBehaviour
         }
     }
 
-    public void AddPlacable(GameObject gj)
+    public void AddPlacable(GameObject gj, Order item)
     {
         if (m_Prefab != null) return;
 
