@@ -16,7 +16,7 @@ public interface ITile
 
     public void configureBehavior(ITileBehavior behavior);
 
-    public void runBehavior(System.Object obj);
+    public void runBehavior(object obj);
     public WorldObjects.Order GetType();
     public List<Vector2> GetPosition();
 

@@ -5,6 +5,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
+using WorldObjects;
 
 namespace World
 {
@@ -32,35 +33,20 @@ namespace World
             return world;
         }
 
-        public bool OnSet(Vector3 pos, GameObject gameObject, int index)
+        public bool OnSet(List<Vector3> pos, Order orderObject, Vector2 relativePosition)
         {
             foreach (ITile tile in tiles)
             {
-                if (tile.ContainsPosition(pos)) return false;
-            }
-            tiles.Add(grassTile);
-
-            foreach (ITile tile in tiles)
-            {
-                if (tile.PosistionCheck(X + 1, Y))
-                    grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
-
-                if (tile.PosistionCheck(X - 1, Y))
-                    grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
-
-                if (tile.PosistionCheck(X, Y + 1))
-                    grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
-
-                if (tile.PosistionCheck(X, Y - 1))
-                    grassTile.AddNeighbour(tile.AddNeighbour(grassTile));
+                List<Vector2> localPos = tile.GetPosition();
+                foreach(Vector2 singlePos in localPos)
+                {
+                    if(Mathf.Abs(singlePos.x - relativePosition.x) + Mathf.Abs(singlePos.y - relativePosition.y) == 1)
+                    {
+                        tile.AddNeighbour(tile);
+                    }
+                }
             }
 
-            List<ITile> L = new();
-            L.Add(grassTile);
-            if (index == 0)
-            {
-                return true;
-            }
             return true;
         }
 
@@ -69,12 +55,13 @@ namespace World
 
         }
 
-        public void OnDelete(int X, int Y)
+        public void OnDelete(int x, int y)
         {
             foreach (ITile tile in tiles)
             {
-                if (tile.PosistionCheck(X, Y))
+                if (tile.GetPosition().Contains(new Vector2(x, y)){
                     tiles.Remove(tile);
+                }
             }
         }
 

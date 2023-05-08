@@ -39,7 +39,6 @@ public class TileGroup : ITile
     public void configureBehavior(ITileBehavior behavior)
     {
         tileBehavior = behavior;
-        tileBehavior.Attach();
     }
 
     public bool ContainsPosition(Vector3 pos)
@@ -52,6 +51,11 @@ public class TileGroup : ITile
             }
         }
         return false;
+    }
+
+    public List<ITile> GetNeighbours()
+    {
+        throw new NotImplementedException();
     }
 
     public List<Vector2> GetPosition()
@@ -79,5 +83,10 @@ public class TileGroup : ITile
         {
             items.Remove(pos);
         }
+    }
+
+    public void runBehavior(object obj)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -70,6 +70,15 @@ public class BasicTile : ITile
     public void configureBehavior(ITileBehavior behavior)
     {
         tileBehavior = behavior;
-        tileBehavior.Attach();
+    }
+
+    public List<ITile> GetNeighbours()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void runBehavior(object obj)
+    {
+        throw new NotImplementedException();
     }
 }
