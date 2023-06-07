@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using WorldObjects;
 
@@ -65,22 +66,34 @@ public class PlacementManager : MonoBehaviour
         {
             if(Input.GetMouseButtonDown(0))
             {
+                //let ray hit floor instead of anything
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
                 Vector3 newpos = Round(hit.point);
                 Vector3 endPos = newpos;
                 Vector3 LocalS = m_Prefab.transform.localScale;
+                Debug.Log(LocalS + "--" + endPos);
                 endPos.x += LocalS.x - 1;
                 endPos.z += LocalS.z - 1;
 
 
-                if (areFree(newpos, endPos))
+                    if (AreFree(newpos, endPos))
                 {
                     Debug.Log("free");
                     newpos.x += (LocalS.x - 1) / 2;
                     newpos.z += (LocalS.z - 1) / 2;
 
-                    bool result = world.OnSet((int)newpos.x, (int)newpos.z, m_Prefab, 1);
+                    List<Vector3> positions = new();
+                    for (int x = (int)newpos.x; x <= (int)endPos.x; x++)
+                    {
+                        for (int z = (int)newpos.z; z <= (int)endPos.z; z++)
+                        {
+                            positions.Add(new Vector3(x,1, z));
+                        }
+                    }
+                    Debug.Log(positions);
+
+                    bool result = world.OnSet(positions,Order.CoalPlant, m_Prefab);
 
                     if(result)
                     {
@@ -100,15 +113,18 @@ public class PlacementManager : MonoBehaviour
         m_Prefab = Instantiate(gj,hit.point,Quaternion.Euler(0,0,0),transform);
     }
 
-    private Boolean areFree(Vector3 start, Vector3 end)
+    private Boolean AreFree(Vector3 start, Vector3 end)
     {
         for(int x = (int)start.x; x  <= (int)end.x; x++)
         {
             for(int z = (int)start.z; z <= (int) end.z; z++)
             {
-                if (world.Grid[x, 0, z])
-                {
-                    return false;
+                foreach(ITile tile in world.tiles){
+
+                    if(tile.ContainsPosition(new Vector3(x, 0, z)))
+                    {
+                        return false;
+                    }
                 }
             }
         }

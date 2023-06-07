@@ -98,31 +98,6 @@ public class BuildingManager : MonoBehaviour
         int X = (int)_posX;
         int Z = (int)_posZ;
 
-        if (!world.Grid[X, 0, Z])
-        {
-
-            Debug.Log(world.tiles.Count);
-            bool result = world.OnSet(X,Z, pendingObject, endix);
-            if (result)
-            {
-
-                if (endix == 0)
-                {
-                    sf.profile.Statistics.Money -= 100;
-                }
-                if (endix == 1)
-                {
-                    sf.profile.Statistics.Money -= 10;
-                }
-                if (endix == 2)
-                {
-                    sf.profile.Statistics.Money -= 50;
-                }
-                //cell.obj = pendingObject;
-                pendingObject = null;
-
-            }
-        }
     }
 
     private void stopPending()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.EnterpriseServices;
+using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
 using UnityEditor;
 using UnityEngine;
@@ -33,21 +34,43 @@ namespace World
             return world;
         }
 
-        public bool OnSet(List<Vector3> pos, Order orderObject, Vector2 relativePosition)
+        public bool OnSet(List<Vector3> positions, Order orderObject, GameObject gameObject)
         {
+
+            List<ITile> neighbours = new List<ITile>();
             foreach (ITile tile in tiles)
             {
-                List<Vector2> localPos = tile.GetPosition();
-                foreach(Vector2 singlePos in localPos)
+                List<Vector2> existingPos = tile.GetPosition();
+                foreach(Vector2 singlePos in existingPos)
                 {
-                    if(Mathf.Abs(singlePos.x - relativePosition.x) + Mathf.Abs(singlePos.y - relativePosition.y) == 1)
+                    foreach (Vector3 position in positions)
                     {
-                        tile.AddNeighbour(tile);
+                        if (Mathf.Abs(singlePos.x - position.x) + Mathf.Abs(singlePos.y - position.y) == 1)
+                        {
+                            neighbours.Add(tile);
+                            tile.AddNeighbour(tile);
+                        }
                     }
                 }
             }
 
             return true;
+        }
+
+        private ITile TileSelection(List<Vector3> positions, Order orderObject, GameObject gameObject, List<ITile> neighbours)
+        {
+            List<Vector2> v2Positions = new List<Vector2>();
+            foreach(Vector3 pos in positions)
+            {
+                v2Positions.Add(pos);
+            }
+
+            return orderObject switch
+            {
+                Order.PowerLine or Order.WaterPipe => new TileGroup(orderObject, neighbours, v2Positions, (int)positions.First().y, new List<GameObject>() { gameObject }),
+                Order.StoryFactory1 => new TileHolder(orderObject, neighbours, v2Positions, (int)positions.First().y, new List<GameObject>() { gameObject }),
+                _ => new BasicTile(orderObject, neighbours, v2Positions, (int)positions.First().y, new List<GameObject>() { gameObject }),
+            };
         }
 
         private void ConfigureNeighbours()
@@ -59,7 +82,7 @@ namespace World
         {
             foreach (ITile tile in tiles)
             {
-                if (tile.GetPosition().Contains(new Vector2(x, y)){
+                if (tile.GetPosition().Contains(new Vector2(x, y))){
                     tiles.Remove(tile);
                 }
             }

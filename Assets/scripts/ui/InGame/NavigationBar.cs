@@ -62,7 +62,9 @@ public class NavigationBar : MonoBehaviour
         if(items != null && id < items.Length)
         {
             Debug.Log($"{items[id].Key}: {items[id].Value}");
-            PlacementManager.GetInstance().AddPlacable(items[id].Value, items[id].Key);
+            var answer = WorldObjects.Order.StoryFactory1;
+            Enum.TryParse<WorldObjects.Order>(items[id].Key, out answer);
+            PlacementManager.GetInstance().AddPlacable(items[id].Value, answer);
         }
     }
 

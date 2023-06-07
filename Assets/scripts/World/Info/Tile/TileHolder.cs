@@ -7,25 +7,23 @@ public class TileHolder : ITile
 {
     private readonly WorldObjects.Order type;
     private ITileBehavior tileBehavior;
+    private List<Vector2> items;
     private List<ITile> neighbours = new List<ITile>();
-    private List<Vector2> items = new List<Vector2>();
+    private List<GameObject> gameObjects = new List<GameObject>();
     private int layer;
     private int value;
 
     private List<ITile> childTiles = new List<ITile>();
 
-    public TileHolder(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int value)
+    public TileHolder(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int layer, List<GameObject> gameObjects)
     {
         this.type = type;
         this.neighbours = neighbours;
         this.items = items;
-        this.value = value;
+        this.layer = layer;
+        this.gameObjects = gameObjects;
     }
 
-    public List<ITile> GetChildren() 
-    {
-        return childTiles;
-    }
 
     public void AddChild(ITile tile) 
     {
@@ -38,10 +36,9 @@ public class TileHolder : ITile
         return true;
     }
 
-    public void configureBehavior(ITileBehavior behavior)
+    public void ConfigureBehavior(ITileBehavior behavior)
     {
         tileBehavior = behavior;
-        tileBehavior.Attach();
     }
 
     public bool ContainsPosition(Vector3 pos)
@@ -77,9 +74,15 @@ public class TileHolder : ITile
 
     public void RemoveNeighbour(ITile tile)
     {
-        foreach (Vector2 pos in tile.GetPosition())
-        {
-            items.Remove(pos);
-        }
+            neighbours.Remove(tile);
+    }
+
+    public List<ITile> GetNeighbours() => neighbours;
+
+    public void RunBehavior(ITile tile, object obj) => tileBehavior.Execute(tile,obj);
+
+    public object GetSavedData()
+    {
+        throw new NotImplementedException();
     }
 }

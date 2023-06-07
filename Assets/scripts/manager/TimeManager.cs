@@ -13,7 +13,7 @@ public class TimeManager : MonoBehaviour
     public int minute = 30;
     public float time;
     public TextMeshProUGUI text;
-    public GameObject light;
+    public new GameObject light;
     public float Rotation;
     public float changespeed;
 

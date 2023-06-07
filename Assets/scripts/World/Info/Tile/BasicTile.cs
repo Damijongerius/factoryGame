@@ -11,18 +11,20 @@ public class BasicTile : ITile
     private ITileBehavior tileBehavior;
     private List<ITile> neighbours;
     private List<Vector2> items;
+    private List<GameObject> objects;
     private int layer;
     private int value;
 
-    public BasicTile(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int value)
+    public BasicTile(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int layer, List<GameObject> objects)
     {
         this.type = type;
         this.neighbours = neighbours;
         this.items = items;
-        this.value = value;
+        this.layer = layer;
+        this.objects = objects;
     }
 
-    public Boolean AddNeighbour(ITile tile)
+    public bool AddNeighbour(ITile tile)
     {
         neighbours.Add(tile);
         return true;
@@ -67,17 +69,22 @@ public class BasicTile : ITile
         }
     }
 
-    public void configureBehavior(ITileBehavior behavior)
+    public void ConfigureBehavior(ITileBehavior behavior)
     {
         tileBehavior = behavior;
     }
 
     public List<ITile> GetNeighbours()
     {
-        throw new NotImplementedException();
+        return neighbours;
     }
 
-    public void runBehavior(object obj)
+    public void RunBehavior(ITile tile, object obj)
+    {
+        tileBehavior.Execute(this,obj);
+    }
+
+    public object GetSavedData()
     {
         throw new NotImplementedException();
     }

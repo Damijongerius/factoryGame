@@ -8,9 +8,12 @@ public class PowerLineBehavior : ITileBehavior
 {
     private ITile parent;
 
-    public void Execute(UnityEngine.Object obj)
+
+
+
+    public void Execute(ITile tile, object obj)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void Initialize(ITile tile)
@@ -47,12 +50,12 @@ public class PowerLineBehavior : ITileBehavior
         Passing pass = new((ITile)this, 1 / (passtrough.Count + change.Count));
         foreach(ITile neighbour in passtrough)
         {
-            neighbour.runBehavior((object)(1 / (passtrough.Count + change.Count)));
+            neighbour.RunBehavior(parent,(object)(1 / (passtrough.Count + change.Count)));
         }
 
         foreach(ITile neighbour in change)
         {
-            neighbour.runBehavior((object)pass);
+            neighbour.RunBehavior(parent,(object)pass);
         }
     }
     class Passing

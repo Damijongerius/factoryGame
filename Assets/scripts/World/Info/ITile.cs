@@ -8,19 +8,21 @@ public interface ITile
 {
     public bool IsNeighbour(Vector3 pos);
 
-    public Boolean AddNeighbour(ITile tile);
+    public bool AddNeighbour(ITile tile);
 
     public void RemoveNeighbour(ITile tile);
 
     public List<ITile> GetNeighbours();
 
-    public void configureBehavior(ITileBehavior behavior);
+    public void ConfigureBehavior(ITileBehavior behavior);
 
-    public void runBehavior(object obj);
+    public void RunBehavior(ITile tile, object obj);
     public WorldObjects.Order GetType();
     public List<Vector2> GetPosition();
 
-    public Boolean ContainsPosition(Vector3 pos);
+    public bool ContainsPosition(Vector3 pos);
+
+    public object GetSavedData();
 }
 
 /*

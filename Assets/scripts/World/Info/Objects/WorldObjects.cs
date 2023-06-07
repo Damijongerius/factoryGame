@@ -171,6 +171,7 @@ namespace WorldObjects
         WaterFilterCenter, //
         WaterPipeExtractor, // (water extractor)
         WaterTower, //
+        WaterPipe,
         PowerAmplifier, //
         PowerDemper, // (PowerLineresistor)
         PowerLine,//

@@ -9,15 +9,17 @@ public class TileGroup : ITile
     private ITileBehavior tileBehavior;
     private List<ITile> neighbours;
     private List<Vector2> items;
+    private List<GameObject> objects;
     private int layer;
     private int value;
 
-    public TileGroup(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int value)
+    public TileGroup(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int layer, List<GameObject> objects)
     {
         this.type = type;
         this.neighbours = neighbours;
         this.items = items;
-        this.value = value;
+        this.layer = layer;
+        this.objects = objects;
     }
 
     public Boolean AddNeighbour(ITile tile)
@@ -35,12 +37,7 @@ public class TileGroup : ITile
         neighbours.Add(tile);
         return true;
     }
-
-    public void configureBehavior(ITileBehavior behavior)
-    {
-        tileBehavior = behavior;
-    }
-
+    public void ConfigureBehavior(ITileBehavior behavior) =>tileBehavior = behavior;
     public bool ContainsPosition(Vector3 pos)
     {
         foreach(Vector2 position in items)
@@ -52,19 +49,15 @@ public class TileGroup : ITile
         }
         return false;
     }
+    public List<ITile> GetNeighbours() => neighbours;
+    public List<Vector2> GetPosition() => items;
 
-    public List<ITile> GetNeighbours()
+    public object GetSavedData()
     {
         throw new NotImplementedException();
     }
 
-    public List<Vector2> GetPosition()
-    {
-        return items;
-    }
-
     public new WorldObjects.Order GetType() => type;
-
     public bool IsNeighbour(Vector3 pos)
     {
         foreach (Vector2 item in  items)
@@ -76,7 +69,6 @@ public class TileGroup : ITile
         }
         return false;
     }
-
     public void RemoveNeighbour(ITile tile)
     {
         foreach(Vector2 pos in tile.GetPosition())
@@ -85,8 +77,6 @@ public class TileGroup : ITile
         }
     }
 
-    public void runBehavior(object obj)
-    {
-        throw new NotImplementedException();
-    }
+    public void RunBehavior(ITile tile, object obj) => tileBehavior.Execute(tile, obj);
+    
 }
