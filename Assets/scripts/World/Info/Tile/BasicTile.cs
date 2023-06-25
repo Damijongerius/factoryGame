@@ -1,91 +1,56 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using WorldObjects;
 
 public class BasicTile : ITile
 {
-
-    private readonly WorldObjects.Order type;
-    private ITileBehavior tileBehavior;
-    private List<ITile> neighbours;
-    private List<Vector2> items;
-    private List<GameObject> objects;
-    private int layer;
-    private int value;
-
-    public BasicTile(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int layer, List<GameObject> objects)
+    private Dictionary<Vector2, GameObject> positions = new();
+    private WorldObjects.Order type;
+    private ITileBehavior behavior;
+    public bool ContainsPositions(List<Vector2> poss)
     {
-        this.type = type;
-        this.neighbours = neighbours;
-        this.items = items;
-        this.layer = layer;
-        this.objects = objects;
-    }
-
-    public bool AddNeighbour(ITile tile)
-    {
-        neighbours.Add(tile);
-        return true;
-    }
-
-    public bool ContainsPosition(Vector3 pos)
-    {
-        foreach (Vector2 position in items)
+        foreach(Vector2 pos in poss)
         {
-            if (position == (Vector2)pos)
+            if (positions.ContainsKey(pos))
             {
                 return true;
             }
         }
         return false;
+    }
+
+    public ITileBehavior Getbehavior()
+    {
+        return behavior;
+    }
+
+    public Dictionary<Vector2, GameObject> getObjectPositions()
+    {
+        return positions;
     }
 
     public List<Vector2> GetPosition()
     {
-        return items;
+        return positions.Keys.ToList();
     }
 
-    public new WorldObjects.Order GetType() => type;
-
-    public bool IsNeighbour(Vector3 pos)
+    public void Init(Dictionary<Vector2, GameObject> content, ITileBehavior behavior, Order tpye)
     {
-        foreach (Vector2 item in items)
-        {
-            if (item == new Vector2(pos.x, pos.z))
-            {
-                return true;
-            }
-        }
-        return false;
+        this.positions = content;
+        this.behavior = behavior;
+        this.type = tpye;
     }
 
-    public void RemoveNeighbour(ITile tile)
+    public void SetBehavior(ITileBehavior behavior)
     {
-        foreach (Vector2 pos in tile.GetPosition())
-        {
-            items.Remove(pos);
-        }
+        this.behavior = behavior;
     }
 
-    public void ConfigureBehavior(ITileBehavior behavior)
+    Order ITile.GetType()
     {
-        tileBehavior = behavior;
-    }
-
-    public List<ITile> GetNeighbours()
-    {
-        return neighbours;
-    }
-
-    public void RunBehavior(ITile tile, object obj)
-    {
-        tileBehavior.Execute(this,obj);
-    }
-
-    public object GetSavedData()
-    {
-        throw new NotImplementedException();
+        return this.type;
     }
 }

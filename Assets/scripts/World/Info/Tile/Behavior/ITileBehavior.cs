@@ -1,12 +1,9 @@
 
 
 using System;
+using System.Collections.Generic;
 
 public interface ITileBehavior
 {
-    public void Run();
-
-    public void Execute(ITile tile, object obj);
-    
-    public void Initialize(ITile tile);
+    public Dictionary<string, object> GetData();
 }

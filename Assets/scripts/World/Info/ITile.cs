@@ -6,59 +6,12 @@ using WorldObjects;
 
 public interface ITile
 {
-    public bool IsNeighbour(Vector3 pos);
+    public void Init(Dictionary<Vector2, GameObject> content, ITileBehavior behavior, WorldObjects.Order tpye);
+    public void SetBehavior(ITileBehavior behavior);
+    public ITileBehavior Getbehavior();
 
-    public bool AddNeighbour(ITile tile);
-
-    public void RemoveNeighbour(ITile tile);
-
-    public List<ITile> GetNeighbours();
-
-    public void ConfigureBehavior(ITileBehavior behavior);
-
-    public void RunBehavior(ITile tile, object obj);
     public WorldObjects.Order GetType();
     public List<Vector2> GetPosition();
-
-    public bool ContainsPosition(Vector3 pos);
-
-    public object GetSavedData();
+    public Dictionary<Vector2, GameObject> getObjectPositions();
+    public bool ContainsPositions(List<Vector2> poss);
 }
-
-/*
- public interface Tile
-{
-    protected WorldObjects.Order type;
-    protected GameObject obj;
-    protected Vector3 pos;
-    protected List<Tile> Neighbours = new();
-
-    public Structures structure;
-    public Tile(int X, int Y, GameObject gameObject, int index)
-    {
-        this.x = X;
-        this.y = Y;
-        this.obj = gameObject;
-    }
-
-    public bool PosistionCheck(int X, int Y)
-    {
-        if (this.x == X && this.y == Y)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public Vector3 Pos()
-    {
-        return new Vector2(this.x, this.y);
-    }
-
-    public Tile AddNeighbour(Tile tile)
-    {
-       Neighbours.Add(tile);
-        return this;
-    }
-}
-*/

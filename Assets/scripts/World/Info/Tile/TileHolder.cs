@@ -1,88 +1,57 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using WorldObjects;
 
 public class TileHolder : ITile
 {
-    private readonly WorldObjects.Order type;
-    private ITileBehavior tileBehavior;
-    private List<Vector2> items;
-    private List<ITile> neighbours = new List<ITile>();
-    private List<GameObject> gameObjects = new List<GameObject>();
-    private int layer;
-    private int value;
-
-    private List<ITile> childTiles = new List<ITile>();
-
-    public TileHolder(WorldObjects.Order type, List<ITile> neighbours, List<Vector2> items, int layer, List<GameObject> gameObjects)
+    private Dictionary<Vector2, GameObject> positions = new();
+    private WorldObjects.Order type;
+    private ITileBehavior behavior;
+    public bool ContainsPositions(List<Vector2> poss)
     {
-        this.type = type;
-        this.neighbours = neighbours;
-        this.items = items;
-        this.layer = layer;
-        this.gameObjects = gameObjects;
-    }
-
-
-    public void AddChild(ITile tile) 
-    {
-        childTiles.Add(tile);
-    }
-
-    public Boolean AddNeighbour(ITile tile)
-    {
-        neighbours.Add(tile);
-        return true;
-    }
-
-    public void ConfigureBehavior(ITileBehavior behavior)
-    {
-        tileBehavior = behavior;
-    }
-
-    public bool ContainsPosition(Vector3 pos)
-    {
-        foreach (Vector2 position in items)
+        foreach (Vector2 pos in poss)
         {
-            if (position == (Vector2)pos)
+            if (positions.ContainsKey(pos))
             {
                 return true;
             }
         }
         return false;
+    }
+
+    public ITileBehavior Getbehavior()
+    {
+        return behavior;
+    }
+
+    public Dictionary<Vector2, GameObject> getObjectPositions()
+    {
+        return positions;
     }
 
     public List<Vector2> GetPosition()
     {
-        return items;
+        return positions.Keys.ToList();
     }
 
-    public new WorldObjects.Order GetType() => type;
-
-    public bool IsNeighbour(Vector3 pos)
+    public void Init(Dictionary<Vector2, GameObject> content, ITileBehavior behavior, Order tpye)
     {
-        foreach (Vector2 item in items)
-        {
-            if (item == new Vector2(pos.x, pos.z))
-            {
-                return true;
-            }
-        }
-        return false;
+        this.positions = content;
+        this.behavior = behavior;
+        this.type = tpye;
     }
 
-    public void RemoveNeighbour(ITile tile)
+    public void SetBehavior(ITileBehavior behavior)
     {
-            neighbours.Remove(tile);
+        this.behavior = behavior;
     }
 
-    public List<ITile> GetNeighbours() => neighbours;
-
-    public void RunBehavior(ITile tile, object obj) => tileBehavior.Execute(tile,obj);
-
-    public object GetSavedData()
+    Order ITile.GetType()
     {
-        throw new NotImplementedException();
-    }
+        return this.type;
+    } 
+
 }

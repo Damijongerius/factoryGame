@@ -6,20 +6,13 @@ using UnityEngine;
 
 public class BehaviorExecutor : MonoBehaviour
 {
-    float elapsed = 0f;
+    /*
+ * subscribe to place event
+ * subscribe to remove event
+ * roep behavior aan en bereken alles
+ * 
+*/
 
-    public delegate void Executor();
-    public static Executor executor;
 
-    public void Update()
-    {
-        elapsed += Time.deltaTime;
-        if (elapsed >= 1f)
-        {
-            elapsed %= 1f;
-            executor();
-
-        }
-    }
 
 }

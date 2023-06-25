@@ -49,11 +49,6 @@ public class NavigationBar : MonoBehaviour
             default:
                 break;
         }
-
-        foreach (var Placeable in newContent)
-        {
-            Debug.Log($"{Placeable.Key}: {Placeable.Value}");
-        }
     }
 
     public void OnButtonClick(int id)
@@ -61,7 +56,6 @@ public class NavigationBar : MonoBehaviour
         var items = newContent.ToArray();
         if(items != null && id < items.Length)
         {
-            Debug.Log($"{items[id].Key}: {items[id].Value}");
             var answer = WorldObjects.Order.StoryFactory1;
             Enum.TryParse<WorldObjects.Order>(items[id].Key, out answer);
             PlacementManager.GetInstance().AddPlacable(items[id].Value, answer);

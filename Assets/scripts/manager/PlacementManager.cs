@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using World;
 using WorldObjects;
 
 public class PlacementManager : MonoBehaviour
 {
 
     private static PlacementManager instance;
-    
+
     public GameObject[] placeables;
 
     public GameObject m_Prefab;
@@ -32,7 +33,7 @@ public class PlacementManager : MonoBehaviour
 
     private void UpdatePosition()
     {
-        if(m_Prefab == null)
+        if (m_Prefab == null)
         {
             return;
         }
@@ -62,9 +63,9 @@ public class PlacementManager : MonoBehaviour
 
     private void ClickActions()
     {
-        if(m_Prefab != null)
+        if (m_Prefab != null)
         {
-            if(Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 //let ray hit floor instead of anything
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -72,14 +73,12 @@ public class PlacementManager : MonoBehaviour
                 Vector3 newpos = Round(hit.point);
                 Vector3 endPos = newpos;
                 Vector3 LocalS = m_Prefab.transform.localScale;
-                Debug.Log(LocalS + "--" + endPos);
                 endPos.x += LocalS.x - 1;
                 endPos.z += LocalS.z - 1;
 
 
-                    if (AreFree(newpos, endPos))
+                if (AreFree(newpos, endPos))
                 {
-                    Debug.Log("free");
                     newpos.x += (LocalS.x - 1) / 2;
                     newpos.z += (LocalS.z - 1) / 2;
 
@@ -88,16 +87,16 @@ public class PlacementManager : MonoBehaviour
                     {
                         for (int z = (int)newpos.z; z <= (int)endPos.z; z++)
                         {
-                            positions.Add(new Vector3(x,1, z));
+                            positions.Add(new Vector3(x, 0, z));
                         }
                     }
-                    Debug.Log(positions);
 
-                    bool result = world.OnSet(positions,Order.CoalPlant, m_Prefab);
+                    ITile result = world.OnSet(positions, Order.CoalPlant, m_Prefab);
 
-                    if(result)
+                    if (result != null)
                     {
-                        m_Prefab.transform.position = new Vector3(newpos.x,0.5f,newpos.z);
+                        world.tiles.Add(result);
+                        m_Prefab.transform.position = new Vector3(newpos.x, 0.5f, newpos.z);
                         m_Prefab = null;
                     }
                 }
@@ -110,34 +109,35 @@ public class PlacementManager : MonoBehaviour
         if (m_Prefab != null) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        m_Prefab = Instantiate(gj,hit.point,Quaternion.Euler(0,0,0),transform);
+        m_Prefab = Instantiate(gj, hit.point, Quaternion.Euler(0, 0, 0), transform);
     }
 
     private Boolean AreFree(Vector3 start, Vector3 end)
     {
-        for(int x = (int)start.x; x  <= (int)end.x; x++)
+        List<Vector2> positions = new();
+        for (int x = (int)start.x; x <= (int)end.x; x++)
         {
-            for(int z = (int)start.z; z <= (int) end.z; z++)
+            for (int z = (int)start.z; z <= (int)end.z; z++)
             {
-                foreach(ITile tile in world.tiles){
-
-                    if(tile.ContainsPosition(new Vector3(x, 0, z)))
-                    {
-                        return false;
-                    }
-                }
+                positions.Add(new Vector2(x, z));
             }
+        }
+
+        foreach (ITile tile in world.tiles)
+        {
+            tile.ContainsPositions(positions);
         }
         return true;
     }
 
-    
+
     private void OnDrawGizmos()
     {
         var ray = Camera.main.ScreenPointToRay(new Vector2(Screen.height / 2, Screen.width / 2));
         RaycastHit hitPoint;
 
-        if (Physics.Raycast(ray, out hitPoint, 100.0f)) {
+        if (Physics.Raycast(ray, out hitPoint, 100.0f))
+        {
             Vector3 pos = Round(hitPoint.point);
             for (int x = (int)pos.x - 14; x <= pos.x + 14; x++)
             {
