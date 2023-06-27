@@ -1,12 +1,16 @@
 // // \\ // \\ // \\
 import { SaveFile, Convert, Profile, Map } from "./models/SaveFile";
-import { DB } from "./DB/Database";
+import { Database } from "./DB/Database";
 import express from "express";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
+import { ProfileManager } from './src/ProfileManager';
 var abbrev = require("abbrev");
 // \\ // \\ // \\ //
 
+Database.connect("localhost", "root", "", "factorygame");
+
+const profileManager : ProfileManager = new ProfileManager();
 // // \\ // \\ // \\
 const app = express();
 
@@ -22,6 +26,11 @@ app.listen(3000, function () {
   console.log("server running");
 });
 // \\ // \\ // \\ //
+
+app.post("/profiles/Save", profileManager.SaveProfile);
+app.post("/profiles/load", profileManager.loadProfile);
+app.post("/profiles/Delete", profileManager.deleteProfile);
+app.post("/profiles/Statistics/load", profileManager.loadProfile);
 
 // OnSaveSaveFileRequest
 // // \\ // \\ // \\
@@ -289,18 +298,3 @@ app.post("/DeleteSaveFile", async function (req, res) {
 });
 // \\ // \\ // \\ //
 
-// encryption
-// // \\ // \\ // \\
-async function EncryptPasswordASync(password) {
-  const hash = await bcrypt.hash(password, 10);
-  return hash;
-}
-
-async function comparePassword(
-  password: string | Buffer,
-  hash: string,
-  callback: Function
-) {
-  callback(await bcrypt.compare(password, hash));
-}
-// \\ // \\ // \\ //

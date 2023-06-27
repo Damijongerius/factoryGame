@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoalPlant : MonoBehaviour
+public class CoalPlant : ITileBehavior
 {
-    // Start is called before the first frame update
-    void Start()
+    private Dictionary<string, float> mainData = new Dictionary<string, float>()
     {
-        
-    }
+        { "upkeepCost", 0.6f },
+        { "powerOutage", 7 },
+        { "powerstorageCap", 6 },
+    };
+    public Dictionary<string, float> GetData() => mainData;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float Price() => 690;
 }

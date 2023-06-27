@@ -12,16 +12,11 @@ public class TimeManager : MonoBehaviour
     public int hour = 8;
     public int minute = 30;
     public float time;
-    public TextMeshProUGUI text;
     public new GameObject light;
     public float Rotation;
     public float changespeed;
 
     public bool daytime;
-    void Start()
-    {
-       
-    }
 
     // Update is called once per frame
     void Update()
@@ -68,11 +63,11 @@ public class TimeManager : MonoBehaviour
 
         if (hour < 10)
         {
-            text.text = "Date: 0" + hour + ":" + minute + "-" + day + "/" + month + "/" + year;
+            StatisticsBar.Time("Date: 0" + hour + ":" + minute + "-" + day + "/" + month + "/" + year);
         }
         else
         {
-            text.text = "Date: " + hour + ":" + minute + "-" + day + "/" + month + "/" + year;
+            StatisticsBar.Time("Date: " + hour + ":" + minute + "-" + day + "/" + month + "/" + year);
         }
     }
 }

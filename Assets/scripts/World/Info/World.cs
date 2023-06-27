@@ -16,6 +16,9 @@ namespace World
         public bool[,,] Grid;
         public List<ITile> tiles = new List<ITile>();
 
+        public delegate void WorldDelegate();
+        public WorldDelegate change;
+
         public World(World w)
         {
             world = w;
@@ -33,8 +36,11 @@ namespace World
 
         public ITile OnSet(List<Vector3> positions, Order orderObject, GameObject gameObject)
         {
-            Debug.Log("continue here");
-            return TileSelection(positions,orderObject,gameObject);
+
+            ITile result = TileSelection(positions,orderObject,gameObject);
+            world.tiles.Add(result);
+            change();
+            return result;
         }
 
         private ITile TileSelection(List<Vector3> positions, Order orderObject, GameObject gameObject)
@@ -66,32 +72,38 @@ namespace World
         {
             return orderObject switch
             {
-                Order.CoalPlant => throw new NotImplementedException(),
-                Order.OilPlant => throw new NotImplementedException(),
-                Order.PotatoPlant => throw new NotImplementedException(),
-                Order.SolarPanel => throw new NotImplementedException(),
-                Order.WindMill => throw new NotImplementedException(),
-                Order.StoryFactory1 => throw new NotImplementedException(),
-                Order.DataCable => throw new NotImplementedException(),
-                Order.PowerCable => throw new NotImplementedException(),
-                Order.PowerProcessor => throw new NotImplementedException(),
-                Order.PowerStorageModule => throw new NotImplementedException(),
-                Order.LeadAcidBattery => throw new NotImplementedException(),
-                Order.LithiumIonBattery => throw new NotImplementedException(),
-                Order.SodiumSulphurBattery => throw new NotImplementedException(),
-                Order.WaterStorage => throw new NotImplementedException(),
-                Order.WaterFilterCenter => throw new NotImplementedException(),
-                Order.WaterPipeExtractor => throw new NotImplementedException(),
-                Order.WaterTower => throw new NotImplementedException(),
-                Order.WaterPipe => throw new NotImplementedException(),
-                Order.PowerAmplifier => throw new NotImplementedException(),
-                Order.PowerDemper => throw new NotImplementedException(),
-                Order.PowerLine => throw new NotImplementedException(),
-                Order.PowerMerger => throw new NotImplementedException(),
-                Order.PowerSplitter => throw new NotImplementedException(),
-                Order.DataCenter => throw new NotImplementedException(),
-                Order.DataStockCenter => throw new NotImplementedException(),
-                Order.SatelliteDish => throw new NotImplementedException(),
+                Order.CoalPlant => new CoalPlant(),
+                Order.OilPlant => new OilPlant(),
+                Order.PotatoPlant => new PotatoPlant(),
+                Order.SolarPanel => new SolarFarm(),
+                Order.WindMill => new  WindMill(),
+                Order.StoryFactory1 => new Factory(),
+                Order.LeadAcidBattery => new LeadAcidBattery(),
+                Order.LithiumIonBattery => new LithiumIonBattery(),
+                Order.SodiumSulphurBattery => new SodiumSulphurBattery(),
+                Order.DataCenter => new DataCenter(),
+                Order.DataStockCenter => new DataStockCenter(),
+                Order.SatelliteDish => new SatelliteDish(),
+                _ => throw new NotImplementedException(),
+            };
+        }
+
+        private float GetPrice(Order orderObject)
+        {
+            return orderObject switch
+            {
+                Order.CoalPlant => new CoalPlant().Price(),
+                Order.OilPlant => new OilPlant().Price(),
+                Order.PotatoPlant => new PotatoPlant().Price(),
+                Order.SolarPanel => new SolarFarm().Price(),
+                Order.WindMill => new WindMill().Price(),
+                Order.StoryFactory1 => new Factory().Price(),
+                Order.LeadAcidBattery => new LeadAcidBattery().Price(),
+                Order.LithiumIonBattery => new LithiumIonBattery().Price(),
+                Order.SodiumSulphurBattery => new SodiumSulphurBattery().Price(),
+                Order.DataCenter => new DataCenter().Price(),
+                Order.DataStockCenter => new DataStockCenter().Price(),
+                Order.SatelliteDish => new SatelliteDish().Price(),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -102,6 +114,7 @@ namespace World
             {
                 if (tile.GetPosition().Contains(new Vector2(x, y))){
                     tiles.Remove(tile);
+                    change();
                 }
             }
         }

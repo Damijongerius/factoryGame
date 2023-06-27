@@ -11,7 +11,10 @@ public class PlacementManager : MonoBehaviour
 
     public GameObject[] placeables;
 
+    public GameObject buildCanvas;
+
     public GameObject m_Prefab;
+    private Order orderItem;
 
     private RaycastHit hit;
     public LayerMask layerMask;
@@ -29,6 +32,10 @@ public class PlacementManager : MonoBehaviour
     {
         UpdatePosition();
         ClickActions();
+        if(buildCanvas.activeSelf)
+        {
+            DrawGrid();
+        }
     }
 
     private void UpdatePosition()
@@ -91,11 +98,12 @@ public class PlacementManager : MonoBehaviour
                         }
                     }
 
-                    ITile result = world.OnSet(positions, Order.CoalPlant, m_Prefab);
+                    Debug.Log(orderItem);
+                    ITile result = world.OnSet(positions, orderItem, m_Prefab);
 
                     if (result != null)
                     {
-                        world.tiles.Add(result);
+                        
                         m_Prefab.transform.position = new Vector3(newpos.x, 0.5f, newpos.z);
                         m_Prefab = null;
                     }
@@ -110,6 +118,7 @@ public class PlacementManager : MonoBehaviour
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         m_Prefab = Instantiate(gj, hit.point, Quaternion.Euler(0, 0, 0), transform);
+        orderItem = item;
     }
 
     private Boolean AreFree(Vector3 start, Vector3 end)
@@ -119,6 +128,8 @@ public class PlacementManager : MonoBehaviour
         {
             for (int z = (int)start.z; z <= (int)end.z; z++)
             {
+                if(world.Grid[x, 0, z]) return false;
+                
                 positions.Add(new Vector2(x, z));
             }
         }
@@ -131,7 +142,7 @@ public class PlacementManager : MonoBehaviour
     }
 
 
-    private void OnDrawGizmos()
+    private void DrawGrid()
     {
         var ray = Camera.main.ScreenPointToRay(new Vector2(Screen.height / 2, Screen.width / 2));
         RaycastHit hitPoint;
@@ -143,11 +154,12 @@ public class PlacementManager : MonoBehaviour
             {
                 for (int z = (int)pos.z - 14; z <= pos.z + 7; z++)
                 {
-                    Gizmos.color = UnityEngine.Color.white;
-                    Gizmos.DrawLine(new Vector3(x - 0.5f, 0.55f, z - 0.5f), new Vector3(x - 0.5f, 0.55f, z + 0.5f));
-                    Gizmos.DrawLine(new Vector3(x - 0.5f, 0.55f, z - 0.5f), new Vector3(x + 0.5f, 0.55f, z - 0.5f));
-                    Gizmos.DrawLine(new Vector3(x + 0.5f, 0.55f, z - 0.5f), new Vector3(x + 0.5f, 0.55f, z + 0.5f));
-                    Gizmos.DrawLine(new Vector3(x - 0.5f, 0.55f, z + 0.5f), new Vector3(x + 0.5f, 0.55f, z + 0.5f));
+                    Vector3 startPoint = new Vector3(x - 0.5f, 0.55f, z - 0.5f);
+                    Vector3 endPoint = new Vector3(x + 0.5f, 0.55f, z + 0.5f);
+                    Debug.DrawLine(startPoint, new Vector3(startPoint.x, startPoint.y, endPoint.z), UnityEngine.Color.white);
+                    Debug.DrawLine(startPoint, new Vector3(endPoint.x, startPoint.y, startPoint.z), UnityEngine.Color.white);
+                    Debug.DrawLine(new Vector3(startPoint.x, startPoint.y, endPoint.z), endPoint, UnityEngine.Color.white);
+                    Debug.DrawLine(new Vector3(endPoint.x, startPoint.y, startPoint.z), endPoint, UnityEngine.Color.white);
                 }
             }
         }

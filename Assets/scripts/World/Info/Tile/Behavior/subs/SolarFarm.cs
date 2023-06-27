@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SolarFarm : MonoBehaviour
+public class SolarFarm : ITileBehavior
 {
-    // Start is called before the first frame update
-    void Start()
+    private Dictionary<string, float> mainData = new Dictionary<string, float>()
     {
-        
-    }
+        { "upkeepCost", 0.12f },
+        { "powerstorageCap", 4 },
+    };
+    public Dictionary<string, float> GetData() => mainData;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float Price() => 100;
 }
+    
+

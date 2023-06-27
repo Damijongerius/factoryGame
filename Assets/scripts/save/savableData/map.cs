@@ -11,8 +11,6 @@ namespace World {
         public Map(int _seedX, int _seedY) {
             SeedX = _seedX;
             SeedY = _seedY;
-
-            WorldLayers = new WorldLayer[12];
         }
 
         private float SeedX { get; }
@@ -20,8 +18,7 @@ namespace World {
 
         private float size;
 
-        private WorldLayer[] WorldLayers { get; set; }
-
+        private TileObject[] objects;
         public void SetSize(float _size) => size = _size;
         
 
@@ -32,18 +29,32 @@ namespace World {
             return new Vector2(SeedX, SeedY);
         }
 
-        public WorldLayer GetWorldLayer(int layer)
+        public void GetObjects()
         {
-            foreach(WorldLayer worldLayer in WorldLayers) 
+            World activeWorld = World.GetInstance();
+            for(int i = 0; i < activeWorld.tiles.Count; i++)
             {
-                if(worldLayer.GetLayer() == layer) return worldLayer;
+                objects[i] = new TileObject(activeWorld.tiles[i]);
             }
-            return null;
         }
 
-        public void AddWorldLayer(int layer)
+    }
+
+    class TileObject
+    {
+        float x;
+        float y;
+        string order;
+
+
+        public TileObject(ITile tile)
         {
-            WorldLayers[^1] = new WorldLayer(layer);
+            Vector2 pos = tile.GetPosition()[0];
+            x = pos.x;
+            y = pos.y;
+            order =  tile.GetType().ToString();
         }
     }
 }
+
+

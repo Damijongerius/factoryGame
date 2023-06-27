@@ -33,12 +33,6 @@ public partial class Statistics
 
     [JsonProperty("data")]
     public long Data { get; set; }
-
-    [JsonProperty("xp")]
-    public long Xp { get; set; }
-
-    [JsonProperty("Level")]
-    public long Level { get; set; }
 }
 
 

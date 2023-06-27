@@ -44,6 +44,8 @@ public class JsonSaveLoad
     //save file to filestream
     public bool Save(string _saveName, SaveFile _saveData, bool saveToDB)
     {
+        gameSave.map.GetObjects();
+
         string prePath = Application.persistentDataPath + "/" + user.guid + "/profile/" + _saveName;
 
         if (!Directory.Exists(prePath))

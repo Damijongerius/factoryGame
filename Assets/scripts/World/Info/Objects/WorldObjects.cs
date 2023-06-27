@@ -141,7 +141,7 @@ namespace WorldObjects
         {
             return new Dictionary<string, GameObject>
                 {
-                    { "SmallFactory", StoryFactory1 },
+                    { "StoryFactory1", StoryFactory1 },
                     //{ "MediumFactory", StoryFactory2 },
                     //{ "LargeFactory", StoryFactory3 },
                     { "DataCable", DataCable },

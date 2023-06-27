@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataStockCenter : MonoBehaviour
+public class DataStockCenter : ITileBehavior
 {
-    // Start is called before the first frame update
-    void Start()
+    private Dictionary<string, float> mainData = new Dictionary<string, float>()
     {
-        
-    }
+        { "upkeepCost", 0.7f },
+        { "dataStorageCap", 10 },
+    };
+    public Dictionary<string, float> GetData() => mainData;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float Price() => 400;
 }

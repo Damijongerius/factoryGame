@@ -13,7 +13,7 @@ export class Insert{
       var sql = `INSERT INTO savefile (SaveName, users_UserId) VALUES ("${Name}", "${GUID}")`;
   
       return new Promise<number>((resolve, reject) => {
-        this.conn.query(sql, (err, result) => {
+        this.conn.query(sql, (err, result) => {11
           return err ? reject(err) : resolve(result.insertId);
         });
       });
