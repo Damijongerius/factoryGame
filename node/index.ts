@@ -1,16 +1,16 @@
 // // \\ // \\ // \\
-import { SaveFile, Convert, Profile, Map } from "./models/SaveFile";
-import { Database } from "./DB/Database";
+import { Database } from "./src/objects/Database";
 import express from "express";
-import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import { ProfileManager } from './src/ProfileManager';
+import { SignManager } from './src/SigningManager';
 var abbrev = require("abbrev");
 // \\ // \\ // \\ //
 
 Database.connect("localhost", "root", "", "factorygame");
 
 const profileManager : ProfileManager = new ProfileManager();
+const signManager : SignManager = new SignManager();
 // // \\ // \\ // \\
 const app = express();
 
@@ -32,6 +32,11 @@ app.post("/profiles/load", profileManager.loadProfile);
 app.post("/profiles/Delete", profileManager.deleteProfile);
 app.post("/profiles/Statistics/load", profileManager.loadProfile);
 
+app.post("/user/add", signManager.CreateUser);
+app.post("/user/delete", signManager.DeleteUser);
+app.post("/user/load", signManager.GetUser);
+
+/*
 // OnSaveSaveFileRequest
 // // \\ // \\ // \\
 app.post("/Save/savefile", async function (req, res) {
@@ -297,4 +302,4 @@ app.post("/DeleteSaveFile", async function (req, res) {
   }
 });
 // \\ // \\ // \\ //
-
+*/

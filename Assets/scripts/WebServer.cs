@@ -15,7 +15,7 @@ public class WebServer
         form.AddField("sendJson", data);
         Debug.Log(data);
         form.AddField("GUID", User.GetInstance().guid.ToString());
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Save/savefile", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/profiles/Save", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
@@ -38,7 +38,7 @@ public class WebServer
         WWWForm form = new WWWForm();
         form.AddField("ID", id);
         form.AddField("GUID", User.GetInstance().guid.ToString());
-        using (UnityWebRequest www = UnityWebRequest.Post($"http://localhost:3000/Load/savefile", form))
+        using (UnityWebRequest www = UnityWebRequest.Post($"http://localhost:3000/profiles/load", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
@@ -63,7 +63,7 @@ public class WebServer
 
         WWWForm form = new WWWForm();
         form.AddField("GUID", User.GetInstance().guid.ToString());
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/Load/profiles", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/profiles/Statistics/load", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
@@ -88,7 +88,7 @@ public class WebServer
         form.AddField("GUID", GUID.ToString());
         form.AddField("UserName", UserName);
         form.AddField("Password", password);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/CreateUser", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/user/add", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
@@ -119,7 +119,7 @@ public class WebServer
         WWWForm form = new WWWForm();
         form.AddField("UserName", UserName);
         form.AddField("Password", password);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/LoadUser", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/user/load", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
@@ -148,7 +148,7 @@ public class WebServer
         form.AddField("GUID", GUID);
         form.AddField("UserName", UserName);
         form.AddField("Password", password);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/LoadUser", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/user/load", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
@@ -175,7 +175,7 @@ public class WebServer
     {
         WWWForm form = new WWWForm();
         form.AddField("GUID", User.GetInstance().guid.ToString());
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/DeleteUser", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/user/delete", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
@@ -198,7 +198,7 @@ public class WebServer
         WWWForm form = new WWWForm();
         form.AddField("GUID", User.GetInstance().guid.ToString());
         form.AddField("saveName", saveName);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/DeleteSaveFile", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/profiles/Delete", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();

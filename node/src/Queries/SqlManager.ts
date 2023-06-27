@@ -1,24 +1,13 @@
+import { Database } from "../objects/Database";
 
-export class sqlManager{
+export class SqlManager{
+    async insertProfile(Profile){
 
-    async insertProfile(){
-        const Query = `START TRANSACTION;
+    }
 
-        INSERT INTO `factorygame`.`users` (`UserName`, `password`)
-        VALUES ('JohnDoe', 'password123');
-        
-        INSERT INTO `factorygame`.`savefile` (`SaveName`, `users_UserId`)
-        VALUES ('MySaveFile', LAST_INSERT_ID());
-        
-        INSERT INTO `factorygame`.`map` (`xRange`, `yRange`, `savefile_ID`)
-        VALUES (10.5, 20.5, LAST_INSERT_ID());
-        
-        INSERT INTO `factorygame`.`profile` (`DateMade`, `DateSeen`, `TimePlayed`, `savefile_ID`, `Money`)
-        VALUES ('2023-06-27 12:34:56', NULL, '2 hours', LAST_INSERT_ID(), 500);
-        
-        INSERT INTO `factorygame`.`objects` (`position_x`, `position_y`, `objectOrder`, `map_savefile_ID`)
-        VALUES (5, 5, 'object1', LAST_INSERT_ID());
-        
-        COMMIT;`
+    async insertUser(guid: string, username : string, password : string){
+        const sqlQuery = `INSERT INTO users (UserId,username, password) VALUES (?, ?,?)`
+
+        Database.query(sqlQuery, [guid,username, password]);
     }
 }

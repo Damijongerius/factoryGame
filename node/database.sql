@@ -27,7 +27,7 @@ USE `factorygame` ;
 DROP TABLE IF EXISTS `factorygame`.`users` ;
 
 CREATE TABLE IF NOT EXISTS `factorygame`.`users` (
-  `UserId` VARCHAR(50) GENERATED ALWAYS AS () VIRTUAL,
+  `UserId` VARCHAR(50),
   `UserName` VARCHAR(45) NULL,
   `password` VARCHAR(255) NULL,
   PRIMARY KEY (`UserId`))
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS `factorygame`.`savefile` (
   `SaveName` VARCHAR(225) NOT NULL,
   `users_UserId` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`ID`, `users_UserId`),
-  UNIQUE INDEX `ID_UNIQUE` (`ID` ASC) VISIBLE,
-  INDEX `fk_savefile_users_idx` (`users_UserId` ASC) VISIBLE,
+  UNIQUE INDEX `ID_UNIQUE` (`ID` ASC),
+  INDEX `fk_savefile_users_idx` (`users_UserId` ASC),
   CONSTRAINT `fk_savefile_users`
     FOREIGN KEY (`users_UserId`)
     REFERENCES `factorygame`.`users` (`UserId`)
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `factorygame`.`map` (
   `yRange` FLOAT NOT NULL,
   `savefile_ID` INT(11) NOT NULL,
   PRIMARY KEY (`savefile_ID`),
-  INDEX `fk_map_savefile1_idx` (`savefile_ID` ASC) VISIBLE,
+  INDEX `fk_map_savefile1_idx` (`savefile_ID` ASC),
   CONSTRAINT `fk_map_savefile1`
     FOREIGN KEY (`savefile_ID`)
     REFERENCES `factorygame`.`savefile` (`ID`)
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `factorygame`.`objects` (
   `objectOrder` VARCHAR(45) NOT NULL,
   `map_savefile_ID` INT(11) NOT NULL,
   PRIMARY KEY (`position_x`, `position_y`, `map_savefile_ID`),
-  INDEX `fk_objects_map1_idx` (`map_savefile_ID` ASC) VISIBLE,
+  INDEX `fk_objects_map1_idx` (`map_savefile_ID` ASC),
   CONSTRAINT `fk_objects_map1`
     FOREIGN KEY (`map_savefile_ID`)
     REFERENCES `factorygame`.`map` (`savefile_ID`)
@@ -119,3 +119,4 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+

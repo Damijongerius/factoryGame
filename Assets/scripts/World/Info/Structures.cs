@@ -13,7 +13,5 @@ namespace WorldObjects
         private int Value { get; set; }
 
         private int Tier { get; set; }
-
-        private EWorldLayer layer { get; set; }
     }
 }
