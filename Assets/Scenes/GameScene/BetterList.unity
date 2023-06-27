@@ -13472,6 +13472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placeables: []
+  buildCanvas: {fileID: 1000726964}
   m_Prefab: {fileID: 0}
   layerMask:
     serializedVersion: 2
