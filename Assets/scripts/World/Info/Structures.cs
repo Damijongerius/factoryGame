@@ -18,6 +18,16 @@ namespace WorldObjects
 
         public bool LandStruct;
 
+        public void OnCalculate() { }
+
+        public void ResetCycles() { }
+
+        public void GetCycles() { }
+
+        public void AddPath(List<Tile> list) { }
+
+
+
         //make function overload of world.onDelete with Tile you want to Delete
         public void Tests(GameObject _value)
         {

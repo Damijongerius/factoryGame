@@ -3,21 +3,40 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using World;
 
-public partial class Map
-{
+namespace World {
+    public class Map
+    {
+        public Map(int _seedX, int _seedY) {
+            SeedX = _seedX;
+            SeedY = _seedY;
 
-    public float xRange = 0;
-    public float yRange = 0;
+            WorldLayers = new WorldLayer[12];
+        }
 
-    public List<cells> grid = new();
-}
+        private float SeedX { get; }
+        private float SeedY { get; }
 
-//contains an object if not it wont save
-public class cells
-{
-    public int x;
-    public int y;
+        private WorldLayer[] WorldLayers { get; set; }
 
-    public ObjectTypes objType;
+        public Vector2 GetSeed()
+        {
+            return new Vector2(SeedX, SeedY);
+        }
+
+        public WorldLayer GetWorldLayer(int layer)
+        {
+            foreach(WorldLayer worldLayer in WorldLayers) 
+            {
+                if(worldLayer.GetLayer() == layer) return worldLayer;
+            }
+            return null;
+        }
+
+        public void AddWorldLayer(int layer)
+        {
+            WorldLayers[^1] = new WorldLayer(layer);
+        }
+    }
 }

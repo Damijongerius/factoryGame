@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 public class Map2
 {
    // private ObjectSaveLoad objects = new ObjectSaveLoad();
-    private World world = World.GetInstance();
+    private World.World world = World.World.GetInstance();
     //3d cell2 x y z
 
     public GameObject pref;

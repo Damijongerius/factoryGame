@@ -49,7 +49,6 @@ public class cameraController : MonoBehaviour
     {
 
         Move();
-        Zoom();
         OverObj();
         Rotation();
 
@@ -69,18 +68,6 @@ public class cameraController : MonoBehaviour
 
         transform.position = new Vector3(Mathf.Clamp(transform.position.x , 11f, 91), transform.position.y, Mathf.Clamp(transform.position.z, -11f, 71f));
 
-    }
-    public void Zoom()
-    {
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        float dist = Vector3.Distance(transform.position, mainCam.transform.position);
-
-        if (dist < minZoomDist && scrollInput > 0.0f)
-            return;
-        else if (dist > maxZoomDist && scrollInput < 0.0f)
-            return;
-
-        mainCam.transform.position += scrollInput * zoomSpeed * mainCam.transform.forward;
     }
 
     public void OverObj()
@@ -104,27 +91,9 @@ public class cameraController : MonoBehaviour
 
     public void Rotation()
     {
-        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
-        if (Input.GetMouseButton(2) && Physics.Raycast(ray, out RaycastHit hit))
-        {
-            if (!Using)
-             {
-               point = hit.point;
-               Using = true;
-             }
-            float MouseX = Input.GetAxis("Mouse X") * Time.deltaTime * (mousemulti * mouseSensitivity);
-            float MouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * (mousemulti * mouseSensitivity);
+        //q and e for turning left and right
+        //basic key bind can be changed
 
-            xRotation -= MouseY;
-            xRotation = Mathf.Clamp(xRotation, -40f, 0f);
-            yRotation -= MouseX;
-
-            this.transform.localRotation = Quaternion.Euler(xRotation, -yRotation, 0f);
-        }
-        else
-        {
-            Using = false;
-        }
     }
 
     public void FocustOnPosition (Vector3 pos)

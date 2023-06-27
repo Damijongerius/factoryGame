@@ -29,6 +29,8 @@ public class GrassTile : Tile
 
     public void UpdateGenPath(List<Tile> list)
     {
+        Debug.Log("update" + list.Count + "," + Neighbours.Count);
+
         list.Add(this);
         if (this.structure is Wire)
         {
@@ -47,21 +49,23 @@ public class GrassTile : Tile
         } 
         if(this.structure is Station)
         {
+            Debug.Log("return" + list);
             Miner m = (Miner)list[0].structure;
-            m.paths.Add(list);
+            m.AddPath(list);
             return;
         }
     }
 
     public void FindPath(List<Tile> closedList)
     {
-        closedList.Add(this);
-        if(this.structure is Station)
+        Debug.Log("finding" + closedList.Count);
+        if (this.structure is Station && closedList.Count > 1)
         {
             Station s = (Station)this.structure;
             s.cycle = new List<Cycle>();
             return;
         }
+
         if (this.structure is Miner)
         {
             if (Neighbours.Count == 0)
@@ -70,28 +74,22 @@ public class GrassTile : Tile
             }
             foreach (GrassTile tile in Neighbours.Cast<GrassTile>())
             {
-                
-                if((Miner)tile.structure != null)
-                {
-                    Miner m = (Miner)tile.structure;
-                    BuildingManager.GetInstance().Invoke(nameof(m.OnCalculate), 1f);
-                    tile.UpdateGenPath(new List<Tile>());
-                }
-               
+                tile.UpdateGenPath(new List<Tile> { this });
+                tile.structure.OnCalculate();
                 return;
             }
         }
-        if (this.structure is Wire)
+
+        //continue check
+        closedList.Add(this);
+        foreach (GrassTile tile in Neighbours.Cast<GrassTile>())
         {
-            //continue check
-            foreach(GrassTile tile in Neighbours.Cast<GrassTile>())
+            if (!closedList.Contains(tile))
             {
-                if (!closedList.Contains(tile))
-                {
-                    tile.FindPath(closedList);
-                }
+                tile.FindPath(closedList);
             }
-            return;
         }
+        return;
+
     }
 }
