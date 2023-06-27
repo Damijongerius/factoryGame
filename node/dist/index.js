@@ -9,7 +9,6 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const ProfileManager_1 = require("./src/ProfileManager");
 const SigningManager_1 = require("./src/SigningManager");
-var abbrev = require("abbrev");
 // \\ // \\ // \\ //
 Database_1.Database.connect("localhost", "root", "", "factorygame");
 const profileManager = new ProfileManager_1.ProfileManager();

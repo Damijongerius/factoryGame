@@ -27,7 +27,7 @@ USE `factorygame` ;
 DROP TABLE IF EXISTS `factorygame`.`users` ;
 
 CREATE TABLE IF NOT EXISTS `factorygame`.`users` (
-  `id` VARCHAR(50) GENERATED ALWAYS AS () VIRTUAL,
+  `id` VARCHAR(50) ,
   `UserName` VARCHAR(45) NULL,
   `password` VARCHAR(255) NULL,
   PRIMARY KEY (`id`))
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS `factorygame`.`profile` (
   `SaveName` VARCHAR(225) NOT NULL,
   `users_id` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`id`, `users_id`),
-  UNIQUE INDEX `ID_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `fk_savefile_users_idx` (`users_id` ASC) VISIBLE,
+  UNIQUE INDEX `ID_UNIQUE` (`id` ASC) ,
+  INDEX `fk_savefile_users_idx` (`users_id` ASC) ,
   CONSTRAINT `fk_savefile_users`
     FOREIGN KEY (`users_id`)
     REFERENCES `factorygame`.`users` (`id`)
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `factorygame`.`map` (
   `yRange` FLOAT NOT NULL,
   `profile_id` INT(11) NOT NULL,
   PRIMARY KEY (`profile_id`),
-  INDEX `fk_map_savefile1_idx` (`profile_id` ASC) VISIBLE,
+  INDEX `fk_map_savefile1_idx` (`profile_id` ASC) ,
   CONSTRAINT `fk_map_savefile1`
     FOREIGN KEY (`profile_id`)
     REFERENCES `factorygame`.`profile` (`id`)
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `factorygame`.`objects` (
   `objectOrder` VARCHAR(45) NOT NULL,
   `profile_id` INT(11) NOT NULL,
   PRIMARY KEY (`position_x`, `position_y`, `profile_id`),
-  INDEX `fk_objects_map1_idx` (`profile_id` ASC) VISIBLE,
+  INDEX `fk_objects_map1_idx` (`profile_id` ASC) ,
   CONSTRAINT `fk_objects_map1`
     FOREIGN KEY (`profile_id`)
     REFERENCES `factorygame`.`map` (`profile_id`)
