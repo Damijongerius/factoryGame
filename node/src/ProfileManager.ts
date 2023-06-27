@@ -5,7 +5,7 @@ export class ProfileManager{
         console.log("save" + req.body.sendJson + "-" + req.body.GUID);
         
     }
-
+    
     loadProfile(req : Request, res : Response){
         console.log("load" + req.body.ID, req.body.GUID);
     }

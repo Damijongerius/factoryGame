@@ -4,7 +4,6 @@ import express from "express";
 import bodyParser from "body-parser";
 import { ProfileManager } from './src/ProfileManager';
 import { SignManager } from './src/SigningManager';
-var abbrev = require("abbrev");
 // \\ // \\ // \\ //
 
 Database.connect("localhost", "root", "", "factorygame");
