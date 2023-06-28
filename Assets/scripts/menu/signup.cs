@@ -82,7 +82,7 @@ public class SignUp
         user.guid = this.userGUID;
         Debug.Log(this.userGUID);
         user.UserName = this.userName.text;
-        manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+        manager.transform.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
     }
 
     private void requirements(Requirements req)

@@ -23,7 +23,7 @@ public class signingManager : MonoBehaviour
     private TextMeshProUGUI switchSigningText;
     private TextMeshProUGUI signingText;
 
-    private bool LoginSignUp;
+    private bool LoginSignUp = false;
     private void Start()
     {
         ws = new WebServer();
@@ -45,7 +45,6 @@ public class signingManager : MonoBehaviour
         login = new Login(username, password, this);
         signUp = new SignUp(username, password, this);
         offline = new Offline(this);
-
         
     }
     
@@ -53,11 +52,11 @@ public class signingManager : MonoBehaviour
     {
         if(LoginSignUp)
         {
-            login.LoggingIn();
+            signUp.SigningUp();
         }
         else
-        {
-            signUp.SigningUp();
+        {  
+            login.LoggingIn();
         }
     }
 
@@ -86,7 +85,7 @@ public class signingManager : MonoBehaviour
     {
         if(User.GetInstance().UserName != null)
         {
-            transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+            transform.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
         }
     }
 }

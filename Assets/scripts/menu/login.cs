@@ -20,7 +20,6 @@ public class Login
 
     private int loading;
     private int loaded;
-    private GameObject plane;
 
     private readonly signingManager manager;
 
@@ -59,7 +58,6 @@ public class Login
             case 3:
                 {
                     //if usersavefile contains this profile delete
-                    plane.SetActive(false);
                     Debug.Log("wrong");
                     break;
                 }
@@ -67,7 +65,6 @@ public class Login
                 {
                     //incorrect password
                     password.text = "";
-                    plane.SetActive(false);
                     Debug.Log("wrong");
                     break;
                 }
@@ -75,7 +72,6 @@ public class Login
                 {
                     //sorry problem on our end pls play offline or try again later
                     Debug.Log("wrong");
-                    plane.SetActive(false);
                     break;
                 }
         }
@@ -84,14 +80,15 @@ public class Login
 
     void Configure()
     {
-        manager.StartCoroutine(ws.GetProfiles(ConfigureResultAsync));
+        Debug.Log("configure");
+        manager.StartCoroutine(ws.GetProfiles(ConfigureResult));
     }
-    bool ConfigureResultAsync(string json)
+
+    bool ConfigureResult(string json)
     {
         JsonSaveLoad loader = new JsonSaveLoad();
         Debug.Log(json);
-        packet p = new packet();
-        p = JsonConvert.DeserializeObject<packet>(json);
+        Pack p = JsonConvert.DeserializeObject<Pack>(json);
 
         List<int> ids = new List<int>();
         for (int i = 0; i < p.profiles.Length; i++)
@@ -99,18 +96,19 @@ public class Login
             SaveFile savedfile;
             try
             {
-                savedfile = JsonConvert.DeserializeObject<SaveFile>(loader.Load(p.savefiles[i].SaveName, false));
-                if (savedfile.profile.DateSeen < p.profiles[i].DateSeen)
+                savedfile = JsonConvert.DeserializeObject<SaveFile>(loader.Load(p.profiles[i].SaveName, false));
+                if (savedfile.profile.DateSeen < p.Statistics[i].DateSeen)
                 {
-                    ids.Add(p.profiles[i].savefile_ID);
+                    ids.Add(p.Statistics[i].profile_id);
                 }
             }
             catch
             {
-                ids.Add(p.profiles[i].savefile_ID);
+                ids.Add(p.Statistics[i].profile_id);
             }
 
         }
+        /*
         if (ids.Count != 0)
         {
             for (int i = 0; i < ids.Count; i++)
@@ -119,12 +117,13 @@ public class Login
                 manager.StartCoroutine(ws.GetSaveFile(ids[i], SaveFileResult));
             }
         }
-        else
-        {
-            manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
-        }
+        */
+
+        manager.transform.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+        
         return false;
     }
+   
 
     bool SaveFileResult(string json)
     {
@@ -137,7 +136,7 @@ public class Login
 
         if (loaded == loading)
         {
-            manager.transform.parent.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+            manager.transform.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
         }
         return true;
     }
@@ -162,3 +161,25 @@ public class packet
         public DateTime TimePlayed;
     }
 }
+
+public class Pack
+{
+    public statistics[] Statistics;
+    public profile[] profiles;
+    public class profile
+    {
+        public int ID;
+        public string SaveName;
+        public string users_id;
+    }
+
+    public class statistics
+    {
+        public int profile_id;
+        public DateTime DateMade;
+        public DateTime DateSeen;
+        public DateTime TimePlayed;
+        public float Money;
+    }
+}
+

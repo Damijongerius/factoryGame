@@ -161,12 +161,8 @@ public class ProfileManager : MonoBehaviour
 
     public void ActualLoad()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("BetterList");
         startPlaying = System.DateTime.Now;
         playing = true;
     }
-
-
-
-
 }
