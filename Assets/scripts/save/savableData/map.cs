@@ -18,12 +18,12 @@ namespace World {
 
         }
 
-        private float SeedX = 0;
-        private float SeedY = 0;
+        public float SeedX = 0;
+        public float SeedY = 0;
 
-        private float size;
+        public float size;
 
-        private TileObject[] objects;
+        public TileObject[] objects;
         public void SetSize(float _size) => size = _size;
         
 

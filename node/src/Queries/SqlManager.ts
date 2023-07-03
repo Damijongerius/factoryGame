@@ -1,4 +1,3 @@
-import { Data } from "phaser";
 import { Database } from "../objects/Database";
 import { Profile } from "../objects/Profile";
 
@@ -23,7 +22,7 @@ export class SqlManager {
       profile.money,
     ]);
 
-    const objectsQuery = `INSERT INTO objects (position_x, position_y, objectOrder, profile_id) VALUES (?, ?, ?, ?)`;
+    const objectsQuery = `INSERT INTO objects (position_x, position_y, objectOrder, profile_id) VALUES (?, ?, '?', ?)`;
     for (const gameObject of profile.gameObjects) {
       await Database.query(objectsQuery, [
         gameObject.x,

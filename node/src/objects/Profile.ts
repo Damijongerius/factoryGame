@@ -33,7 +33,7 @@ export class Profile{
         this.money = json.profile.Statistics.money;
         this.networth = json.profile.Statistics.networth
         this.data = json.profile.Statistics.Data
-        this.gameObjects = json.map.GameObject
+        this.gameObjects = json.map.objects;
         this.name = json.profile.Name
     }
 }
