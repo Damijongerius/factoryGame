@@ -28,7 +28,7 @@ app.listen(3000, function () {
 app.post("/profiles/Save", profileManager.SaveProfile);
 app.post("/profiles/load", profileManager.loadProfile);
 app.post("/profiles/Delete", profileManager.deleteProfile);
-app.post("/profiles/Statistics/load", profileManager.loadProfile);
+app.post("/profiles/Statistics/load", profileManager.loadStatistics);
 app.post("/user/add", signManager.CreateUser);
 app.post("/user/delete", signManager.DeleteUser);
 app.post("/user/load", signManager.GetUser);

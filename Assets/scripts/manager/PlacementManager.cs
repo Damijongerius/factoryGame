@@ -121,6 +121,31 @@ public class PlacementManager : MonoBehaviour
         orderItem = item;
     }
 
+    public void PlaceItem(GameObject gameObject, Order item, float _x, float _y)
+    {
+        Instantiate(gameObject, hit.point, Quaternion.Euler(_x, 0, _y), transform);
+        Vector3 newpos = new Vector3(_x, 0, _y);
+        Vector3 endPos = new Vector3(_x,0,_y);
+        Vector3 LocalS = m_Prefab.transform.localScale;
+        endPos.x += LocalS.x - 1;
+        endPos.z += LocalS.z - 1;
+
+        newpos.x += (LocalS.x - 1) / 2;
+        newpos.z += (LocalS.z - 1) / 2;
+
+        List<Vector3> positions = new();
+        for (int x = (int)newpos.x; x <= (int)endPos.x; x++)
+        {
+            for (int z = (int)newpos.z; z <= (int)endPos.z; z++)
+            {
+                positions.Add(new Vector3(x, 0, z));
+            }
+        }
+
+        Debug.Log(orderItem);
+        ITile result = world.OnSet(positions, orderItem, m_Prefab);
+    }
+
     private Boolean AreFree(Vector3 start, Vector3 end)
     {
         List<Vector2> positions = new();

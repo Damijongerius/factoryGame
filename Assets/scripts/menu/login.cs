@@ -108,7 +108,7 @@ public class Login
             }
 
         }
-        /*
+        
         if (ids.Count != 0)
         {
             for (int i = 0; i < ids.Count; i++)
@@ -117,10 +117,10 @@ public class Login
                 manager.StartCoroutine(ws.GetSaveFile(ids[i], SaveFileResult));
             }
         }
-        */
-
-        manager.transform.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
-        
+        else
+        {
+            manager.transform.parent.gameObject.GetComponent<openCloseManager>().HandleClick();
+        }
         return false;
     }
    
@@ -168,7 +168,7 @@ public class Pack
     public profile[] profiles;
     public class profile
     {
-        public int ID;
+        public int id;
         public string SaveName;
         public string users_id;
     }

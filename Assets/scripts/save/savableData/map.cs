@@ -8,13 +8,18 @@ using World;
 namespace World {
     public class Map
     {
-        public Map(int _seedX, int _seedY) {
+        public Map(float _seedX, float _seedY) {
             SeedX = _seedX;
             SeedY = _seedY;
         }
 
-        private float SeedX { get; }
-        private float SeedY { get; }
+        public Map()
+        {
+
+        }
+
+        private float SeedX = 0;
+        private float SeedY = 0;
 
         private float size;
 
@@ -29,22 +34,42 @@ namespace World {
             return new Vector2(SeedX, SeedY);
         }
 
+        public void setSeed(float _seedX, float _seedY)
+        {
+            if(SeedX == 0)
+            {
+                SeedX = _seedX;
+            }
+            if(SeedY == 0)
+            {
+                SeedY = _seedY;
+            }
+        }
+
         public void GetObjects()
         {
+            List<TileObject> tileObjects = new();
             World activeWorld = World.GetInstance();
             for(int i = 0; i < activeWorld.tiles.Count; i++)
             {
-                objects[i] = new TileObject(activeWorld.tiles[i]);
+                tileObjects.Add(new TileObject(activeWorld.tiles[i]));
             }
+
+            objects = tileObjects.ToArray();
+        }
+
+        public TileObject[] GetPreparedObjects()
+        {
+            return objects;
         }
 
     }
 
-    class TileObject
+    public class TileObject
     {
-        float x;
-        float y;
-        string order;
+        public float x;
+        public float y;
+        public string order;
 
 
         public TileObject(ITile tile)

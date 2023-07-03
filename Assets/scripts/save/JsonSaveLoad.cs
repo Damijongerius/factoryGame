@@ -29,6 +29,7 @@ public class JsonSaveLoad
     public void CreateSaveData(string _name)
     {
         gameSave.profile = new Profile();
+        gameSave.map = new Map();
         gameSave.profile.Name = _name;
         gameSave.profile.DateMade = System.DateTime.Now;
         gameSave.profile.Statistics.Money += 200;
@@ -44,6 +45,7 @@ public class JsonSaveLoad
     //save file to filestream
     public bool Save(string _saveName, SaveFile _saveData, bool saveToDB)
     {
+        Debug.Log(gameSave.map);
         gameSave.map.GetObjects();
 
         string prePath = Application.persistentDataPath + "/" + user.guid + "/profile/" + _saveName;

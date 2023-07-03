@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Odbc;
 using System.Linq;
 using System.Net;
 using UnityEngine;
@@ -16,6 +17,12 @@ public class NavigationBar : MonoBehaviour
     private List<Image> ContentList;
     private Dictionary<string, GameObject> newContent;
 
+    private static NavigationBar instance;
+
+    private void Start()
+    {
+        instance = this;
+    }
 
     public void Awake()
     {
@@ -60,6 +67,27 @@ public class NavigationBar : MonoBehaviour
             Enum.TryParse<WorldObjects.Order>(items[id].Key, out answer);
             PlacementManager.GetInstance().AddPlacable(items[id].Value, answer);
         }
+    }
+
+    public GameObject getObject(string orderString)
+    {
+        var answer = WorldObjects.Order.StoryFactory1;
+        Enum.TryParse<WorldObjects.Order>(orderString, out answer);
+        var items = newContent.ToArray();
+        foreach(var item in items)
+        {
+            if(item.Value.name == answer.ToString())
+            {
+                return item.Value;
+            }
+        }
+
+        return null;
+    }
+    
+    public static NavigationBar GetInstance()
+    {
+        return instance;
     }
 
 

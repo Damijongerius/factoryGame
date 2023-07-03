@@ -19,6 +19,10 @@ public class Map2
     //  // \\ // \\ // \\
     public Map2(GameObject pref, Vector2 _seed, int[] _size, Material[] _atlas)
     {
+        if(sf.map == null)
+        {
+            sf.map = new World.Map(_seed[0], _seed[1]);
+        }
         world.size = _size;
         this.pref = pref;
         GenerateSeed(_seed);

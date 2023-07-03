@@ -105,6 +105,9 @@ public class ProfileManager : MonoBehaviour
 
         loadingscreen.gameObject.SetActive(true);
 
+        ObjectSaveLoad objsl = new ObjectSaveLoad();
+        objsl.LoadObjects();
+
     }
 
     public void Save()
@@ -130,7 +133,7 @@ public class ProfileManager : MonoBehaviour
     {
         Save();
         playing = false;
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("StartupScene");
 
     }
 
